@@ -1,41 +1,453 @@
-```html
 <!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phong Cách Vuông Góc - Animation Effects</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <title>Click Here</title>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
 
-    <link rel="stylesheet" href="style.css">
+        .container {
+            background: #ffffff;
+            border: 3px solid #2c3e50;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            animation: slideInFromBottom 0.8s ease-out;
+        }
+
+        .container:hover {
+            box-shadow: 15px 15px 0 rgba(0, 0, 0, 0.1);
+            transform: translate(-5px, -5px);
+        }
+
+        h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-bottom: 3px solid #3498db;
+            display: inline-block;
+            padding-bottom: 10px;
+            animation: fadeInDown 1s ease-out 0.3s both;
+        }
+
+        p {
+            color: #555;
+            font-size: 1.1rem;
+            margin: 20px 0;
+            line-height: 1.6;
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+
+        .btn-click-here {
+            display: inline-block;
+            background: #2c3e50;
+            color: #ffffff;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 3px solid #2c3e50;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            animation: pulse 2s infinite, fadeInUp 1s ease-out 0.9s both;
+        }
+
+        .btn-click-here:hover {
+            background: #3498db;
+            border-color: #3498db;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            animation-play-state: paused;
+        }
+
+        .btn-click-here:active {
+            transform: translateY(0) scale(0.95);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.1s ease;
+        }
+
+        /* Shine effect */
+        .btn-click-here::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shine 3s infinite;
+        }
+
+        /* Particles container */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            background: #ffffff;
+            opacity: 0.3;
+            animation: float linear infinite;
+        }
+
+        /* Floating squares background */
+        .floating-squares {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        .square {
+            position: absolute;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            animation: rotateSquare 20s linear infinite;
+        }
+
+        /* Keyframe Animations */
+        @keyframes slideInFromBottom {
+            from {
+                transform: translateY(100px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        @keyframes shine {
+            0% {
+                left: -100%;
+            }
+            50% {
+                left: 100%;
+            }
+            100% {
+                left: 100%;
+            }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10% { transform: translateX(-10px); }
+            20% { transform: translateX(10px); }
+            30% { transform: translateX(-10px); }
+            40% { transform: translateX(10px); }
+            50% { transform: translateX(-5px); }
+            60% { transform: translateX(5px); }
+            70% { transform: translateX(-3px); }
+            80% { transform: translateX(3px); }
+            90% { transform: translateX(-1px); }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+            }
+        }
+
+        @keyframes rotateSquare {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+            50% {
+                transform: rotate(180deg) scale(1.5);
+            }
+            100% {
+                transform: rotate(360deg) scale(1);
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-30px);
+            }
+            60% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @keyframes flash {
+            0%, 50%, 100% {
+                opacity: 1;
+            }
+            25%, 75% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .btn-click-here {
+                padding: 15px 30px;
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
-
 <body>
+    <!-- Floating squares background -->
+    <div class="floating-squares" id="floatingSquares"></div>
+    
+    <!-- Particles -->
+    <div class="particles" id="particles"></div>
 
-    <main class="container">
+    <div class="container" id="mainContainer">
+        <h1>Sharp Design</h1>
+        <p>Phong cách thiết kế vuông góc với nhiều animation động</p>
+        <button class="btn-click-here" onclick="handleClick()">Click Here</button>
+    </div>
 
-        <div class="logo">
-            🔐
-        </div>
+    <script>
+        // Tạo particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random size
+                const size = Math.random() * 10 + 5;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                // Random position
+                particle.style.left = Math.random() * 100 + '%';
+                
+                // Random animation duration
+                const duration = Math.random() * 10 + 10;
+                particle.style.animationDuration = duration + 's';
+                
+                // Random delay
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
 
-        <h1>Verify you're human</h1>
+        // Tạo floating squares
+        function createFloatingSquares() {
+            const squaresContainer = document.getElementById('floatingSquares');
+            const squareCount = 10;
+            
+            for (let i = 0; i < squareCount; i++) {
+                const square = document.createElement('div');
+                square.className = 'square';
+                
+                // Random size
+                const size = Math.random() * 100 + 50;
+                square.style.width = size + 'px';
+                square.style.height = size + 'px';
+                
+                // Random position
+                square.style.left = Math.random() * 90 + '%';
+                square.style.top = Math.random() * 90 + '%';
+                
+                // Random animation duration
+                const duration = Math.random() * 15 + 15;
+                square.style.animationDuration = duration + 's';
+                
+                // Random delay
+                square.style.animationDelay = Math.random() * 10 + 's';
+                
+                squaresContainer.appendChild(square);
+            }
+        }
 
-        <p class="sub">
-            Complete this quick step to continue.
-        </p>
+        // Xử lý click button
+        function handleClick() {
+            const button = document.querySelector('.btn-click-here');
+            const container = document.getElementById('mainContainer');
+            
+            // Thay đổi text tạm thời
+            const originalText = button.textContent;
+            button.textContent = 'Clicked!';
+            
+            // Thêm hiệu ứng shake
+            button.style.animation = 'shake 0.5s, bounce 1s';
+            
+            // Flash container
+            container.style.animation = 'flash 0.5s';
+            
+            // Tạo burst particles
+            createBurstParticles();
+            
+            // Khôi phục text sau 1.5 giây
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.animation = 'pulse 2s infinite, fadeInUp 1s ease-out 0.9s both';
+                container.style.animation = 'slideInFromBottom 0.8s ease-out';
+            }, 1500);
+            
+            // Log ra console
+            console.log('Button đã được click! Animation đang chạy...');
+        }
 
-        <a href="#" class="click-btn">
-            CLICK HERE
-        </a>
+        // Tạo burst particles khi click
+        function createBurstParticles() {
+            const burstContainer = document.createElement('div');
+            burstContainer.style.position = 'fixed';
+            burstContainer.style.top = '50%';
+            burstContainer.style.left = '50%';
+            burstContainer.style.pointerEvents = 'none';
+            burstContainer.style.zIndex = '999';
+            document.body.appendChild(burstContainer);
+            
+            const burstCount = 30;
+            
+            for (let i = 0; i < burstCount; i++) {
+                const particle = document.createElement('div');
+                particle.style.position = 'absolute';
+                particle.style.width = '10px';
+                particle.style.height = '10px';
+                particle.style.background = '#e74c3c';
+                particle.style.opacity = '1';
+                
+                // Random direction
+                const angle = (Math.PI * 2 * i) / burstCount;
+                const velocity = Math.random() * 200 + 100;
+                const dx = Math.cos(angle) * velocity;
+                const dy = Math.sin(angle) * velocity;
+                
+                // Animation
+                particle.style.transition = 'all 1s ease-out';
+                particle.style.transform = `translate(0, 0)`;
+                
+                burstContainer.appendChild(particle);
+                
+                // Trigger animation
+                setTimeout(() => {
+                    particle.style.transform = `translate(${dx}px, ${dy}px)`;
+                    particle.style.opacity = '0';
+                }, 10);
+                
+                // Remove particle after animation
+                setTimeout(() => {
+                    particle.remove();
+                }, 1000);
+            }
+            
+            // Remove burst container after animation
+            setTimeout(() => {
+                burstContainer.remove();
+            }, 1000);
+        }
 
-        <div class="status">
-            <span></span>
-            Secure Gateway
-        </div>
-
-    </main>
-
+        // Thêm event listeners cho các hiệu ứng hover
+        document.addEventListener('DOMContentLoaded', () => {
+            createParticles();
+            createFloatingSquares();
+            
+            // Thêm hiệu ứng mouse move
+            document.addEventListener('mousemove', (e) => {
+                const container = document.getElementById('mainContainer');
+                const rect = container.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                const deltaX = (e.clientX - centerX) / 50;
+                const deltaY = (e.clientY - centerY) / 50;
+                
+                container.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+            });
+            
+            // Reset transform khi mouse leave
+            document.addEventListener('mouseleave', () => {
+                const container = document.getElementById('mainContainer');
+                container.style.transform = 'translate(0, 0)';
+            });
+        });
+    </script>
 </body>
 </html>
-```
-
