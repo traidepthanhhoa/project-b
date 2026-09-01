@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phong Cách Vuông Góc - Animation Effects</title>
+    <title>Quest Maker</title>
     <style>
         * {
             margin: 0;
@@ -20,6 +20,7 @@
             align-items: center;
             padding: 20px;
             overflow-x: hidden;
+            position: relative;
         }
 
         .container {
@@ -32,6 +33,8 @@
             box-shadow: 10px 10px 0 rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
             animation: slideInFromBottom 0.8s ease-out;
+            position: relative;
+            z-index: 10;
         }
 
         .container:hover {
@@ -49,6 +52,16 @@
             display: inline-block;
             padding-bottom: 10px;
             animation: fadeInDown 1s ease-out 0.3s both;
+        }
+
+        .subtitle {
+            color: #555;
+            font-size: 1.3rem;
+            margin: 20px 0;
+            line-height: 1.6;
+            font-weight: bold;
+            animation: fadeIn 1s ease-out 0.6s both;
+            letter-spacing: 1px;
         }
 
         p {
@@ -75,6 +88,7 @@
             position: relative;
             overflow: hidden;
             animation: pulse 2s infinite, fadeInUp 1s ease-out 0.9s both;
+            margin-top: 20px;
         }
 
         .btn-click-here:hover {
@@ -111,7 +125,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: -1;
+            z-index: 1;
         }
 
         .particle {
@@ -129,7 +143,7 @@
             width: 100%;
             height: 100%;
             pointer-events: none;
-            z-index: -2;
+            z-index: 0;
         }
 
         .square {
@@ -202,19 +216,6 @@
             }
         }
 
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            10% { transform: translateX(-10px); }
-            20% { transform: translateX(10px); }
-            30% { transform: translateX(-10px); }
-            40% { transform: translateX(10px); }
-            50% { transform: translateX(-5px); }
-            60% { transform: translateX(5px); }
-            70% { transform: translateX(-3px); }
-            80% { transform: translateX(3px); }
-            90% { transform: translateX(-1px); }
-        }
-
         @keyframes float {
             0% {
                 transform: translateY(100vh) rotate(0deg);
@@ -233,27 +234,6 @@
             }
             100% {
                 transform: rotate(360deg) scale(1);
-            }
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-30px);
-            }
-            60% {
-                transform: translateY(-15px);
-            }
-        }
-
-        @keyframes flash {
-            0%, 50%, 100% {
-                opacity: 1;
-            }
-            25%, 75% {
-                opacity: 0.5;
             }
         }
 
@@ -282,9 +262,12 @@
     <div class="particles" id="particles"></div>
 
     <div class="container" id="mainContainer">
-        <h1>Sharp Design</h1>
-        <p>Phong cách thiết kế vuông góc với nhiều animation động</p>
-        <button class="btn-click-here" onclick="handleClick()">Click Here</button>
+        <h1>Quest Maker</h1>
+        <div class="subtitle">Click Here</div>
+        <p>Make Quest To Take Money Now/p>
+        <a href="https://vuotnhanh.com/RxIa" class="btn-click-here" target="_blank" title="Quest Maker - Click Here">
+            Click Here
+        </a>
     </div>
 
     <script>
@@ -345,86 +328,7 @@
             }
         }
 
-        // Xử lý click button
-        function handleClick() {
-            const button = document.querySelector('.btn-click-here');
-            const container = document.getElementById('mainContainer');
-            
-            // Thay đổi text tạm thời
-            const originalText = button.textContent;
-            button.textContent = 'Clicked!';
-            
-            // Thêm hiệu ứng shake
-            button.style.animation = 'shake 0.5s, bounce 1s';
-            
-            // Flash container
-            container.style.animation = 'flash 0.5s';
-            
-            // Tạo burst particles
-            createBurstParticles();
-            
-            // Khôi phục text sau 1.5 giây
-            setTimeout(() => {
-                button.textContent = originalText;
-                button.style.animation = 'pulse 2s infinite, fadeInUp 1s ease-out 0.9s both';
-                container.style.animation = 'slideInFromBottom 0.8s ease-out';
-            }, 1500);
-            
-            // Log ra console
-            console.log('Button đã được click! Animation đang chạy...');
-        }
-
-        // Tạo burst particles khi click
-        function createBurstParticles() {
-            const burstContainer = document.createElement('div');
-            burstContainer.style.position = 'fixed';
-            burstContainer.style.top = '50%';
-            burstContainer.style.left = '50%';
-            burstContainer.style.pointerEvents = 'none';
-            burstContainer.style.zIndex = '999';
-            document.body.appendChild(burstContainer);
-            
-            const burstCount = 30;
-            
-            for (let i = 0; i < burstCount; i++) {
-                const particle = document.createElement('div');
-                particle.style.position = 'absolute';
-                particle.style.width = '10px';
-                particle.style.height = '10px';
-                particle.style.background = '#e74c3c';
-                particle.style.opacity = '1';
-                
-                // Random direction
-                const angle = (Math.PI * 2 * i) / burstCount;
-                const velocity = Math.random() * 200 + 100;
-                const dx = Math.cos(angle) * velocity;
-                const dy = Math.sin(angle) * velocity;
-                
-                // Animation
-                particle.style.transition = 'all 1s ease-out';
-                particle.style.transform = `translate(0, 0)`;
-                
-                burstContainer.appendChild(particle);
-                
-                // Trigger animation
-                setTimeout(() => {
-                    particle.style.transform = `translate(${dx}px, ${dy}px)`;
-                    particle.style.opacity = '0';
-                }, 10);
-                
-                // Remove particle after animation
-                setTimeout(() => {
-                    particle.remove();
-                }, 1000);
-            }
-            
-            // Remove burst container after animation
-            setTimeout(() => {
-                burstContainer.remove();
-            }, 1000);
-        }
-
-        // Thêm event listeners cho các hiệu ứng hover
+        // Thêm event listeners cho các hiệu ứng
         document.addEventListener('DOMContentLoaded', () => {
             createParticles();
             createFloatingSquares();
