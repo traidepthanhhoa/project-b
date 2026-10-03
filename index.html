@@ -5,24 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Kenhmatchat - Script</title>
-  <meta
-    name="description"
-    content="Website Tổng Hợp Script Roblox"
-  >
+  <meta name="description" content="Website Tổng Hợp Script Roblox">
   <meta name="theme-color" content="#0d0710">
 
   <script>
     (() => {
       try {
         const stored = localStorage.getItem("theme");
-        const prefersDark = window.matchMedia(
-          "(prefers-color-scheme: dark)"
-        ).matches;
+        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.documentElement.dataset.theme = stored || (prefersDark ? "dark" : "light");
 
-        document.documentElement.dataset.theme =
-          stored || (prefersDark ? "dark" : "light");
+        const storedLang = localStorage.getItem("lang") || "vi";
+        document.documentElement.dataset.lang = storedLang;
+        document.documentElement.lang = storedLang;
       } catch {
         document.documentElement.dataset.theme = "dark";
+        document.documentElement.dataset.lang = "vi";
       }
     })();
   </script>
@@ -110,13 +108,9 @@
        RESET
     ========================================================= */
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
@@ -136,14 +130,11 @@
       font-family: Inter, system-ui, sans-serif;
       line-height: 1.5;
 
-      transition:
-        background .3s,
-        color .3s;
+      transition: background .3s, color .3s;
 
       position: relative;
     }
 
-    /* lớp sương mù halloween */
     body::before {
       content: "";
       position: fixed;
@@ -152,16 +143,8 @@
       z-index: 0;
 
       background:
-        radial-gradient(
-          circle at 15% 25%,
-          rgba(168, 85, 247, .08),
-          transparent 40%
-        ),
-        radial-gradient(
-          circle at 85% 70%,
-          rgba(255, 122, 24, .08),
-          transparent 40%
-        );
+        radial-gradient(circle at 15% 25%, rgba(168, 85, 247, .08), transparent 40%),
+        radial-gradient(circle at 85% 70%, rgba(255, 122, 24, .08), transparent 40%);
 
       animation: fogMove 20s ease-in-out infinite alternate;
     }
@@ -171,23 +154,127 @@
       100% { opacity: 1;  transform: translate(2%, -2%); }
     }
 
-    button,
-    input {
-      font: inherit;
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    button:disabled { cursor: not-allowed; opacity: .55; }
+
+
+    /* =========================================================
+       LANGUAGE SWITCHER
+    ========================================================= */
+
+    .lang-switcher {
+      position: relative;
     }
 
-    button {
-      cursor: pointer;
+    .lang-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+
+      border: 1px solid var(--line-strong);
+      background: var(--surface);
+      color: var(--text);
+
+      border-radius: 9px;
+      padding: 9px 12px;
+
+      font-weight: 600;
+      transition: .18s;
     }
 
-    button:disabled {
-      cursor: not-allowed;
-      opacity: .55;
+    .lang-btn:hover {
+      background: var(--surface-hover);
+      border-color: var(--orange);
+      color: var(--orange);
+      box-shadow: 0 0 12px rgba(255, 122, 24, .3);
+    }
+
+    .lang-btn .lang-flag {
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    .lang-btn .lang-arrow {
+      font-size: .65rem;
+      opacity: .7;
+      transition: transform .2s;
+    }
+
+    .lang-switcher.open .lang-arrow {
+      transform: rotate(180deg);
+    }
+
+    .lang-menu {
+      position: absolute;
+      top: calc(100% + 6px);
+      right: 0;
+
+      min-width: 160px;
+
+      background: var(--surface);
+      border: 1px solid var(--line-strong);
+      border-radius: 9px;
+
+      box-shadow: var(--shadow);
+
+      padding: 6px;
+
+      display: grid;
+      gap: 2px;
+
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-6px);
+      transition: .18s;
+
+      z-index: 100;
+    }
+
+    .lang-switcher.open .lang-menu {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+    }
+
+    .lang-option {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+
+      width: 100%;
+
+      border: 0;
+      background: transparent;
+      color: var(--text);
+
+      border-radius: 6px;
+      padding: 8px 10px;
+
+      text-align: left;
+      font-size: .82rem;
+      font-weight: 600;
+
+      transition: .15s;
+    }
+
+    .lang-option:hover {
+      background: var(--surface-2);
+      color: var(--orange);
+    }
+
+    .lang-option.active {
+      background: rgba(255, 122, 24, .12);
+      color: var(--orange);
+    }
+
+    .lang-option .lang-flag {
+      font-size: 1rem;
     }
 
 
     /* =========================================================
-       READING PROGRESS (dòng máu)
+       READING PROGRESS
     ========================================================= */
 
     .reading-progress {
@@ -223,12 +310,9 @@
       position: fixed;
       right: 22px;
       bottom: 22px;
-
       z-index: 10020;
-
       display: grid;
       gap: 9px;
-
       width: min(380px, calc(100vw - 32px));
     }
 
@@ -236,18 +320,12 @@
       display: flex;
       align-items: center;
       gap: 10px;
-
       padding: 12px 15px;
-
       background: var(--surface);
-
       border: 1px solid var(--line-strong);
       border-radius: 10px;
-
       box-shadow: var(--shadow);
-
-      animation:
-        toastIn .25s ease both;
+      animation: toastIn .25s ease both;
     }
 
     .toast.success {
@@ -263,46 +341,25 @@
     .toast-icon {
       display: grid;
       place-items: center;
-
       width: 24px;
       height: 24px;
-
       border: 1px solid currentColor;
       border-radius: 50%;
-
       font-weight: 800;
     }
 
-    .toast.success .toast-icon {
-      color: var(--green);
-    }
+    .toast.success .toast-icon { color: var(--green); }
+    .toast.error .toast-icon { color: var(--red); }
 
-    .toast.error .toast-icon {
-      color: var(--red);
-    }
-
-    .toast.out {
-      animation:
-        toastOut .2s ease both;
-    }
+    .toast.out { animation: toastOut .2s ease both; }
 
     @keyframes toastIn {
-      from {
-        opacity: 0;
-        transform: translateY(8px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
 
     @keyframes toastOut {
-      to {
-        opacity: 0;
-        transform: translateX(8px);
-      }
+      to { opacity: 0; transform: translateX(8px); }
     }
 
 
@@ -313,9 +370,7 @@
     .loader {
       position: fixed;
       inset: 0;
-
       z-index: 10010;
-
       display: grid;
       place-items: center;
 
@@ -326,9 +381,7 @@
           var(--bg) 70%
         );
 
-      transition:
-        opacity .3s,
-        visibility .3s;
+      transition: opacity .3s, visibility .3s;
     }
 
     .loader.hidden {
@@ -339,14 +392,10 @@
 
     .loader-box {
       width: min(360px, calc(100vw - 40px));
-
       text-align: center;
-
       padding: 26px;
-
       border: 1px solid var(--line-strong);
       border-radius: 14px;
-
       background: var(--surface);
 
       box-shadow:
@@ -368,9 +417,7 @@
     }
 
     .loader-box strong,
-    .loader-box span {
-      display: block;
-    }
+    .loader-box span { display: block; }
 
     .loader-box strong {
       margin-top: 12px;
@@ -382,54 +429,36 @@
 
     .loader-box span {
       margin-top: 4px;
-
       color: var(--muted);
-
       font-size: .78rem;
     }
 
     .spinner {
       width: 38px;
       height: 38px;
-
       margin: auto;
-
       border: 3px solid var(--line);
       border-top-color: var(--orange);
       border-right-color: var(--purple);
-
       border-radius: 50%;
-
-      animation:
-        spin .8s linear infinite;
-
+      animation: spin .8s linear infinite;
       box-shadow: var(--glow-orange);
     }
 
     .loader-percent {
       margin-top: 10px;
-
       font-weight: 800;
-
-      font-family:
-        "JetBrains Mono",
-        monospace;
-
+      font-family: "JetBrains Mono", monospace;
       color: var(--purple);
       font-size: 1.1rem;
     }
 
     .progress {
       height: 6px;
-
       margin-top: 15px;
-
       background: var(--surface-2);
-
       border-radius: 99px;
-
       overflow: hidden;
-
       border: 1px solid var(--line);
     }
 
@@ -445,17 +474,11 @@
           var(--purple)
         );
 
-      transition:
-        width .12s;
-
+      transition: width .12s;
       box-shadow: 0 0 8px var(--orange);
     }
 
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
 
     /* =========================================================
@@ -464,15 +487,12 @@
 
     .site-header {
       width: min(1120px, calc(100% - 32px));
-
       margin: 0 auto;
-
       padding: 34px 0 22px;
 
       display: flex;
       align-items: center;
       justify-content: space-between;
-
       gap: 20px;
 
       position: relative;
@@ -502,18 +522,13 @@
         );
 
       border-radius: 10px;
-
       color: var(--orange);
 
-      font-family:
-        "JetBrains Mono",
-        monospace;
-
+      font-family: "JetBrains Mono", monospace;
       font-weight: 700;
       font-size: 1.1rem;
 
       box-shadow: var(--glow-orange);
-
       animation: pumpkinPulse 3s ease-in-out infinite;
     }
 
@@ -525,7 +540,6 @@
     .brand h1 {
       margin: 0;
       font-size: 1.4rem;
-
       font-family: "Creepster", cursive;
       letter-spacing: .06em;
 
@@ -551,29 +565,23 @@
 
     .brand p {
       margin: 3px 0 0;
-
       color: var(--muted);
-
       font-size: .78rem;
     }
 
     .header-actions {
       display: flex;
       gap: 8px;
+      align-items: center;
     }
 
     .guide-open-btn,
     .theme-toggle {
       border: 1px solid var(--line-strong);
-
       color: var(--text);
-
       background: var(--surface);
-
       border-radius: 9px;
-
       padding: 9px 13px;
-
       transition: .18s;
       font-weight: 600;
     }
@@ -595,9 +603,7 @@
     .theme-dot {
       width: 9px;
       height: 9px;
-
       border-radius: 50%;
-
       background: var(--orange);
       box-shadow: 0 0 8px var(--orange);
     }
@@ -609,11 +615,8 @@
 
     .container {
       width: min(1120px, calc(100% - 32px));
-
       margin: 0 auto;
-
       padding-bottom: 55px;
-
       position: relative;
       z-index: 1;
     }
@@ -622,42 +625,26 @@
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
-
       gap: 20px;
-
       padding: 30px 0 24px;
-
       border-bottom: 1px solid var(--line);
-
       position: relative;
     }
 
     .eyebrow {
       color: var(--orange);
-
       letter-spacing: .18em;
-
       font-size: .68rem;
       font-weight: 800;
-
       text-transform: uppercase;
     }
 
     .hero-intro h2 {
       margin: 8px 0;
-
-      font-size:
-        clamp(
-          1.7rem,
-          4vw,
-          2.7rem
-        );
-
+      font-size: clamp(1.7rem, 4vw, 2.7rem);
       line-height: 1.1;
-
       font-family: "Creepster", cursive;
       letter-spacing: .03em;
-
       color: var(--text);
     }
 
@@ -670,15 +657,12 @@
 
     .hero-intro p {
       max-width: 700px;
-
       margin: 0;
-
       color: var(--text-soft);
     }
 
     .stats-box {
       min-width: 110px;
-
       padding: 14px 16px;
 
       background:
@@ -690,7 +674,6 @@
 
       border: 1px solid var(--line-strong);
       border-radius: 12px;
-
       text-align: center;
 
       box-shadow: var(--glow-purple);
@@ -698,20 +681,15 @@
 
     .stats-box strong {
       display: block;
-
       font-size: 1.7rem;
-
       font-family: "JetBrains Mono", monospace;
-
       color: var(--orange);
       text-shadow: 0 0 10px rgba(255, 122, 24, .5);
     }
 
     .stats-box span {
       color: var(--muted);
-
       font-size: .75rem;
-
       letter-spacing: .1em;
       text-transform: uppercase;
     }
@@ -723,31 +701,20 @@
 
     .tab-bar {
       display: flex;
-
       gap: 8px;
-
       margin: 24px 0 12px;
-
       overflow-x: auto;
-
       padding-bottom: 3px;
     }
 
     .tab-btn {
       flex: 0 0 auto;
-
       border: 1px solid var(--line);
-
       background: var(--surface);
-
       color: var(--text-soft);
-
       border-radius: 9px;
-
       padding: 10px 14px;
-
       font-weight: 700;
-
       transition: .18s;
     }
 
@@ -768,7 +735,6 @@
         );
 
       border-color: var(--orange);
-
       box-shadow: var(--glow-orange);
     }
 
@@ -779,13 +745,9 @@
 
     .tab-btn b {
       margin-left: 5px;
-
       padding: 2px 7px;
-
       background: var(--surface-2);
-
       border-radius: 999px;
-
       font-size: .68rem;
     }
 
@@ -794,76 +756,51 @@
        SEARCH
     ========================================================= */
 
-    .search-wrap {
-      margin-bottom: 20px;
-    }
+    .search-wrap { margin-bottom: 20px; }
 
     .search-box {
       position: relative;
-
       display: flex;
       align-items: center;
     }
 
     .search-box > svg {
       position: absolute;
-
       left: 14px;
-
       width: 18px;
-
       color: var(--muted);
-
       pointer-events: none;
     }
 
     #searchInput {
       width: 100%;
-
       border: 1px solid var(--line);
-
       outline: none;
-
       background: var(--surface);
-
       color: var(--text);
-
       border-radius: 10px;
-
       padding: 13px 44px 13px 42px;
-
       transition: .18s;
     }
 
-    #searchInput::placeholder {
-      color: var(--muted);
-    }
+    #searchInput::placeholder { color: var(--muted); }
 
     #searchInput:focus {
       border-color: var(--orange);
-
       box-shadow:
-        0 0 0 3px
-        rgba(255, 122, 24, .15),
+        0 0 0 3px rgba(255, 122, 24, .15),
         var(--glow-orange);
     }
 
     .search-clear {
       position: absolute;
-
       right: 9px;
-
       width: 31px;
       height: 31px;
-
       border: 0;
-
       border-radius: 8px;
-
       background: var(--surface-2);
-
       color: var(--text-soft);
-
       transition: .18s;
     }
 
@@ -874,7 +811,6 @@
 
     .search-empty {
       margin: 12px 0 0;
-
       color: var(--muted);
       font-style: italic;
     }
@@ -886,19 +822,12 @@
 
     .script-grid {
       display: grid;
-
-      grid-template-columns:
-        repeat(
-          3,
-          minmax(0, 1fr)
-        );
-
+      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 14px;
     }
 
     .script-card {
       min-height: 245px;
-
       display: flex;
       flex-direction: column;
 
@@ -910,9 +839,7 @@
         );
 
       border: 1px solid var(--line);
-
       border-radius: 12px;
-
       padding: 17px;
 
       transition:
@@ -925,13 +852,13 @@
       overflow: hidden;
     }
 
-    /* đường viền cam phát sáng khi hover */
     .script-card::before {
       content: "";
       position: absolute;
       inset: 0;
       border-radius: 12px;
       padding: 1px;
+
       background:
         linear-gradient(
           135deg,
@@ -939,25 +866,23 @@
           var(--purple),
           var(--blood)
         );
+
       -webkit-mask:
         linear-gradient(#000 0 0) content-box,
         linear-gradient(#000 0 0);
       -webkit-mask-composite: xor;
       mask-composite: exclude;
+
       opacity: 0;
       transition: opacity .25s;
       pointer-events: none;
     }
 
-    .script-card:hover::before {
-      opacity: 1;
-    }
+    .script-card:hover::before { opacity: 1; }
 
     .script-card:hover {
       transform: translateY(-3px);
-
       border-color: transparent;
-
       box-shadow:
         var(--shadow),
         0 0 30px rgba(255, 122, 24, .2);
@@ -979,23 +904,15 @@
 
     .card-topline {
       display: flex;
-
       justify-content: space-between;
-
       gap: 10px;
-
       align-items: center;
     }
 
     .category-label {
-      font-family:
-        "JetBrains Mono",
-        monospace;
-
+      font-family: "JetBrains Mono", monospace;
       font-size: .66rem;
-
       text-transform: uppercase;
-
       color: var(--purple);
       letter-spacing: .12em;
       font-weight: 700;
@@ -1003,32 +920,21 @@
 
     .status-badge {
       display: inline-flex;
-
       align-items: center;
-
       gap: 6px;
-
       padding: 4px 8px;
-
       border-radius: 999px;
-
       font-size: .66rem;
       font-weight: 800;
-
       border: 1px solid var(--line);
     }
 
     .status-badge i {
       width: 7px;
       height: 7px;
-
       border-radius: 50%;
-
       background: var(--green);
-
-      box-shadow:
-        0 0 8px
-        rgba(126, 217, 87, .7);
+      box-shadow: 0 0 8px rgba(126, 217, 87, .7);
       animation: statusPulse 1.5s ease-in-out infinite;
     }
 
@@ -1039,30 +945,24 @@
 
     .status-badge.maintenance i {
       background: var(--red);
-
-      box-shadow:
-        0 0 8px
-        rgba(239, 68, 68, .7);
+      box-shadow: 0 0 8px rgba(239, 68, 68, .7);
       animation: none;
     }
 
     .status-badge.online {
-      border-color:
-        rgba(126, 217, 87, .35);
+      border-color: rgba(126, 217, 87, .35);
       color: var(--green);
       background: rgba(126, 217, 87, .08);
     }
 
     .status-badge.maintenance {
-      border-color:
-        rgba(239, 68, 68, .35);
+      border-color: rgba(239, 68, 68, .35);
       color: var(--red);
       background: rgba(239, 68, 68, .08);
     }
 
     .script-card h3 {
       margin: 14px 0 7px;
-
       font-size: 1.15rem;
       font-weight: 800;
       color: var(--bone);
@@ -1070,35 +970,31 @@
 
     .card-description {
       margin: 0;
-
       color: var(--text-soft);
-
       font-size: .84rem;
+
+      /* FIX: chặn description tràn khi chứa code dài */
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      word-break: break-word;
     }
 
     .tag-row {
       display: flex;
-
       flex-wrap: wrap;
-
       gap: 5px;
-
       margin-top: 14px;
     }
 
     .tag-row span {
       padding: 4px 8px;
-
       border-radius: 6px;
-
       background: var(--surface-2);
-
       color: var(--muted);
-
       font-size: .66rem;
-
       border: 1px solid var(--line);
-
       transition: .18s;
     }
 
@@ -1109,42 +1005,27 @@
 
     .card-info {
       display: flex;
-
       justify-content: space-between;
-
       gap: 8px;
-
       margin-top: auto;
-
       padding-top: 15px;
-
       color: var(--muted);
-
       font-size: .67rem;
     }
 
     .card-actions {
       display: grid;
-
-      grid-template-columns:
-        1fr 1fr;
-
+      grid-template-columns: 1fr 1fr;
       gap: 7px;
-
       margin-top: 11px;
     }
 
     .btn {
       min-height: 38px;
-
       border-radius: 8px;
-
       border: 1px solid var(--line-strong);
-
       font-weight: 800;
-
       font-size: .76rem;
-
       transition: .18s;
     }
 
@@ -1155,31 +1036,24 @@
           var(--orange),
           var(--orange-deep)
         );
-
       color: #fff;
-
       border-color: var(--orange);
-
       box-shadow: 0 4px 12px rgba(255, 122, 24, .2);
     }
 
     .btn.primary:hover:not(:disabled) {
       transform: translateY(-2px);
-
       box-shadow: var(--glow-orange);
     }
 
     .btn.secondary {
       background: var(--surface-2);
-
       color: var(--text);
-
       border-color: var(--line);
     }
 
     .btn.secondary:hover {
       background: var(--surface-hover);
-
       border-color: var(--purple);
       color: var(--purple);
       box-shadow: var(--glow-purple);
@@ -1192,25 +1066,15 @@
 
     .site-footer {
       width: min(1120px, calc(100% - 32px));
-
       margin: 0 auto;
-
       padding: 25px 0 45px;
-
       border-top: 1px solid var(--line);
-
       display: flex;
-
       justify-content: center;
-
       gap: 8px;
-
       color: var(--muted);
-
       font-size: .7rem;
-
       text-align: center;
-
       position: relative;
       z-index: 1;
     }
@@ -1228,41 +1092,26 @@
 
     .back-to-top {
       position: fixed;
-
       right: 18px;
       bottom: 18px;
-
       width: 42px;
       height: 42px;
-
       border: 1px solid var(--orange);
-
       border-radius: 9px;
-
       background: var(--surface);
-
       color: var(--orange);
-
       opacity: 0;
-
       transform: translateY(8px);
-
       pointer-events: none;
-
       transition: .2s;
-
       z-index: 9990;
-
       font-size: 1.1rem;
-
       box-shadow: var(--glow-orange);
     }
 
     .back-to-top.show {
       opacity: 1;
-
       transform: none;
-
       pointer-events: auto;
     }
 
@@ -1278,48 +1127,31 @@
 
     .modal-overlay {
       position: fixed;
-
       inset: 0;
-
       z-index: 10000;
-
       display: grid;
-
       place-items: center;
-
       padding: 20px;
 
       background: rgba(13, 7, 16, .82);
 
       opacity: 0;
-
       visibility: hidden;
-
       pointer-events: none;
-
       transition: .22s;
-
       backdrop-filter: blur(6px);
     }
 
     .modal-overlay.show {
       opacity: 1;
-
       visibility: visible;
-
       pointer-events: auto;
     }
 
     .script-modal,
     .guide-modal {
       width: min(820px, 100%);
-
-      max-height:
-        min(
-          760px,
-          calc(100vh - 40px)
-        );
-
+      max-height: min(760px, calc(100vh - 40px));
       overflow: auto;
 
       background:
@@ -1330,7 +1162,6 @@
         );
 
       border: 1px solid var(--orange);
-
       border-radius: 14px;
 
       box-shadow:
@@ -1338,11 +1169,7 @@
         0 0 40px rgba(255, 122, 24, .2);
 
       padding: 20px;
-
-      transform:
-        translateY(9px)
-        scale(.99);
-
+      transform: translateY(9px) scale(.99);
       transition: .22s;
 
       position: relative;
@@ -1366,41 +1193,28 @@
 
     .modal-head {
       display: flex;
-
       justify-content: space-between;
-
       gap: 14px;
-
       align-items: flex-start;
     }
 
     .modal-head h3 {
       margin: 6px 0 0;
-
       font-size: 1.25rem;
-
       font-family: "Creepster", cursive;
       letter-spacing: .04em;
-
       color: var(--orange);
     }
 
     .modal-close {
       width: 36px;
       height: 36px;
-
       border: 1px solid var(--line-strong);
-
       background: var(--surface-2);
-
       color: var(--text);
-
       border-radius: 8px;
-
       font-size: 1.3rem;
-
       line-height: 1;
-
       transition: .18s;
     }
 
@@ -1412,26 +1226,18 @@
 
     .modal-meta {
       display: flex;
-
       flex-wrap: wrap;
-
       gap: 6px;
-
       margin: 13px 0;
     }
 
     .modal-meta span {
       padding: 5px 9px;
-
       background: var(--surface-2);
-
       border: 1px solid var(--line);
       border-radius: 6px;
-
       font-size: .67rem;
-
       color: var(--muted);
-
       font-family: "JetBrains Mono", monospace;
     }
 
@@ -1447,58 +1253,37 @@
 
     pre {
       margin: 0;
-
       background: #0a0508;
-
       border: 1px solid var(--line-strong);
-
       border-radius: 9px;
-
       padding: 15px;
-
       overflow: auto;
-
       max-height: 50vh;
-
       box-shadow: inset 0 0 20px rgba(255, 122, 24, .05);
     }
 
     code {
-      font-family:
-        "JetBrains Mono",
-        monospace;
-
+      font-family: "JetBrains Mono", monospace;
       font-size: .75rem;
-
       color: var(--orange);
       white-space: pre;
     }
 
     .guide-body {
       margin-top: 16px;
-
       display: grid;
-
       gap: 10px;
     }
 
     .guide-step {
       display: flex;
-
       gap: 10px;
-
       padding: 12px;
-
       background: var(--surface-2);
-
       border: 1px solid var(--line);
-
       border-radius: 9px;
-
       color: var(--text-soft);
-
       font-size: .82rem;
-
       transition: .18s;
     }
 
@@ -1509,7 +1294,6 @@
 
     .guide-step b {
       color: var(--orange);
-
       font-family: "Creepster", cursive;
       font-size: 1.1rem;
       letter-spacing: .05em;
@@ -1517,9 +1301,7 @@
 
     .guide-step code {
       color: var(--purple);
-
       font-size: .72rem;
-
       background: rgba(168, 85, 247, .1);
       padding: 1px 5px;
       border-radius: 4px;
@@ -1527,21 +1309,14 @@
 
     .modal-actions {
       display: flex;
-
       justify-content: flex-end;
-
       gap: 8px;
-
       margin-top: 13px;
     }
 
-    .modal-actions .btn {
-      min-width: 130px;
-    }
+    .modal-actions .btn { min-width: 130px; }
 
-    body.modal-open {
-      overflow: hidden;
-    }
+    body.modal-open { overflow: hidden; }
 
 
     /* =========================================================
@@ -1550,57 +1325,34 @@
 
     @media (max-width: 900px) {
       .script-grid {
-        grid-template-columns:
-          repeat(
-            2,
-            minmax(0, 1fr)
-          );
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
     @media (max-width: 640px) {
       .site-header {
         align-items: flex-start;
-
         flex-direction: column;
       }
 
-      .header-actions {
-        width: 100%;
-      }
-
-      .header-actions > * {
-        flex: 1;
-      }
+      .header-actions { width: 100%; }
+      .header-actions > * { flex: 1; }
 
       .hero-intro {
         align-items: stretch;
-
         flex-direction: column;
       }
 
-      .stats-box {
-        width: 110px;
-      }
+      .stats-box { width: 110px; }
 
-      .script-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .card-actions {
-        grid-template-columns: 1fr;
-      }
-
-      .site-footer {
-        flex-wrap: wrap;
-      }
+      .script-grid { grid-template-columns: 1fr; }
+      .card-actions { grid-template-columns: 1fr; }
+      .site-footer { flex-wrap: wrap; }
 
       .toast-container {
         right: 16px;
         bottom: 16px;
-
-        width:
-          calc(100vw - 32px);
+        width: calc(100vw - 32px);
       }
     }
   </style>
@@ -1612,10 +1364,7 @@
        READING PROGRESS
   ======================================================== -->
 
-  <div
-    class="reading-progress"
-    aria-hidden="true"
-  >
+  <div class="reading-progress" aria-hidden="true">
     <div id="readingProgressFill"></div>
   </div>
 
@@ -1624,49 +1373,31 @@
        TOAST
   ======================================================== -->
 
-  <div
-    class="toast-container"
-    id="toastContainer"
-    aria-live="polite"
-  ></div>
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
 
 
   <!-- =======================================================
        LOADER
   ======================================================== -->
 
-  <div
-    class="loader"
-    id="loader"
-    role="status"
-    aria-live="polite"
-  >
-
+  <div class="loader" id="loader" role="status" aria-live="polite">
     <div class="loader-box">
-
       <div class="spinner"></div>
 
-      <div
-        class="loader-percent"
-        id="percentage"
-      >
-        0%
-      </div>
+      <div class="loader-percent" id="percentage">0%</div>
 
-      <strong>
+      <strong data-i18n="loader.title">
         Đang triệu hồi script...
       </strong>
 
-      <span>
+      <span data-i18n="loader.subtitle">
         Vui lòng đợi trong giây lát...
       </span>
 
       <div class="progress">
         <div id="loaderBar"></div>
       </div>
-
     </div>
-
   </div>
 
 
@@ -1675,32 +1406,59 @@
   ======================================================== -->
 
   <header class="site-header">
-
     <div class="brand">
-
-      <span class="brand-mark">
-        🎃
-      </span>
+      <span class="brand-mark">🎃</span>
 
       <div>
-        <h1>
-          Script Hub
-        </h1>
+        <h1>Script Hub</h1>
 
-        <p>
+        <p data-i18n="brand.subtitle">
           Roblox Script Library · Halloween Edition
         </p>
       </div>
-
     </div>
 
 
     <div class="header-actions">
 
+      <!-- LANGUAGE SWITCHER -->
+      <div class="lang-switcher" id="langSwitcher">
+        <button
+          class="lang-btn"
+          id="langBtn"
+          type="button"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <span class="lang-flag" id="langCurrentFlag">🇻🇳</span>
+          <span id="langCurrentLabel">Tiếng Việt</span>
+          <span class="lang-arrow">▼</span>
+        </button>
+
+        <div class="lang-menu" id="langMenu" role="menu">
+          <button class="lang-option active" data-lang="vi" type="button" role="menuitem">
+            <span class="lang-flag">🇻🇳</span>
+            <span>Tiếng Việt</span>
+          </button>
+
+          <button class="lang-option" data-lang="en" type="button" role="menuitem">
+            <span class="lang-flag">🇬🇧</span>
+            <span>English</span>
+          </button>
+
+          <button class="lang-option" data-lang="th" type="button" role="menuitem">
+            <span class="lang-flag">🇹🇭</span>
+            <span>ภาษาไทย</span>
+          </button>
+        </div>
+      </div>
+
+
       <button
         class="guide-open-btn"
         id="guideOpen"
         type="button"
+        data-i18n="header.guide"
       >
         Hướng dẫn
       </button>
@@ -1711,17 +1469,10 @@
         type="button"
         aria-label="Chuyển chế độ sáng tối"
       >
-
         <span class="theme-dot"></span>
-
-        <span data-role="theme-label">
-          Dark
-        </span>
-
+        <span data-role="theme-label">Dark</span>
       </button>
-
     </div>
-
   </header>
 
 
@@ -1731,52 +1482,33 @@
 
   <main class="container">
 
-    <!-- HERO -->
-
     <section class="hero-intro">
-
       <div>
-
-        <span class="eyebrow">
+        <span class="eyebrow" data-i18n="hero.eyebrow">
           HALLOWEEN SCRIPT LIBRARY
         </span>
 
-        <h2>
+        <h2 data-i18n="hero.title">
           Kho báu ma quái
         </h2>
 
-        <p>
+        <p data-i18n="hero.desc">
           Thêm script ở một nơi duy nhất.
           Card, badge trạng thái, tìm kiếm
           và modal sẽ tự render.
         </p>
-
       </div>
-
 
       <div class="stats-box">
-
-        <strong id="totalScripts">
-          0
-        </strong>
-
-        <span>
-          Scripts
-        </span>
-
+        <strong id="totalScripts">0</strong>
+        <span data-i18n="hero.scripts">Scripts</span>
       </div>
-
     </section>
 
 
-    <!-- TAB (chỉ còn 1 tab Script) -->
+    <!-- TAB -->
 
-    <div
-      class="tab-bar"
-      role="tablist"
-      aria-label="Danh mục"
-    >
-
+    <div class="tab-bar" role="tablist" aria-label="Danh mục">
       <button
         class="tab-btn active"
         data-tab="all"
@@ -1785,19 +1517,16 @@
         type="button"
       >
         <span>🎃</span>
-        Script
+        <span data-i18n="tab.script">Script</span>
         <b data-count="all">0</b>
       </button>
-
     </div>
 
 
     <!-- SEARCH -->
 
     <div class="search-wrap">
-
       <div class="search-box">
-
         <svg
           viewBox="0 0 24 24"
           fill="none"
@@ -1805,26 +1534,18 @@
           stroke-width="2"
           aria-hidden="true"
         >
-          <circle
-            cx="11"
-            cy="11"
-            r="7"
-          ></circle>
-
-          <path
-            d="m20 20-4-4"
-          ></path>
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-4-4"></path>
         </svg>
-
 
         <input
           id="searchInput"
           type="search"
-          placeholder="Tìm script... (Blox Fruits, Fishing Master,...)"
+          data-i18n-placeholder="search.placeholder"
+          placeholder="Tìm script..."
           autocomplete="off"
           spellcheck="false"
         >
-
 
         <button
           id="searchClear"
@@ -1835,18 +1556,16 @@
         >
           ×
         </button>
-
       </div>
-
 
       <p
         id="searchEmpty"
         class="search-empty"
         hidden
+        data-i18n="search.empty"
       >
         Không tìm thấy script nào phù hợp.
       </p>
-
     </div>
 
 
@@ -1857,7 +1576,6 @@
       id="scriptGrid"
       aria-live="polite"
     ></section>
-
   </main>
 
 
@@ -1866,19 +1584,9 @@
   ======================================================== -->
 
   <footer class="site-footer">
-
-    <span>
-      Script Hub
-    </span>
-
-    <span>
-      ·
-    </span>
-
-    <span>
-      Happy Halloween 2026
-    </span>
-
+    <span>Script Hub</span>
+    <span>·</span>
+    <span data-i18n="footer.copy">Happy Halloween 2026</span>
   </footer>
 
 
@@ -1900,31 +1608,20 @@
        SCRIPT CONTENT MODAL
   ======================================================== -->
 
-  <div
-    class="modal-overlay"
-    id="scriptModal"
-    aria-hidden="true"
-  >
-
+  <div class="modal-overlay" id="scriptModal" aria-hidden="true">
     <div
       class="script-modal"
       role="dialog"
       aria-modal="true"
       aria-labelledby="scriptModalTitle"
     >
-
       <div class="modal-head">
-
         <div>
-
-          <span class="eyebrow">
+          <span class="eyebrow" data-i18n="modal.script.eyebrow">
             SCRIPT CONTENT
           </span>
 
-          <h3 id="scriptModalTitle">
-            Script
-          </h3>
-
+          <h3 id="scriptModalTitle">Script</h3>
         </div>
 
         <button
@@ -1935,26 +1632,14 @@
         >
           ×
         </button>
-
       </div>
 
-
-      <div
-        class="modal-meta"
-        id="scriptModalMeta"
-      ></div>
-
+      <div class="modal-meta" id="scriptModalMeta"></div>
 
       <pre><code id="scriptContent"></code></pre>
 
-
       <div class="modal-actions">
-
-        <button
-          class="btn primary"
-          id="modalCopy"
-          type="button"
-        >
+        <button class="btn primary" id="modalCopy" type="button" data-i18n="modal.copy">
           Copy Script
         </button>
 
@@ -1962,14 +1647,12 @@
           class="btn secondary"
           data-close-modal
           type="button"
+          data-i18n="modal.close"
         >
           Đóng
         </button>
-
       </div>
-
     </div>
-
   </div>
 
 
@@ -1977,31 +1660,20 @@
        GUIDE MODAL
   ======================================================== -->
 
-  <div
-    class="modal-overlay"
-    id="guideOverlay"
-    aria-hidden="true"
-  >
-
+  <div class="modal-overlay" id="guideOverlay" aria-hidden="true">
     <div
       class="guide-modal"
       role="dialog"
       aria-modal="true"
       aria-labelledby="guideTitle"
     >
-
       <div class="modal-head">
-
         <div>
+          <span class="eyebrow" data-i18n="guide.eyebrow">SETUP</span>
 
-          <span class="eyebrow">
-            SETUP
-          </span>
-
-          <h3 id="guideTitle">
+          <h3 id="guideTitle" data-i18n="guide.title">
             Cách dùng
           </h3>
-
         </div>
 
         <button
@@ -2012,66 +1684,43 @@
         >
           ×
         </button>
-
       </div>
 
-
       <div class="guide-body">
-
         <div class="guide-step">
-
           <b>1.</b>
-
-          <span>
+          <span data-i18n="guide.step1">
             Mở view script bạn muốn và chọn
             <strong>View Content</strong>
             để xem nội dung.
           </span>
-
         </div>
 
-
         <div class="guide-step">
-
           <b>2.</b>
-
-          <span>
+          <span data-i18n="guide.step2">
             Nhấn
             <strong>Copy Script</strong>
             để chép toàn bộ nội dung vào clipboard.
           </span>
-
         </div>
 
-
         <div class="guide-step">
-
           <b>3.</b>
-
-          <span>
+          <span data-i18n="guide.step3">
             Thêm script vào
-            <code>Executor</code>
-            .
+            <code>Executor</code>.
           </span>
-
         </div>
-
 
         <div class="guide-step">
-
           <b>4.</b>
-
-          <span>
+          <span data-i18n="guide.step4">
             Execute Script
-            <code></code>
           </span>
-
         </div>
-
       </div>
-
     </div>
-
   </div>
 
 
@@ -2086,7 +1735,6 @@
     ========================================================= */
 
     const MAINTENANCE_MODE = {
-
       script1: false,
       script2: false,
       script3: true,
@@ -2095,26 +1743,30 @@
       script6: false,
       script7: false,
       script8: false
-
     };
 
 
-    const SCRIPTS = [
+    /* =========================================================
+       SCRIPTS
+       FIX: description của script1 chỉ còn 1 câu ngắn gọn,
+            không chứa code Lua nữa.
+       FIX: Bỏ tag "PE" (typo) trong script1.
+    ========================================================= */
 
+    const SCRIPTS = [
       {
         id: "script1",
         name: "Teddy Hub",
-        description: "repeat task.wait() until game:IsLoaded() and game:GetService("Players") and game.Players.LocalPlayer and game.Players.LocalPlayer:FindFirstChild("PlayerGui")
-loadstring(game:HttpGet("https://raw.githubusercontent.com/teddyhubdev/diepvy/refs/heads/main/TeddyHub.lua"))() ",
+        description: "Hub tổng hợp đa tính năng, hỗ trợ nhiều tựa game Roblox.",
         category: "universal",
         platform: "pc",
         updated: "2026-10-03",
         version: "1.0.0",
-        tags: ["Blox Fruits", "Farm", "PC", "PE"],
+        tags: ["Blox Fruits", "Farm", "PC"],
         content: `repeat task.wait() until game:IsLoaded() and game:GetService("Players") and game.Players.LocalPlayer and game.Players.LocalPlayer:FindFirstChild("PlayerGui")
-loadstring(game:HttpGet("https://raw.githubusercontent.com/teddyhubdev/diepvy/refs/heads/main/TeddyHub.lua"))() 
+loadstring(game:HttpGet("https://raw.githubusercontent.com/teddyhubdev/diepvy/refs/heads/main/TeddyHub.lua"))()
 
-print("Blox Fruits Farm")`
+print("Teddy Hub loaded")`
       },
 
       {
@@ -2214,8 +1866,251 @@ print("Aimbot Pro loaded")`
 
 print("Auto Farm loaded")`
       }
-
     ];
+
+
+    /* =========================================================
+       I18N — ĐA NGÔN NGỮ
+    ========================================================= */
+
+    const I18N = {
+      vi: {
+        "loader.title": "Đang triệu hồi script...",
+        "loader.subtitle": "Vui lòng đợi trong giây lát...",
+        "brand.subtitle": "Roblox Script Library · Halloween Edition",
+        "header.guide": "Hướng dẫn",
+        "hero.eyebrow": "HALLOWEEN SCRIPT LIBRARY",
+        "hero.title": "Kho báu ma quái",
+        "hero.desc": "Thêm script ở một nơi duy nhất. Card, badge trạng thái, tìm kiếm và modal sẽ tự render.",
+        "hero.scripts": "Scripts",
+        "tab.script": "Script",
+        "search.placeholder": "Tìm script... (Blox Fruits, Fishing Master,...)",
+        "search.empty": "Không tìm thấy script nào phù hợp.",
+        "modal.script.eyebrow": "SCRIPT CONTENT",
+        "modal.copy": "Copy Script",
+        "modal.close": "Đóng",
+        "guide.eyebrow": "SETUP",
+        "guide.title": "Cách dùng",
+        "guide.step1": "Mở view script bạn muốn và chọn <strong>View Content</strong> để xem nội dung.",
+        "guide.step2": "Nhấn <strong>Copy Script</strong> để chép toàn bộ nội dung vào clipboard.",
+        "guide.step3": "Thêm script vào <code>Executor</code>.",
+        "guide.step4": "Execute Script",
+        "status.online": "Online",
+        "status.maintenance": "Bảo trì",
+        "btn.copy": "Copy Script",
+        "btn.maintenance": "Đang bảo trì",
+        "btn.copying": "Copying...",
+        "btn.copied": "Copied ✓",
+        "btn.copyError": "Copy lỗi",
+        "btn.view": "View Content",
+        "toast.copied": "Đã copy {name}",
+        "toast.copyError": "Không thể copy script",
+        "time.today": "Cập nhật hôm nay",
+        "time.yesterday": "Cập nhật hôm qua",
+        "time.daysAgo": "Cập nhật {n} ngày trước",
+        "time.weeksAgo": "Cập nhật {n} tuần trước",
+        "time.monthsAgo": "Cập nhật {n} tháng trước",
+        "time.yearsAgo": "Cập nhật {n} năm trước",
+        "time.unknown": "Ngày cập nhật không rõ"
+      },
+
+      en: {
+        "loader.title": "Summoning scripts...",
+        "loader.subtitle": "Please wait a moment...",
+        "brand.subtitle": "Roblox Script Library · Halloween Edition",
+        "header.guide": "Guide",
+        "hero.eyebrow": "HALLOWEEN SCRIPT LIBRARY",
+        "hero.title": "Spooky Treasure Vault",
+        "hero.desc": "Add scripts in one place. Cards, status badges, search and modals render automatically.",
+        "hero.scripts": "Scripts",
+        "tab.script": "Scripts",
+        "search.placeholder": "Search scripts... (Blox Fruits, Fishing Master,...)",
+        "search.empty": "No matching scripts found.",
+        "modal.script.eyebrow": "SCRIPT CONTENT",
+        "modal.copy": "Copy Script",
+        "modal.close": "Close",
+        "guide.eyebrow": "SETUP",
+        "guide.title": "How to use",
+        "guide.step1": "Open the script card you want and click <strong>View Content</strong> to view.",
+        "guide.step2": "Click <strong>Copy Script</strong> to copy the whole content to clipboard.",
+        "guide.step3": "Paste the script into your <code>Executor</code>.",
+        "guide.step4": "Execute Script",
+        "status.online": "Online",
+        "status.maintenance": "Maintenance",
+        "btn.copy": "Copy Script",
+        "btn.maintenance": "Maintenance",
+        "btn.copying": "Copying...",
+        "btn.copied": "Copied ✓",
+        "btn.copyError": "Copy failed",
+        "btn.view": "View Content",
+        "toast.copied": "Copied {name}",
+        "toast.copyError": "Could not copy script",
+        "time.today": "Updated today",
+        "time.yesterday": "Updated yesterday",
+        "time.daysAgo": "Updated {n} days ago",
+        "time.weeksAgo": "Updated {n} weeks ago",
+        "time.monthsAgo": "Updated {n} months ago",
+        "time.yearsAgo": "Updated {n} years ago",
+        "time.unknown": "Unknown update date"
+      },
+
+      th: {
+        "loader.title": "กำลังอัญเชิญสคริปต์...",
+        "loader.subtitle": "กรุณารอสักครู่...",
+        "brand.subtitle": "Roblox Script Library · Halloween Edition",
+        "header.guide": "คู่มือ",
+        "hero.eyebrow": "HALLOWEEN SCRIPT LIBRARY",
+        "hero.title": "คลังสมบัติผี",
+        "hero.desc": "เพิ่มสคริปต์ในที่เดียว การ์ด ป้ายสถานะ การค้นหา และโมดัลจะแสดงผลอัตโนมัติ",
+        "hero.scripts": "สคริปต์",
+        "tab.script": "สคริปต์",
+        "search.placeholder": "ค้นหาสคริปต์... (Blox Fruits, Fishing Master,...)",
+        "search.empty": "ไม่พบสคริปต์ที่ตรงกัน",
+        "modal.script.eyebrow": "เนื้อหาสคริปต์",
+        "modal.copy": "คัดลอกสคริปต์",
+        "modal.close": "ปิด",
+        "guide.eyebrow": "การตั้งค่า",
+        "guide.title": "วิธีใช้",
+        "guide.step1": "เปิดการ์ดสคริปต์ที่ต้องการ แล้วกด <strong>View Content</strong> เพื่อดูเนื้อหา",
+        "guide.step2": "กด <strong>Copy Script</strong> เพื่อคัดลอกเนื้อหาทั้งหมด",
+        "guide.step3": "วางสคริปต์ลงใน <code>Executor</code>",
+        "guide.step4": "Execute Script",
+        "status.online": "ออนไลน์",
+        "status.maintenance": "ปิดปรับปรุง",
+        "btn.copy": "คัดลอกสคริปต์",
+        "btn.maintenance": "ปิดปรับปรุง",
+        "btn.copying": "กำลังคัดลอก...",
+        "btn.copied": "คัดลอกแล้ว ✓",
+        "btn.copyError": "คัดลอกไม่สำเร็จ",
+        "btn.view": "ดูเนื้อหา",
+        "toast.copied": "คัดลอก {name} แล้ว",
+        "toast.copyError": "ไม่สามารถคัดลอกสคริปต์",
+        "time.today": "อัปเดตวันนี้",
+        "time.yesterday": "อัปเดตเมื่อวาน",
+        "time.daysAgo": "อัปเดต {n} วันที่แล้ว",
+        "time.weeksAgo": "อัปเดต {n} สัปดาห์ที่แล้ว",
+        "time.monthsAgo": "อัปเดต {n} เดือนที่แล้ว",
+        "time.yearsAgo": "อัปเดต {n} ปีที่แล้ว",
+        "time.unknown": "ไม่ทราบวันที่อัปเดต"
+      }
+    };
+
+
+    const LANG_META = {
+      vi: { flag: "🇻🇳", label: "Tiếng Việt" },
+      en: { flag: "🇬🇧", label: "English" },
+      th: { flag: "🇹🇭", label: "ภาษาไทย" }
+    };
+
+
+    let currentLang = document.documentElement.dataset.lang || "vi";
+
+
+    function t(key, vars = {}) {
+      let str = (I18N[currentLang] && I18N[currentLang][key]) || I18N.vi[key] || key;
+
+      Object.entries(vars).forEach(([k, v]) => {
+        str = str.replaceAll(`{${k}}`, v);
+      });
+
+      return str;
+    }
+
+
+    function applyI18n() {
+      /* Text content */
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.dataset.i18n;
+        const val = t(key);
+
+        /* Cho phép HTML trong một số key (VD guide.step1 có <strong>) */
+        if (/<[a-z][\s\S]*>/i.test(val)) {
+          el.innerHTML = val;
+        } else {
+          el.textContent = val;
+        }
+      });
+
+      /* Placeholder */
+      document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+        el.placeholder = t(el.dataset.i18nPlaceholder);
+      });
+
+      /* Cập nhật lại toàn bộ card (vì status/timeAgo nằm trong template) */
+      renderScripts();
+
+      /* Cập nhật label ngôn ngữ */
+      const meta = LANG_META[currentLang] || LANG_META.vi;
+      document.getElementById("langCurrentFlag").textContent = meta.flag;
+      document.getElementById("langCurrentLabel").textContent = meta.label;
+
+      document.querySelectorAll(".lang-option").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.lang === currentLang);
+      });
+    }
+
+
+    function setLang(lang) {
+      if (!I18N[lang]) return;
+
+      currentLang = lang;
+
+      document.documentElement.dataset.lang = lang;
+      document.documentElement.lang = lang;
+
+      try { localStorage.setItem("lang", lang); } catch {}
+
+      applyI18n();
+      closeLangMenu();
+    }
+
+
+    /* =========================================================
+       LANGUAGE SWITCHER UI
+    ========================================================= */
+
+    function openLangMenu() {
+      const sw = document.getElementById("langSwitcher");
+      sw.classList.add("open");
+      document.getElementById("langBtn").setAttribute("aria-expanded", "true");
+    }
+
+    function closeLangMenu() {
+      const sw = document.getElementById("langSwitcher");
+      sw.classList.remove("open");
+      document.getElementById("langBtn").setAttribute("aria-expanded", "false");
+    }
+
+    function toggleLangMenu() {
+      const sw = document.getElementById("langSwitcher");
+      sw.classList.contains("open") ? closeLangMenu() : openLangMenu();
+    }
+
+    function initLangSwitcher() {
+      const btn = document.getElementById("langBtn");
+
+      btn.addEventListener("click", e => {
+        e.stopPropagation();
+        toggleLangMenu();
+      });
+
+      document.querySelectorAll(".lang-option").forEach(opt => {
+        opt.addEventListener("click", () => {
+          setLang(opt.dataset.lang);
+        });
+      });
+
+      /* Click ngoài → đóng menu */
+      document.addEventListener("click", e => {
+        const sw = document.getElementById("langSwitcher");
+        if (!sw.contains(e.target)) closeLangMenu();
+      });
+
+      /* Esc → đóng */
+      document.addEventListener("keydown", e => {
+        if (e.key === "Escape") closeLangMenu();
+      });
+    }
 
 
     /* =========================================================
@@ -2251,21 +2146,21 @@ print("Auto Farm loaded")`
     }
 
     function getStatus(script) {
-      return isDisabled(script) ? "Bảo trì" : "Online";
+      return isDisabled(script) ? t("status.maintenance") : t("status.online");
     }
 
     function getTimeAgo(dateStr) {
       const date = new Date(`${dateStr}T00:00:00`);
-      if (Number.isNaN(date.getTime())) return "Ngày cập nhật không rõ";
+      if (Number.isNaN(date.getTime())) return t("time.unknown");
 
       const days = Math.max(0, Math.floor((Date.now() - date.getTime()) / 86400000));
 
-      if (days === 0) return "Cập nhật hôm nay";
-      if (days === 1) return "Cập nhật hôm qua";
-      if (days < 7) return `Cập nhật ${days} ngày trước`;
-      if (days < 30) return `Cập nhật ${Math.floor(days / 7)} tuần trước`;
-      if (days < 365) return `Cập nhật ${Math.floor(days / 30)} tháng trước`;
-      return `Cập nhật ${Math.floor(days / 365)} năm trước`;
+      if (days === 0) return t("time.today");
+      if (days === 1) return t("time.yesterday");
+      if (days < 7) return t("time.daysAgo", { n: days });
+      if (days < 30) return t("time.weeksAgo", { n: Math.floor(days / 7) });
+      if (days < 365) return t("time.monthsAgo", { n: Math.floor(days / 30) });
+      return t("time.yearsAgo", { n: Math.floor(days / 365) });
     }
 
 
@@ -2316,7 +2211,7 @@ print("Auto Farm loaded")`
 
             <span class="status-badge ${disabled ? "maintenance" : "online"}">
               <i></i>
-              ${status}
+              ${escapeHTML(status)}
             </span>
           </div>
 
@@ -2343,11 +2238,11 @@ print("Auto Farm loaded")`
               data-action="copy"
               ${disabled ? 'disabled aria-disabled="true"' : ""}
             >
-              ${disabled ? "Đang bảo trì" : "Copy Script"}
+              ${disabled ? escapeHTML(t("btn.maintenance")) : escapeHTML(t("btn.copy"))}
             </button>
 
             <button class="btn secondary" data-action="view">
-              View Content
+              ${escapeHTML(t("btn.view"))}
             </button>
           </div>
         </article>
@@ -2455,7 +2350,7 @@ print("Auto Farm loaded")`
         <span>${escapeHTML(script.platform)}</span>
         <span>v${escapeHTML(script.version)}</span>
         <span class="${isDisabled(script) ? "meta-bad" : "meta-good"}">
-          ${getStatus(script)}
+          ${escapeHTML(getStatus(script))}
         </span>
       `;
 
@@ -2493,14 +2388,14 @@ print("Auto Farm loaded")`
 
           button.disabled = true;
           const oldText = button.textContent;
-          button.textContent = "Copying...";
+          button.textContent = t("btn.copying");
 
           const ok = await copyText(script.content);
 
-          button.textContent = ok ? "Copied ✓" : "Copy lỗi";
+          button.textContent = ok ? t("btn.copied") : t("btn.copyError");
 
           showToast(
-            ok ? `Đã copy ${script.name}` : "Không thể copy script",
+            ok ? t("toast.copied", { name: script.name }) : t("toast.copyError"),
             ok ? "success" : "error"
           );
 
@@ -2521,7 +2416,7 @@ print("Auto Farm loaded")`
         const ok = await copyText(script.content);
 
         showToast(
-          ok ? `Đã copy ${script.name}` : "Không thể copy script",
+          ok ? t("toast.copied", { name: script.name }) : t("toast.copyError"),
           ok ? "success" : "error"
         );
       });
@@ -2575,9 +2470,7 @@ print("Auto Farm loaded")`
 
         document.documentElement.dataset.theme = next;
 
-        try {
-          localStorage.setItem("theme", next);
-        } catch {}
+        try { localStorage.setItem("theme", next); } catch {}
 
         updateLabel();
       });
@@ -2641,7 +2534,8 @@ print("Auto Farm loaded")`
 
     document.addEventListener("DOMContentLoaded", () => {
       renderCounts();
-      renderScripts();
+      initLangSwitcher();
+      applyI18n();          /* render card + set text theo ngôn ngữ hiện tại */
       initSearch();
       initScriptActions();
       initModal();
