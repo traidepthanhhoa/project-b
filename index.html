@@ -27,6 +27,7 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://flagcdn.com">
 
   <link
     href="https://fonts.googleapis.com/css2?family=Creepster&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap"
@@ -170,16 +171,18 @@
     .lang-btn {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
 
       border: 1px solid var(--line-strong);
       background: var(--surface);
       color: var(--text);
 
       border-radius: 9px;
-      padding: 9px 12px;
+      padding: 8px 10px;
 
       font-weight: 600;
+      font-size: .84rem;
+
       transition: .18s;
     }
 
@@ -190,13 +193,25 @@
       box-shadow: 0 0 12px rgba(255, 122, 24, .3);
     }
 
-    .lang-btn .lang-flag {
-      font-size: 1rem;
-      line-height: 1;
+    /* Ảnh cờ SVG */
+    .flag-img {
+      width: 22px;
+      height: 15px;
+
+      object-fit: cover;
+
+      border-radius: 2px;
+
+      box-shadow:
+        0 0 0 1px rgba(255, 255, 255, .15),
+        0 1px 3px rgba(0, 0, 0, .4);
+
+      flex-shrink: 0;
+      display: block;
     }
 
     .lang-btn .lang-arrow {
-      font-size: .65rem;
+      font-size: .6rem;
       opacity: .7;
       transition: transform .2s;
     }
@@ -210,7 +225,7 @@
       top: calc(100% + 6px);
       right: 0;
 
-      min-width: 160px;
+      min-width: 180px;
 
       background: var(--surface);
       border: 1px solid var(--line-strong);
@@ -240,7 +255,7 @@
     .lang-option {
       display: flex;
       align-items: center;
-      gap: 9px;
+      gap: 10px;
 
       width: 100%;
 
@@ -252,7 +267,7 @@
       padding: 8px 10px;
 
       text-align: left;
-      font-size: .82rem;
+      font-size: .84rem;
       font-weight: 600;
 
       transition: .15s;
@@ -268,8 +283,19 @@
       color: var(--orange);
     }
 
-    .lang-option .lang-flag {
-      font-size: 1rem;
+    .lang-option .lang-name {
+      flex: 1;
+    }
+
+    .lang-option .lang-code {
+      font-family: "JetBrains Mono", monospace;
+      font-size: .68rem;
+      color: var(--muted);
+      letter-spacing: .06em;
+    }
+
+    .lang-option.active .lang-code {
+      color: var(--orange);
     }
 
 
@@ -973,7 +999,6 @@
       color: var(--text-soft);
       font-size: .84rem;
 
-      /* FIX: chặn description tràn khi chứa code dài */
       overflow: hidden;
       display: -webkit-box;
       -webkit-line-clamp: 3;
@@ -1336,7 +1361,6 @@
       }
 
       .header-actions { width: 100%; }
-      .header-actions > * { flex: 1; }
 
       .hero-intro {
         align-items: stretch;
@@ -1360,25 +1384,11 @@
 
 <body>
 
-  <!-- =======================================================
-       READING PROGRESS
-  ======================================================== -->
-
   <div class="reading-progress" aria-hidden="true">
     <div id="readingProgressFill"></div>
   </div>
 
-
-  <!-- =======================================================
-       TOAST
-  ======================================================== -->
-
   <div class="toast-container" id="toastContainer" aria-live="polite"></div>
-
-
-  <!-- =======================================================
-       LOADER
-  ======================================================== -->
 
   <div class="loader" id="loader" role="status" aria-live="polite">
     <div class="loader-box">
@@ -1386,13 +1396,8 @@
 
       <div class="loader-percent" id="percentage">0%</div>
 
-      <strong data-i18n="loader.title">
-        Đang triệu hồi script...
-      </strong>
-
-      <span data-i18n="loader.subtitle">
-        Vui lòng đợi trong giây lát...
-      </span>
+      <strong data-i18n="loader.title">Đang triệu hồi script...</strong>
+      <span data-i18n="loader.subtitle">Vui lòng đợi trong giây lát...</span>
 
       <div class="progress">
         <div id="loaderBar"></div>
@@ -1401,17 +1406,12 @@
   </div>
 
 
-  <!-- =======================================================
-       HEADER
-  ======================================================== -->
-
   <header class="site-header">
     <div class="brand">
       <span class="brand-mark">🎃</span>
 
       <div>
         <h1>Script Hub</h1>
-
         <p data-i18n="brand.subtitle">
           Roblox Script Library · Halloween Edition
         </p>
@@ -1430,26 +1430,36 @@
           aria-haspopup="true"
           aria-expanded="false"
         >
-          <span class="lang-flag" id="langCurrentFlag">🇻🇳</span>
+          <img
+            class="flag-img"
+            id="langCurrentFlag"
+            src="https://flagcdn.com/w40/vn.png"
+            alt="Tiếng Việt"
+          >
           <span id="langCurrentLabel">Tiếng Việt</span>
           <span class="lang-arrow">▼</span>
         </button>
 
         <div class="lang-menu" id="langMenu" role="menu">
+
           <button class="lang-option active" data-lang="vi" type="button" role="menuitem">
-            <span class="lang-flag">🇻🇳</span>
-            <span>Tiếng Việt</span>
+            <img class="flag-img" src="https://flagcdn.com/w40/vn.png" alt="Việt Nam">
+            <span class="lang-name">Tiếng Việt</span>
+            <span class="lang-code">VI</span>
           </button>
 
           <button class="lang-option" data-lang="en" type="button" role="menuitem">
-            <span class="lang-flag">🇬🇧</span>
-            <span>English</span>
+            <img class="flag-img" src="https://flagcdn.com/w40/gb.png" alt="English">
+            <span class="lang-name">English</span>
+            <span class="lang-code">EN</span>
           </button>
 
           <button class="lang-option" data-lang="th" type="button" role="menuitem">
-            <span class="lang-flag">🇹🇭</span>
-            <span>ภาษาไทย</span>
+            <img class="flag-img" src="https://flagcdn.com/w40/th.png" alt="ไทย">
+            <span class="lang-name">ภาษาไทย</span>
+            <span class="lang-code">TH</span>
           </button>
+
         </div>
       </div>
 
@@ -1476,10 +1486,6 @@
   </header>
 
 
-  <!-- =======================================================
-       MAIN
-  ======================================================== -->
-
   <main class="container">
 
     <section class="hero-intro">
@@ -1488,9 +1494,7 @@
           HALLOWEEN SCRIPT LIBRARY
         </span>
 
-        <h2 data-i18n="hero.title">
-          Kho báu ma quái
-        </h2>
+        <h2 data-i18n="hero.title">Kho báu ma quái</h2>
 
         <p data-i18n="hero.desc">
           Thêm script ở một nơi duy nhất.
@@ -1506,8 +1510,6 @@
     </section>
 
 
-    <!-- TAB -->
-
     <div class="tab-bar" role="tablist" aria-label="Danh mục">
       <button
         class="tab-btn active"
@@ -1522,8 +1524,6 @@
       </button>
     </div>
 
-
-    <!-- SEARCH -->
 
     <div class="search-wrap">
       <div class="search-box">
@@ -1569,8 +1569,6 @@
     </div>
 
 
-    <!-- SCRIPT GRID -->
-
     <section
       class="script-grid"
       id="scriptGrid"
@@ -1579,20 +1577,12 @@
   </main>
 
 
-  <!-- =======================================================
-       FOOTER
-  ======================================================== -->
-
   <footer class="site-footer">
     <span>Script Hub</span>
     <span>·</span>
     <span data-i18n="footer.copy">Happy Halloween 2026</span>
   </footer>
 
-
-  <!-- =======================================================
-       BACK TO TOP
-  ======================================================== -->
 
   <button
     class="back-to-top"
@@ -1604,9 +1594,7 @@
   </button>
 
 
-  <!-- =======================================================
-       SCRIPT CONTENT MODAL
-  ======================================================== -->
+  <!-- SCRIPT CONTENT MODAL -->
 
   <div class="modal-overlay" id="scriptModal" aria-hidden="true">
     <div
@@ -1620,7 +1608,6 @@
           <span class="eyebrow" data-i18n="modal.script.eyebrow">
             SCRIPT CONTENT
           </span>
-
           <h3 id="scriptModalTitle">Script</h3>
         </div>
 
@@ -1656,9 +1643,7 @@
   </div>
 
 
-  <!-- =======================================================
-       GUIDE MODAL
-  ======================================================== -->
+  <!-- GUIDE MODAL -->
 
   <div class="modal-overlay" id="guideOverlay" aria-hidden="true">
     <div
@@ -1670,10 +1655,7 @@
       <div class="modal-head">
         <div>
           <span class="eyebrow" data-i18n="guide.eyebrow">SETUP</span>
-
-          <h3 id="guideTitle" data-i18n="guide.title">
-            Cách dùng
-          </h3>
+          <h3 id="guideTitle" data-i18n="guide.title">Cách dùng</h3>
         </div>
 
         <button
@@ -1690,43 +1672,32 @@
         <div class="guide-step">
           <b>1.</b>
           <span data-i18n="guide.step1">
-            Mở view script bạn muốn và chọn
-            <strong>View Content</strong>
-            để xem nội dung.
+            Mở view script bạn muốn và chọn <strong>View Content</strong> để xem nội dung.
           </span>
         </div>
 
         <div class="guide-step">
           <b>2.</b>
           <span data-i18n="guide.step2">
-            Nhấn
-            <strong>Copy Script</strong>
-            để chép toàn bộ nội dung vào clipboard.
+            Nhấn <strong>Copy Script</strong> để chép toàn bộ nội dung vào clipboard.
           </span>
         </div>
 
         <div class="guide-step">
           <b>3.</b>
           <span data-i18n="guide.step3">
-            Thêm script vào
-            <code>Executor</code>.
+            Thêm script vào <code>Executor</code>.
           </span>
         </div>
 
         <div class="guide-step">
           <b>4.</b>
-          <span data-i18n="guide.step4">
-            Execute Script
-          </span>
+          <span data-i18n="guide.step4">Execute Script</span>
         </div>
       </div>
     </div>
   </div>
 
-
-  <!-- =======================================================
-       JAVASCRIPT
-  ======================================================== -->
 
   <script>
 
@@ -1745,13 +1716,6 @@
       script8: false
     };
 
-
-    /* =========================================================
-       SCRIPTS
-       FIX: description của script1 chỉ còn 1 câu ngắn gọn,
-            không chứa code Lua nữa.
-       FIX: Bỏ tag "PE" (typo) trong script1.
-    ========================================================= */
 
     const SCRIPTS = [
       {
@@ -1870,7 +1834,7 @@ print("Auto Farm loaded")`
 
 
     /* =========================================================
-       I18N — ĐA NGÔN NGỮ
+       I18N
     ========================================================= */
 
     const I18N = {
@@ -1911,7 +1875,8 @@ print("Auto Farm loaded")`
         "time.weeksAgo": "Cập nhật {n} tuần trước",
         "time.monthsAgo": "Cập nhật {n} tháng trước",
         "time.yearsAgo": "Cập nhật {n} năm trước",
-        "time.unknown": "Ngày cập nhật không rõ"
+        "time.unknown": "Ngày cập nhật không rõ",
+        "footer.copy": "Happy Halloween 2026"
       },
 
       en: {
@@ -1951,7 +1916,8 @@ print("Auto Farm loaded")`
         "time.weeksAgo": "Updated {n} weeks ago",
         "time.monthsAgo": "Updated {n} months ago",
         "time.yearsAgo": "Updated {n} years ago",
-        "time.unknown": "Unknown update date"
+        "time.unknown": "Unknown update date",
+        "footer.copy": "Happy Halloween 2026"
       },
 
       th: {
@@ -1991,15 +1957,26 @@ print("Auto Farm loaded")`
         "time.weeksAgo": "อัปเดต {n} สัปดาห์ที่แล้ว",
         "time.monthsAgo": "อัปเดต {n} เดือนที่แล้ว",
         "time.yearsAgo": "อัปเดต {n} ปีที่แล้ว",
-        "time.unknown": "ไม่ทราบวันที่อัปเดต"
+        "time.unknown": "ไม่ทราบวันที่อัปเดต",
+        "footer.copy": "Happy Halloween 2026"
       }
     };
 
 
+    /* FIX: dùng URL ảnh cờ thay vì emoji */
     const LANG_META = {
-      vi: { flag: "🇻🇳", label: "Tiếng Việt" },
-      en: { flag: "🇬🇧", label: "English" },
-      th: { flag: "🇹🇭", label: "ภาษาไทย" }
+      vi: {
+        flag: "https://flagcdn.com/w40/vn.png",
+        label: "Tiếng Việt"
+      },
+      en: {
+        flag: "https://flagcdn.com/w40/gb.png",
+        label: "English"
+      },
+      th: {
+        flag: "https://flagcdn.com/w40/th.png",
+        label: "ภาษาไทย"
+      }
     };
 
 
@@ -2018,12 +1995,10 @@ print("Auto Farm loaded")`
 
 
     function applyI18n() {
-      /* Text content */
       document.querySelectorAll("[data-i18n]").forEach(el => {
         const key = el.dataset.i18n;
         const val = t(key);
 
-        /* Cho phép HTML trong một số key (VD guide.step1 có <strong>) */
         if (/<[a-z][\s\S]*>/i.test(val)) {
           el.innerHTML = val;
         } else {
@@ -2031,17 +2006,19 @@ print("Auto Farm loaded")`
         }
       });
 
-      /* Placeholder */
       document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
         el.placeholder = t(el.dataset.i18nPlaceholder);
       });
 
-      /* Cập nhật lại toàn bộ card (vì status/timeAgo nằm trong template) */
       renderScripts();
 
-      /* Cập nhật label ngôn ngữ */
+      /* Cập nhật cờ + label hiện tại (dùng ảnh) */
       const meta = LANG_META[currentLang] || LANG_META.vi;
-      document.getElementById("langCurrentFlag").textContent = meta.flag;
+
+      const flagImg = document.getElementById("langCurrentFlag");
+      flagImg.src = meta.flag;
+      flagImg.alt = meta.label;
+
       document.getElementById("langCurrentLabel").textContent = meta.label;
 
       document.querySelectorAll(".lang-option").forEach(btn => {
@@ -2100,13 +2077,11 @@ print("Auto Farm loaded")`
         });
       });
 
-      /* Click ngoài → đóng menu */
       document.addEventListener("click", e => {
         const sw = document.getElementById("langSwitcher");
         if (!sw.contains(e.target)) closeLangMenu();
       });
 
-      /* Esc → đóng */
       document.addEventListener("keydown", e => {
         if (e.key === "Escape") closeLangMenu();
       });
@@ -2114,7 +2089,7 @@ print("Auto Farm loaded")`
 
 
     /* =========================================================
-       STATE
+       STATE + HELPERS
     ========================================================= */
 
     const state = {
@@ -2123,7 +2098,6 @@ print("Auto Farm loaded")`
       selectedId: null,
       searchTimer: null
     };
-
 
     const $ = (selector, root = document) => root.querySelector(selector);
     const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
@@ -2535,7 +2509,7 @@ print("Auto Farm loaded")`
     document.addEventListener("DOMContentLoaded", () => {
       renderCounts();
       initLangSwitcher();
-      applyI18n();          /* render card + set text theo ngôn ngữ hiện tại */
+      applyI18n();
       initSearch();
       initScriptActions();
       initModal();
