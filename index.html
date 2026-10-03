@@ -162,6 +162,7 @@
 
     /* =========================================================
        LANGUAGE SWITCHER
+       FIX: dùng pointer-events + animation rõ ràng
     ========================================================= */
 
     .lang-switcher {
@@ -193,7 +194,12 @@
       box-shadow: 0 0 12px rgba(255, 122, 24, .3);
     }
 
-    /* Ảnh cờ SVG */
+    .lang-switcher.open .lang-btn {
+      border-color: var(--orange);
+      color: var(--orange);
+      box-shadow: 0 0 12px rgba(255, 122, 24, .3);
+    }
+
     .flag-img {
       width: 22px;
       height: 15px;
@@ -213,45 +219,54 @@
     .lang-btn .lang-arrow {
       font-size: .6rem;
       opacity: .7;
-      transition: transform .2s;
+      transition: transform .3s cubic-bezier(.4, 0, .2, 1);
     }
 
     .lang-switcher.open .lang-arrow {
       transform: rotate(180deg);
     }
 
+    /* ===== MENU ===== */
     .lang-menu {
       position: absolute;
-      top: calc(100% + 6px);
+      top: calc(100% + 8px);
       right: 0;
 
-      min-width: 180px;
+      min-width: 200px;
 
       background: var(--surface);
       border: 1px solid var(--line-strong);
-      border-radius: 9px;
+      border-radius: 10px;
 
-      box-shadow: var(--shadow);
+      box-shadow:
+        var(--shadow),
+        0 0 30px rgba(255, 122, 24, .15);
 
       padding: 6px;
 
       display: grid;
       gap: 2px;
 
+      /* FIX: dùng pointer-events thay vì visibility */
       opacity: 0;
-      visibility: hidden;
-      transform: translateY(-6px);
-      transition: .18s;
+      transform: translateY(-10px) scale(.95);
+      transform-origin: top right;
+      pointer-events: none;
+
+      transition:
+        opacity .22s cubic-bezier(.4, 0, .2, 1),
+        transform .22s cubic-bezier(.4, 0, .2, 1);
 
       z-index: 100;
     }
 
     .lang-switcher.open .lang-menu {
       opacity: 1;
-      visibility: visible;
-      transform: none;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
     }
 
+    /* Hiệu ứng từng item trượt vào */
     .lang-option {
       display: flex;
       align-items: center;
@@ -263,24 +278,57 @@
       background: transparent;
       color: var(--text);
 
-      border-radius: 6px;
-      padding: 8px 10px;
+      border-radius: 7px;
+      padding: 9px 11px;
 
       text-align: left;
       font-size: .84rem;
       font-weight: 600;
 
-      transition: .15s;
+      transition: background .15s, color .15s, transform .15s;
+      cursor: pointer;
+
+      opacity: 0;
+      transform: translateX(8px);
+    }
+
+    .lang-switcher.open .lang-option {
+      animation: langItemIn .3s cubic-bezier(.4, 0, .2, 1) forwards;
+    }
+
+    .lang-switcher.open .lang-option:nth-child(1) { animation-delay: .04s; }
+    .lang-switcher.open .lang-option:nth-child(2) { animation-delay: .09s; }
+    .lang-switcher.open .lang-option:nth-child(3) { animation-delay: .14s; }
+    .lang-switcher.open .lang-option:nth-child(4) { animation-delay: .19s; }
+
+    @keyframes langItemIn {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
 
     .lang-option:hover {
       background: var(--surface-2);
       color: var(--orange);
+      transform: translateX(2px);
+    }
+
+    .lang-option:active {
+      transform: translateX(2px) scale(.97);
     }
 
     .lang-option.active {
       background: rgba(255, 122, 24, .12);
       color: var(--orange);
+    }
+
+    .lang-option.active::after {
+      content: "✓";
+      font-size: .8rem;
+      color: var(--orange);
+      margin-left: auto;
+      font-weight: 800;
     }
 
     .lang-option .lang-name {
@@ -522,7 +570,7 @@
       gap: 20px;
 
       position: relative;
-      z-index: 1;
+      z-index: 10;
     }
 
     .brand {
@@ -632,6 +680,12 @@
       border-radius: 50%;
       background: var(--orange);
       box-shadow: 0 0 8px var(--orange);
+      transition: .3s;
+    }
+
+    [data-theme="light"] .theme-dot {
+      background: var(--purple);
+      box-shadow: 0 0 8px var(--purple);
     }
 
 
@@ -876,7 +930,29 @@
 
       position: relative;
       overflow: hidden;
+
+      animation: cardIn .35s ease backwards;
     }
+
+    @keyframes cardIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .script-card:nth-child(1) { animation-delay: .02s; }
+    .script-card:nth-child(2) { animation-delay: .05s; }
+    .script-card:nth-child(3) { animation-delay: .08s; }
+    .script-card:nth-child(4) { animation-delay: .11s; }
+    .script-card:nth-child(5) { animation-delay: .14s; }
+    .script-card:nth-child(6) { animation-delay: .17s; }
+    .script-card:nth-child(7) { animation-delay: .20s; }
+    .script-card:nth-child(8) { animation-delay: .23s; }
 
     .script-card::before {
       content: "";
@@ -1247,6 +1323,7 @@
       background: var(--blood);
       color: var(--bone);
       border-color: var(--blood);
+      transform: rotate(90deg);
     }
 
     .modal-meta {
@@ -1315,6 +1392,7 @@
     .guide-step:hover {
       border-color: var(--orange);
       background: var(--surface-hover);
+      transform: translateX(4px);
     }
 
     .guide-step b {
@@ -1869,6 +1947,7 @@ print("Auto Farm loaded")`
         "btn.view": "View Content",
         "toast.copied": "Đã copy {name}",
         "toast.copyError": "Không thể copy script",
+        "toast.langChanged": "Đã đổi ngôn ngữ: {name}",
         "time.today": "Cập nhật hôm nay",
         "time.yesterday": "Cập nhật hôm qua",
         "time.daysAgo": "Cập nhật {n} ngày trước",
@@ -1910,6 +1989,7 @@ print("Auto Farm loaded")`
         "btn.view": "View Content",
         "toast.copied": "Copied {name}",
         "toast.copyError": "Could not copy script",
+        "toast.langChanged": "Language changed: {name}",
         "time.today": "Updated today",
         "time.yesterday": "Updated yesterday",
         "time.daysAgo": "Updated {n} days ago",
@@ -1951,6 +2031,7 @@ print("Auto Farm loaded")`
         "btn.view": "ดูเนื้อหา",
         "toast.copied": "คัดลอก {name} แล้ว",
         "toast.copyError": "ไม่สามารถคัดลอกสคริปต์",
+        "toast.langChanged": "เปลี่ยนภาษาเป็น: {name}",
         "time.today": "อัปเดตวันนี้",
         "time.yesterday": "อัปเดตเมื่อวาน",
         "time.daysAgo": "อัปเดต {n} วันที่แล้ว",
@@ -1963,7 +2044,6 @@ print("Auto Farm loaded")`
     };
 
 
-    /* FIX: dùng URL ảnh cờ thay vì emoji */
     const LANG_META = {
       vi: {
         flag: "https://flagcdn.com/w40/vn.png",
@@ -2012,7 +2092,6 @@ print("Auto Farm loaded")`
 
       renderScripts();
 
-      /* Cập nhật cờ + label hiện tại (dùng ảnh) */
       const meta = LANG_META[currentLang] || LANG_META.vi;
 
       const flagImg = document.getElementById("langCurrentFlag");
@@ -2028,7 +2107,10 @@ print("Auto Farm loaded")`
 
 
     function setLang(lang) {
-      if (!I18N[lang]) return;
+      if (!I18N[lang] || lang === currentLang) {
+        closeLangMenu();
+        return;
+      }
 
       currentLang = lang;
 
@@ -2039,11 +2121,16 @@ print("Auto Farm loaded")`
 
       applyI18n();
       closeLangMenu();
+
+      /* Toast thông báo đổi ngôn ngữ */
+      const meta = LANG_META[lang];
+      showToast(t("toast.langChanged", { name: meta.label }), "success");
     }
 
 
     /* =========================================================
        LANGUAGE SWITCHER UI
+       FIX: xử lý click đúng cách + animation
     ========================================================= */
 
     function openLangMenu() {
@@ -2064,24 +2151,31 @@ print("Auto Farm loaded")`
     }
 
     function initLangSwitcher() {
+      const sw = document.getElementById("langSwitcher");
       const btn = document.getElementById("langBtn");
 
+      /* Toggle khi bấm nút — chặn bubble để không bị document click đóng ngay */
       btn.addEventListener("click", e => {
+        e.preventDefault();
         e.stopPropagation();
         toggleLangMenu();
       });
 
+      /* Chọn ngôn ngữ — chặn bubble tương tự */
       document.querySelectorAll(".lang-option").forEach(opt => {
-        opt.addEventListener("click", () => {
+        opt.addEventListener("click", e => {
+          e.preventDefault();
+          e.stopPropagation();
           setLang(opt.dataset.lang);
         });
       });
 
+      /* Click ngoài → đóng */
       document.addEventListener("click", e => {
-        const sw = document.getElementById("langSwitcher");
         if (!sw.contains(e.target)) closeLangMenu();
       });
 
+      /* Esc → đóng */
       document.addEventListener("keydown", e => {
         if (e.key === "Escape") closeLangMenu();
       });
