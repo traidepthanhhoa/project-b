@@ -40,6 +40,9 @@ window.FIREBASE_CONFIG = {
   --success-bg: #d1fae5;
   --danger: #ef4444;
   --danger-bg: #fee2e2;
+  --warning: #f59e0b;
+  --warning-bg: #fef3c7;
+  --star: #fbbf24;
   --shadow-sm: 0 1px 2px rgba(15, 23, 42, .05);
   --shadow: 0 4px 12px rgba(15, 23, 42, .08);
   --shadow-lg: 0 12px 32px rgba(59, 130, 246, .15);
@@ -56,6 +59,7 @@ window.FIREBASE_CONFIG = {
   --line-strong: #475569;
   --success-bg: rgba(16,185,129,.15);
   --danger-bg: rgba(239,68,68,.15);
+  --warning-bg: rgba(245,158,11,.15);
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
@@ -81,8 +85,7 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 }
 .header-inner {
   width: min(1200px, calc(100% - 32px));
-  margin: 0 auto;
-  padding: 12px 0;
+  margin: 0 auto; padding: 12px 0;
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
 }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); }
@@ -115,6 +118,37 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 }
 .btn-icon:hover { background: var(--surface-hover); color: var(--text); }
 .btn-block { width: 100%; padding: 12px; }
+.btn-danger { background: var(--danger); color: #fff; }
+.btn-danger:hover:not(:disabled) { background: #dc2626; }
+
+/* LANG SWITCHER */
+.lang-switcher { position: relative; }
+.lang-btn {
+  display: flex; align-items: center; gap: 6px;
+  padding: 9px 12px; border-radius: 8px;
+  background: var(--surface-2); border: 1px solid var(--line);
+  font-size: .82rem; font-weight: 600; color: var(--text);
+  transition: all .15s;
+}
+.lang-btn:hover { border-color: var(--primary); }
+.lang-menu {
+  position: absolute; top: calc(100% + 6px); right: 0;
+  min-width: 160px; background: var(--surface);
+  border: 1px solid var(--line); border-radius: 10px;
+  box-shadow: var(--shadow-lg); padding: 6px;
+  opacity: 0; transform: translateY(-6px); pointer-events: none;
+  transition: all .18s; z-index: 200;
+}
+.lang-switcher.open .lang-menu { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.lang-option {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 8px 12px; border-radius: 7px;
+  font-size: .84rem; font-weight: 500;
+  color: var(--text-soft); text-align: left;
+  transition: all .12s;
+}
+.lang-option:hover { background: var(--surface-2); color: var(--text); }
+.lang-option.active { background: var(--primary-light); color: var(--primary); font-weight: 700; }
 
 /* USER */
 .user-menu { position: relative; }
@@ -190,7 +224,7 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .tab-btn.active .tab-count { background: rgba(255,255,255,.25); color: #fff; }
 
 /* SEARCH */
-.search-wrap { margin-bottom: 20px; }
+.search-wrap { margin-bottom: 16px; }
 .search-box { position: relative; display: flex; align-items: center; max-width: 500px; }
 .search-box svg { position: absolute; left: 14px; width: 18px; color: var(--muted); pointer-events: none; }
 #searchInput {
@@ -206,19 +240,89 @@ button:disabled { cursor: not-allowed; opacity: .55; }
   color: var(--muted);
 }
 
+/* TOOLBAR */
+.toolbar {
+  display: flex; flex-wrap: wrap;
+  gap: 8px; margin-bottom: 16px; padding: 10px;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 10px; align-items: center;
+}
+.toolbar-label {
+  font-size: .72rem; color: var(--muted);
+  font-weight: 700; text-transform: uppercase; letter-spacing: .05em;
+}
+.sort-select {
+  background: var(--surface-2); color: var(--text);
+  border: 1px solid var(--line); border-radius: 7px;
+  padding: 7px 10px; font-size: .8rem; font-weight: 600;
+  cursor: pointer;
+}
+.sort-select:focus { outline: none; border-color: var(--primary); }
+.tag-chip {
+  padding: 5px 11px; border-radius: 999px;
+  background: var(--surface-2); border: 1px solid var(--line);
+  color: var(--text-soft); font-size: .74rem; font-weight: 600;
+  transition: all .15s; cursor: pointer;
+}
+.tag-chip:hover { border-color: var(--primary); color: var(--primary); }
+.tag-chip.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* HISTORY */
+.history-section {
+  margin: 16px 0; padding: 14px;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.history-header {
+  display: flex; justify-content: space-between;
+  align-items: center; margin-bottom: 10px;
+}
+.history-header h4 { margin: 0; font-size: .85rem; font-weight: 700; color: var(--text-soft); }
+.history-clear {
+  font-size: .72rem; color: var(--danger);
+  padding: 4px 8px; border-radius: 6px; transition: all .15s;
+}
+.history-clear:hover { background: var(--danger-bg); }
+.history-list {
+  display: flex; gap: 8px; overflow-x: auto;
+  padding-bottom: 4px; scrollbar-width: thin;
+}
+.history-list::-webkit-scrollbar { height: 4px; }
+.history-list::-webkit-scrollbar-thumb { background: var(--line-strong); border-radius: 2px; }
+.history-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; background: var(--surface-2);
+  border: 1px solid var(--line); border-radius: 8px;
+  cursor: pointer; white-space: nowrap; flex-shrink: 0;
+  transition: all .15s; font-size: .78rem; color: var(--text-soft);
+}
+.history-item:hover {
+  border-color: var(--primary); color: var(--primary);
+  transform: translateY(-2px);
+}
+.history-item img { width: 24px; height: 24px; border-radius: 6px; object-fit: cover; }
+
 /* GRID */
 .script-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 16px;
+  animation: fadeInUp .3s ease;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 .script-card {
   background: var(--surface); border: 1px solid var(--line);
   border-radius: 12px; padding: 18px;
   display: flex; flex-direction: column; gap: 12px;
-  transition: all .18s; position: relative;
+  transition: transform .15s ease-out, border-color .18s, box-shadow .18s;
+  position: relative; transform-style: preserve-3d;
+  will-change: transform;
 }
-.script-card:hover { border-color: var(--primary); box-shadow: var(--shadow); transform: translateY(-2px); }
+.script-card.tilting { transition: transform .05s ease-out; }
+.script-card:hover { border-color: var(--primary); box-shadow: var(--shadow); }
 
 .card-header { display: flex; align-items: center; gap: 12px; }
 .card-logo {
@@ -229,7 +333,7 @@ button:disabled { cursor: not-allowed; opacity: .55; }
   font-size: 1.5rem; overflow: hidden;
 }
 .card-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.card-header-text { min-width: 0; flex: 1; padding-right: 40px; }
+.card-header-text { min-width: 0; flex: 1; padding-right: 80px; }
 .card-category {
   display: block; margin-bottom: 3px;
   font-family: "JetBrains Mono", monospace;
@@ -254,12 +358,32 @@ button:disabled { cursor: not-allowed; opacity: .55; }
   -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
 }
 .card-tags { display: flex; flex-wrap: wrap; gap: 5px; }
-.card-tags span { padding: 3px 8px; background: var(--surface-2); border-radius: 5px; font-size: .68rem; color: var(--text-soft); }
-.card-meta { display: flex; justify-content: space-between; font-size: .72rem; color: var(--muted); padding-top: 8px; border-top: 1px solid var(--line); margin-top: auto; }
+.card-tags span {
+  padding: 3px 8px; background: var(--surface-2);
+  border-radius: 5px; font-size: .68rem; color: var(--text-soft);
+  transition: all .15s;
+}
+.card-tags span[data-tag] { cursor: pointer; }
+.card-tags span[data-tag]:hover { background: var(--primary-light); color: var(--primary); }
+.card-meta {
+  display: flex; justify-content: space-between;
+  font-size: .72rem; color: var(--muted);
+  padding-top: 8px; border-top: 1px solid var(--line); margin-top: auto;
+}
+.card-views { color: var(--primary); font-weight: 700; }
 .card-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.btn-copy { background: var(--primary); color: #fff; padding: 10px; border-radius: 8px; font-weight: 700; font-size: .82rem; }
+.btn-copy {
+  background: var(--primary); color: #fff;
+  padding: 10px; border-radius: 8px;
+  font-weight: 700; font-size: .82rem;
+}
 .btn-copy:hover:not(:disabled) { background: var(--primary-dark); }
-.btn-view { background: var(--surface-2); color: var(--text); padding: 10px; border-radius: 8px; font-weight: 700; font-size: .82rem; border: 1px solid var(--line); }
+.btn-view {
+  background: var(--surface-2); color: var(--text);
+  padding: 10px; border-radius: 8px;
+  font-weight: 700; font-size: .82rem;
+  border: 1px solid var(--line);
+}
 .btn-view:hover { background: var(--surface-hover); border-color: var(--primary); color: var(--primary); }
 
 .fav-btn {
@@ -267,9 +391,45 @@ button:disabled { cursor: not-allowed; opacity: .55; }
   width: 32px; height: 32px; border-radius: 50%;
   background: var(--surface-2); border: 1px solid var(--line);
   display: grid; place-items: center; font-size: 1rem;
-  z-index: 2;
+  z-index: 2; transition: all .15s;
 }
+.fav-btn:hover { border-color: var(--danger); transform: scale(1.1); }
 .fav-btn.active { background: var(--danger-bg); border-color: var(--danger); }
+
+.report-btn-card {
+  position: absolute; top: 14px; right: 54px;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: var(--surface-2); border: 1px solid var(--line);
+  display: grid; place-items: center; font-size: .9rem;
+  z-index: 2; transition: all .15s;
+}
+.report-btn-card:hover { border-color: var(--warning); transform: scale(1.1); }
+
+/* STAR RATING */
+.card-rating {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: .78rem;
+  color: var(--muted);
+}
+.stars-display {
+  display: inline-flex;
+  gap: 2px;
+}
+.star {
+  color: var(--line-strong);
+  font-size: .95rem;
+  line-height: 1;
+  transition: color .15s;
+}
+.star.filled { color: var(--star); }
+.stars-interactive .star {
+  cursor: pointer;
+  font-size: 1.4rem;
+}
+.stars-interactive .star:hover,
+.stars-interactive .star.hover { color: var(--star); }
 
 .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
 .empty-state-icon { font-size: 3rem; margin-bottom: 12px; opacity: .5; }
@@ -287,19 +447,70 @@ button:disabled { cursor: not-allowed; opacity: .55; }
   background: var(--surface); border-radius: 14px;
   box-shadow: var(--shadow-lg); overflow: hidden;
   display: flex; flex-direction: column;
+  transform: translateY(10px); transition: transform .2s;
 }
-.modal-header { padding: 18px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.modal-overlay.show .modal { transform: translateY(0); }
+.modal-header {
+  padding: 18px 20px; border-bottom: 1px solid var(--line);
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+}
 .modal-header h3 { margin: 0; font-size: 1.15rem; font-weight: 800; }
-.modal-header .eyebrow { font-size: .68rem; text-transform: uppercase; color: var(--primary); letter-spacing: .08em; font-weight: 700; margin-bottom: 4px; display: block; }
-.modal-close { width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; color: var(--muted); font-size: 1.3rem; line-height: 1; }
+.modal-header .eyebrow {
+  font-size: .68rem; text-transform: uppercase;
+  color: var(--primary); letter-spacing: .08em;
+  font-weight: 700; margin-bottom: 4px; display: block;
+}
+.modal-close {
+  width: 32px; height: 32px; border-radius: 8px;
+  display: grid; place-items: center;
+  color: var(--muted); font-size: 1.3rem; line-height: 1;
+}
 .modal-close:hover { background: var(--surface-2); color: var(--text); }
 .modal-body { padding: 20px; overflow-y: auto; flex: 1; }
 .modal-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
-.modal-meta span { padding: 4px 9px; background: var(--surface-2); border-radius: 6px; font-size: .72rem; color: var(--text-soft); font-family: "JetBrains Mono", monospace; }
+.modal-meta span {
+  padding: 4px 9px; background: var(--surface-2);
+  border-radius: 6px; font-size: .72rem;
+  color: var(--text-soft); font-family: "JetBrains Mono", monospace;
+}
 .modal-meta .meta-online { color: var(--success); background: var(--success-bg); }
 .modal-meta .meta-maintenance { color: var(--danger); background: var(--danger-bg); }
-.script-code { background: #0f172a; color: #e2e8f0; padding: 16px; border-radius: 10px; overflow: auto; max-height: 320px; font-family: "JetBrains Mono", monospace; font-size: .8rem; line-height: 1.6; white-space: pre; margin: 0; }
-.modal-actions { padding: 16px 20px; border-top: 1px solid var(--line); display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+.script-code {
+  background: #0f172a; color: #e2e8f0;
+  padding: 16px; border-radius: 10px;
+  overflow: auto; max-height: 320px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: .8rem; line-height: 1.6;
+  white-space: pre; margin: 0;
+}
+.modal-actions {
+  padding: 16px 20px; border-top: 1px solid var(--line);
+  display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap;
+}
+
+/* RATING SECTION IN MODAL */
+.rating-section {
+  margin-top: 20px; padding: 16px;
+  background: var(--surface-2); border-radius: 10px;
+  text-align: center;
+}
+.rating-section h5 {
+  margin: 0 0 10px; font-size: .85rem;
+  color: var(--text-soft); font-weight: 700;
+}
+.rating-avg {
+  font-size: 2rem; font-weight: 800;
+  color: var(--star); line-height: 1;
+  font-family: "JetBrains Mono", monospace;
+}
+.rating-count {
+  font-size: .75rem; color: var(--muted);
+  margin-top: 4px; margin-bottom: 12px;
+}
+.rating-hint {
+  font-size: .75rem; color: var(--muted);
+  margin-top: 8px;
+}
 
 /* AUTH */
 .auth-modal .modal { width: min(440px, 100%); }
@@ -326,6 +537,57 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .auth-error { padding: 10px 14px; background: var(--danger-bg); color: var(--danger); border-radius: 8px; font-size: .82rem; margin-bottom: 14px; display: none; }
 .auth-error.show { display: block; }
 
+/* PROFILE MODAL */
+.profile-modal .modal { width: min(500px, 100%); }
+.profile-header {
+  display: flex; flex-direction: column;
+  align-items: center; gap: 10px;
+  padding: 10px 0 20px;
+}
+.profile-avatar-large {
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff; display: grid; place-items: center;
+  font-size: 2.5rem; font-weight: 800;
+  overflow: hidden; position: relative;
+  border: 3px solid var(--surface);
+  box-shadow: var(--shadow);
+}
+.profile-avatar-large img { width: 100%; height: 100%; object-fit: cover; }
+.profile-avatar-edit {
+  position: absolute; bottom: 0; right: 0;
+  width: 30px; height: 30px; border-radius: 50%;
+  background: var(--primary); color: #fff;
+  display: grid; place-items: center;
+  font-size: .85rem; cursor: pointer;
+  border: 2px solid var(--surface);
+}
+.profile-name {
+  font-size: 1.2rem; font-weight: 800;
+  margin-top: 8px;
+}
+.profile-email {
+  font-size: .82rem; color: var(--muted);
+}
+.profile-stats {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 10px; margin: 20px 0;
+}
+.profile-stat {
+  padding: 12px; background: var(--surface-2);
+  border-radius: 10px; text-align: center;
+}
+.profile-stat strong {
+  display: block; font-size: 1.3rem;
+  font-weight: 800; color: var(--primary);
+  font-family: "JetBrains Mono", monospace;
+}
+.profile-stat span {
+  font-size: .72rem; color: var(--muted);
+  text-transform: uppercase; letter-spacing: .05em;
+}
+
 /* COMMENTS */
 .comments-section { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--line); }
 .comments-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
@@ -339,16 +601,24 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 .comment-login-hint { padding: 14px; background: var(--surface-2); border-radius: 8px; text-align: center; font-size: .85rem; color: var(--text-soft); margin-bottom: 18px; }
 .comment-login-hint button { color: var(--primary); font-weight: 700; text-decoration: underline; }
 .comment-list { display: grid; gap: 12px; }
-.comment-item { display: flex; gap: 10px; padding: 12px; background: var(--surface-2); border-radius: 10px; }
+.comment-item { display: flex; gap: 10px; padding: 12px; background: var(--surface-2); border-radius: 10px; position: relative; }
 .comment-avatar { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: .82rem; flex-shrink: 0; overflow: hidden; }
 .comment-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .comment-content { flex: 1; min-width: 0; }
 .comment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; gap: 8px; }
 .comment-author { font-weight: 700; font-size: .84rem; }
-.comment-time { font-size: .7rem; color: var(--muted); }
+.comment-time { font-size: .7rem; color: var(--muted); display: flex; align-items: center; gap: 6px; }
 .comment-text { font-size: .85rem; color: var(--text-soft); word-break: break-word; white-space: pre-wrap; margin: 0; }
-.comment-delete { font-size: .7rem; color: var(--danger); padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
-.comment-delete:hover { background: var(--danger-bg); }
+.comment-btn {
+  font-size: .7rem; padding: 2px 6px;
+  border-radius: 4px; transition: all .15s;
+  color: var(--muted);
+}
+.comment-btn:hover { background: var(--surface); color: var(--text); }
+.comment-btn.del { color: var(--danger); }
+.comment-btn.del:hover { background: var(--danger-bg); }
+.comment-btn.report { color: var(--warning); }
+.comment-btn.report:hover { background: var(--warning-bg); }
 .comments-loading, .comments-empty { text-align: center; padding: 20px; color: var(--muted); font-size: .84rem; }
 
 /* TOAST */
@@ -369,10 +639,11 @@ button:disabled { cursor: not-allowed; opacity: .55; }
   .script-grid { grid-template-columns: 1fr; }
   .tab-bar { width: 100%; overflow-x: auto; }
   .modal-overlay { padding: 10px; }
+  .header-actions { gap: 4px; }
+  .btn { padding: 8px 12px; font-size: .8rem; }
 }
 </style>
 </head>
-
 <body>
 <!-- HEADER -->
 <header class="site-header">
@@ -380,15 +651,29 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 <a href="#" class="brand">
 <div class="brand-mark">SH</div>
 <div>
-<h1>Script Hub</h1>
-<p>Kho script Roblox miễn phí</p>
+<h1 data-i18n="app.title">Script Hub</h1>
+<p data-i18n="app.subtitle">Kho script Roblox miễn phí</p>
 </div>
 </a>
 <div class="header-actions">
+
+<!-- #30: LANGUAGE SWITCHER -->
+<div class="lang-switcher" id="langSwitcher">
+<button class="lang-btn" id="langBtn" type="button">
+<span id="langFlag">🇻🇳</span>
+<span id="langLabel">Tiếng Việt</span>
+</button>
+<div class="lang-menu">
+<button class="lang-option active" data-lang="vi">🇻🇳 Tiếng Việt</button>
+<button class="lang-option" data-lang="en">🇬🇧 English</button>
+<button class="lang-option" data-lang="th">🇹🇭 ภาษาไทย</button>
+</div>
+</div>
+
 <button class="btn-icon" id="themeToggle" title="Đổi giao diện"><span id="themeIcon">🌙</span></button>
-<button class="btn btn-outline" id="guideBtn">Hướng dẫn</button>
+<button class="btn btn-outline" id="guideBtn" data-i18n="btn.guide">📖 Hướng dẫn</button>
 <div id="userArea">
-<button class="btn btn-primary" id="loginBtn">Đăng nhập</button>
+<button class="btn btn-primary" id="loginBtn" data-i18n="btn.login">Đăng nhập</button>
 </div>
 </div>
 </div>
@@ -397,33 +682,56 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 <main class="container">
 <section class="hero">
 <div>
-<h2>Kho Script Roblox</h2>
-<p>Tổng hợp các script hot nhất, cập nhật liên tục, miễn phí 100%</p>
+<h2 data-i18n="hero.title">🎮 Kho Script Roblox</h2>
+<p data-i18n="hero.subtitle">Tổng hợp các script hot nhất, cập nhật liên tục, miễn phí 100%</p>
 </div>
 <div class="hero-stats">
-<div class="stat-box"><strong id="totalScripts">0</strong><span>Scripts</span></div>
-<div class="stat-box"><strong id="totalFavs">0</strong><span>Yêu thích</span></div>
+<div class="stat-box"><strong id="totalScripts">0</strong><span data-i18n="stat.scripts">Scripts</span></div>
+<div class="stat-box"><strong id="totalFavs">0</strong><span data-i18n="stat.favs">Yêu thích</span></div>
 </div>
 </section>
 
 <div class="tab-bar">
-<button class="tab-btn active" data-tab="all">Tất cả <span class="tab-count" id="countAll">0</span></button>
-<button class="tab-btn" data-tab="fav">Yêu thích <span class="tab-count" id="countFav">0</span></button>
+<button class="tab-btn active" data-tab="all"><span data-i18n="tab.all">📦 Tất cả</span> <span class="tab-count" id="countAll">0</span></button>
+<button class="tab-btn" data-tab="fav"><span data-i18n="tab.fav">❤️ Yêu thích</span> <span class="tab-count" id="countFav">0</span></button>
 </div>
 
 <div class="search-wrap">
 <div class="search-box">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
-<input id="searchInput" type="search" placeholder="Tìm script...">
+<input id="searchInput" type="search" data-i18n-placeholder="search.placeholder" placeholder="Tìm script...">
 <button class="search-clear" id="searchClear" hidden>✕</button>
 </div>
+</div>
+
+<!-- #14: LỊCH SỬ XEM -->
+<div class="history-section" id="historySection" hidden>
+<div class="history-header">
+<h4 data-i18n="history.title">🕐 Vừa xem gần đây</h4>
+<button class="history-clear" id="historyClear" data-i18n="history.clear">Xóa lịch sử</button>
+</div>
+<div class="history-list" id="historyList"></div>
+</div>
+
+<div class="toolbar">
+<span class="toolbar-label" data-i18n="toolbar.sort">Sắp xếp:</span>
+<select class="sort-select" id="sortSelect">
+<option value="newest" data-i18n="sort.newest">Mới nhất</option>
+<option value="az" data-i18n="sort.az">Tên A-Z</option>
+<option value="views" data-i18n="sort.views">Nhiều lượt xem</option>
+<option value="copied" data-i18n="sort.copied">Nhiều lượt copy</option>
+<option value="rating" data-i18n="sort.rating">Đánh giá cao</option>
+</select>
+
+<span class="toolbar-label" style="margin-left: 10px;" data-i18n="toolbar.tags">Lọc tag:</span>
+<div id="tagFilter" style="display: flex; flex-wrap: wrap; gap: 5px;"></div>
 </div>
 
 <div class="script-grid" id="scriptGrid"></div>
 
 <div class="empty-state" id="emptyState" hidden>
 <div class="empty-state-icon">🔍</div>
-<p>Không tìm thấy script nào phù hợp</p>
+<p data-i18n="empty.text">Không tìm thấy script nào phù hợp</p>
 </div>
 </main>
 
@@ -432,7 +740,7 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 <div class="modal">
 <div class="modal-header">
 <div>
-<span class="eyebrow">Chi tiết script</span>
+<span class="eyebrow" data-i18n="modal.script.eyebrow">Chi tiết script</span>
 <h3 id="modalTitle">Script</h3>
 </div>
 <button class="modal-close" data-close>✕</button>
@@ -440,28 +748,44 @@ button:disabled { cursor: not-allowed; opacity: .55; }
 <div class="modal-body">
 <div class="modal-meta" id="modalMeta"></div>
 <pre class="script-code" id="modalCode"></pre>
+
+<!-- #17: ĐÁNH GIÁ SAO -->
+<div class="rating-section" id="ratingSection">
+<h5 data-i18n="rating.title">⭐ Đánh giá script này</h5>
+<div class="rating-avg" id="ratingAvg">0.0</div>
+<div class="rating-count" id="ratingCount" data-i18n="rating.count">Chưa có đánh giá</div>
+<div class="stars-interactive" id="starsInteractive">
+<span class="star" data-value="1">★</span>
+<span class="star" data-value="2">★</span>
+<span class="star" data-value="3">★</span>
+<span class="star" data-value="4">★</span>
+<span class="star" data-value="5">★</span>
+</div>
+<div class="rating-hint" id="ratingHint" data-i18n="rating.hint">Bấm vào sao để đánh giá</div>
+</div>
+
 <div class="comments-section">
 <div class="comments-header">
-<h4>💬 Bình luận</h4>
+<h4 data-i18n="comment.title">💬 Bình luận</h4>
 <span class="count" id="commentCount">0</span>
 </div>
 <div id="commentFormArea">
 <div class="comment-login-hint" id="commentLoginHint">
-Bạn cần <button id="commentLoginBtn">đăng nhập</button> để bình luận
+<span data-i18n="comment.login.hint1">Bạn cần</span> <button id="commentLoginBtn" data-i18n="comment.login.hint2">đăng nhập</button> <span data-i18n="comment.login.hint3">để bình luận</span>
 </div>
 <form class="comment-form" id="commentForm" hidden>
-<textarea id="commentInput" placeholder="Viết bình luận..." maxlength="500"></textarea>
-<button type="submit">Gửi</button>
+<textarea id="commentInput" data-i18n-placeholder="comment.placeholder" placeholder="Viết bình luận..." maxlength="500"></textarea>
+<button type="submit" data-i18n="comment.send">Gửi</button>
 </form>
 </div>
 <div class="comment-list" id="commentList">
-<div class="comments-loading">Đang tải bình luận...</div>
+<div class="comments-loading" data-i18n="comment.loading">Đang tải bình luận...</div>
 </div>
 </div>
 </div>
 <div class="modal-actions">
-<button class="btn btn-primary" id="modalCopyBtn">Copy Script</button>
-<button class="btn btn-outline" data-close>Đóng</button>
+<button class="btn btn-primary" id="modalCopyBtn" data-i18n="btn.copy.script">Copy Script</button>
+<button class="btn btn-outline" data-close data-i18n="btn.close">Đóng</button>
 </div>
 </div>
 </div>
@@ -471,48 +795,84 @@ Bạn cần <button id="commentLoginBtn">đăng nhập</button> để bình lu�
 <div class="modal">
 <div class="modal-header">
 <div>
-<span class="eyebrow">Tài khoản</span>
-<h3 id="authTitle">Đăng nhập</h3>
+<span class="eyebrow" data-i18n="auth.eyebrow">Tài khoản</span>
+<h3 id="authTitle" data-i18n="auth.login">Đăng nhập</h3>
 </div>
 <button class="modal-close" data-close>✕</button>
 </div>
 <div class="modal-body">
 <div class="auth-tabs">
-<button class="auth-tab active" data-auth-tab="login">Đăng nhập</button>
-<button class="auth-tab" data-auth-tab="register">Đăng ký</button>
+<button class="auth-tab active" data-auth-tab="login" data-i18n="auth.login">Đăng nhập</button>
+<button class="auth-tab" data-auth-tab="register" data-i18n="auth.register">Đăng ký</button>
 </div>
 <div class="auth-error" id="authError"></div>
 
 <form id="loginForm">
-<div class="form-group"><label>Email</label><input type="email" id="loginEmail" required placeholder="email@example.com"></div>
-<div class="form-group"><label>Mật khẩu</label><input type="password" id="loginPassword" required placeholder="Ít nhất 6 ký tự"></div>
-<button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
-<div class="divider">hoặc</div>
+<div class="form-group"><label data-i18n="auth.email">Email</label><input type="email" id="loginEmail" required placeholder="email@example.com"></div>
+<div class="form-group"><label data-i18n="auth.password">Mật khẩu</label><input type="password" id="loginPassword" required data-i18n-placeholder="auth.password.placeholder" placeholder="Ít nhất 6 ký tự"></div>
+<button type="submit" class="btn btn-primary btn-block" data-i18n="auth.login">Đăng nhập</button>
+<div class="divider" data-i18n="auth.or">hoặc</div>
 <button type="button" class="btn-google" id="googleLoginBtn">
 <img src="https://www.google.com/favicon.ico" width="18" height="18" alt="">
-Đăng nhập bằng Google
+<span data-i18n="auth.google.login">Đăng nhập bằng Google</span>
 </button>
 </form>
 
 <form id="registerForm" hidden>
-<div class="form-group"><label>Tên hiển thị</label><input type="text" id="registerName" required placeholder="VD: Phuc03" maxlength="30"></div>
-<div class="form-group"><label>Email</label><input type="email" id="registerEmail" required placeholder="email@example.com"></div>
-<div class="form-group"><label>Mật khẩu</label><input type="password" id="registerPassword" required placeholder="Ít nhất 6 ký tự" minlength="6"></div>
+<div class="form-group"><label data-i18n="auth.name">Tên hiển thị</label><input type="text" id="registerName" required placeholder="VD: Phuc03" maxlength="30"></div>
+<div class="form-group"><label data-i18n="auth.email">Email</label><input type="email" id="registerEmail" required placeholder="email@example.com"></div>
+<div class="form-group"><label data-i18n="auth.password">Mật khẩu</label><input type="password" id="registerPassword" required data-i18n-placeholder="auth.password.placeholder" placeholder="Ít nhất 6 ký tự" minlength="6"></div>
 <div class="captcha-box">
-<label class="captcha-label">Xác minh bạn không phải robot</label>
+<label class="captcha-label" data-i18n="auth.captcha">🔒 Xác minh bạn không phải robot</label>
 <div class="captcha-row">
 <div class="captcha-question" id="captchaQuestion">1 + 1 = ?</div>
-<input type="number" class="captcha-input" id="captchaInput" placeholder="Đáp án" required>
+<input type="number" class="captcha-input" id="captchaInput" data-i18n-placeholder="auth.captcha.placeholder" placeholder="Đáp án" required>
 <button type="button" class="captcha-refresh" id="captchaRefresh" title="Đổi câu hỏi">🔄</button>
 </div>
 </div>
-<button type="submit" class="btn btn-primary btn-block">Đăng ký</button>
-<div class="divider">hoặc</div>
+<button type="submit" class="btn btn-primary btn-block" data-i18n="auth.register">Đăng ký</button>
+<div class="divider" data-i18n="auth.or">hoặc</div>
 <button type="button" class="btn-google" id="googleRegisterBtn">
 <img src="https://www.google.com/favicon.ico" width="18" height="18" alt="">
-Đăng ký bằng Google
+<span data-i18n="auth.google.register">Đăng ký bằng Google</span>
 </button>
 </form>
+</div>
+</div>
+</div>
+
+<!-- #12 #13: MODAL PROFILE -->
+<div class="modal-overlay profile-modal" id="profileModal">
+<div class="modal">
+<div class="modal-header">
+<div>
+<span class="eyebrow" data-i18n="profile.eyebrow">Tài khoản</span>
+<h3 data-i18n="profile.title">Trang cá nhân</h3>
+</div>
+<button class="modal-close" data-close>✕</button>
+</div>
+<div class="modal-body">
+<div class="profile-header">
+<div class="profile-avatar-large" id="profileAvatarLarge">
+<span id="profileInitial">?</span>
+<label class="profile-avatar-edit" for="avatarInput" title="Đổi avatar">📷</label>
+<input type="file" id="avatarInput" accept="image/*" style="display:none;">
+</div>
+<div class="profile-name" id="profileName">User</div>
+<div class="profile-email" id="profileEmail">user@example.com</div>
+</div>
+
+<div class="profile-stats">
+<div class="profile-stat"><strong id="profileFavsCount">0</strong><span data-i18n="profile.stat.favs">Yêu thích</span></div>
+<div class="profile-stat"><strong id="profileViewsCount">0</strong><span data-i18n="profile.stat.views">Lượt xem</span></div>
+<div class="profile-stat"><strong id="profileCommentsCount">0</strong><span data-i18n="profile.stat.comments">Bình luận</span></div>
+</div>
+
+<div class="form-group">
+<label data-i18n="profile.edit.name">Đổi tên hiển thị</label>
+<input type="text" id="profileNameInput" maxlength="30" placeholder="Tên mới">
+</div>
+<button class="btn btn-primary btn-block" id="profileSaveBtn" data-i18n="profile.save">Lưu thay đổi</button>
 </div>
 </div>
 </div>
@@ -522,37 +882,36 @@ Bạn cần <button id="commentLoginBtn">đăng nhập</button> để bình lu�
 <div class="modal">
 <div class="modal-header">
 <div>
-<span class="eyebrow">Hướng dẫn</span>
-<h3>Cách sử dụng Script Hub</h3>
+<span class="eyebrow" data-i18n="guide.eyebrow">Hướng dẫn</span>
+<h3 data-i18n="guide.title">Cách sử dụng Script Hub</h3>
 </div>
 <button class="modal-close" data-close>✕</button>
 </div>
 <div class="modal-body">
 <ol style="padding-left: 20px; line-height: 2; color: var(--text-soft);">
-<li><strong>Bấm "Xem"</strong> trên card script bạn muốn dùng</li>
-<li><strong>Đọc script</strong> trong khung màu đen</li>
-<li><strong>Bấm "Copy Script"</strong> để sao chép toàn bộ</li>
-<li><strong>Mở Executor</strong> (Delta, Fluxus, Solara, Xeno...)</li>
-<li><strong>Dán script</strong> vào và bấm <strong>Execute</strong></li>
+<li data-i18n="guide.step1"><strong>Bấm "Xem"</strong> trên card script bạn muốn dùng</li>
+<li data-i18n="guide.step2"><strong>Đọc script</strong> trong khung màu đen</li>
+<li data-i18n="guide.step3"><strong>Bấm "Copy Script"</strong> để sao chép toàn bộ</li>
+<li data-i18n="guide.step4"><strong>Mở Executor</strong> (Delta, Fluxus, Solara, Xeno...)</li>
+<li data-i18n="guide.step5"><strong>Dán script</strong> vào và bấm <strong>Execute</strong></li>
 </ol>
 </div>
 </div>
 </div>
 
 <div class="toast-container" id="toastContainer"></div>
-
 <!-- FIREBASE SDK -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
   signOut, onAuthStateChanged, updateProfile,
-  GoogleAuthProvider, signInWithPopup
+  GoogleAuthProvider, signInWithPopup, updatePassword
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import {
   getFirestore, doc, getDoc, setDoc, updateDoc,
   collection, addDoc, query, orderBy, onSnapshot,
-  deleteDoc, serverTimestamp, increment
+  deleteDoc, serverTimestamp, increment, where
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const app = initializeApp(window.FIREBASE_CONFIG);
@@ -563,25 +922,361 @@ window.__firebase = {
   app, auth, db,
   createUserWithEmailAndPassword, signInWithEmailAndPassword,
   signOut, onAuthStateChanged, updateProfile,
-  GoogleAuthProvider, signInWithPopup,
+  GoogleAuthProvider, signInWithPopup, updatePassword,
   doc, getDoc, setDoc, updateDoc,
   collection, addDoc, query, orderBy, onSnapshot,
-  deleteDoc, serverTimestamp, increment
+  deleteDoc, serverTimestamp, increment, where
 };
 
 window.dispatchEvent(new Event('firebase-ready'));
 </script>
+
 <script>
+/* =========================================================
+   STATE
+========================================================== */
 let fb = null;
 let currentUser = null;
 let favorites = new Set();
 let copyCounts = {};
+let views = {};
+let ratings = {};          // {scriptId: {avg, count, userRatings: {uid: star}}}
 let currentTab = 'all';
 let searchQuery = '';
 let currentScriptId = null;
 let unsubscribeComments = null;
 let captchaAnswer = null;
+let currentSort = "newest";
+let currentTagFilter = "";
+let viewHistory = [];
+let currentLang = localStorage.getItem("lang") || "vi";
 
+/* =========================================================
+   I18N — #30 ĐA NGÔN NGỮ
+========================================================== */
+const I18N = {
+  vi: {
+    "app.title": "Script Hub",
+    "app.subtitle": "Kho script Roblox miễn phí",
+    "btn.guide": "📖 Hướng dẫn",
+    "btn.login": "Đăng nhập",
+    "btn.logout": "Đăng xuất",
+    "btn.profile": "Trang cá nhân",
+    "btn.close": "Đóng",
+    "btn.copy.script": "Copy Script",
+    "hero.title": "🎮 Kho Script Roblox",
+    "hero.subtitle": "Tổng hợp các script hot nhất, cập nhật liên tục, miễn phí 100%",
+    "stat.scripts": "Scripts",
+    "stat.favs": "Yêu thích",
+    "tab.all": "📦 Tất cả",
+    "tab.fav": "❤️ Yêu thích",
+    "search.placeholder": "Tìm script...",
+    "history.title": "🕐 Vừa xem gần đây",
+    "history.clear": "Xóa lịch sử",
+    "toolbar.sort": "Sắp xếp:",
+    "toolbar.tags": "Lọc tag:",
+    "sort.newest": "Mới nhất",
+    "sort.az": "Tên A-Z",
+    "sort.views": "Nhiều lượt xem",
+    "sort.copied": "Nhiều lượt copy",
+    "sort.rating": "Đánh giá cao",
+    "empty.text": "Không tìm thấy script nào phù hợp",
+    "empty.fav": "Bạn chưa yêu thích script nào",
+    "modal.script.eyebrow": "Chi tiết script",
+    "rating.title": "⭐ Đánh giá script này",
+    "rating.count": "Chưa có đánh giá",
+    "rating.count.n": "{n} đánh giá",
+    "rating.hint": "Bấm vào sao để đánh giá",
+    "rating.thanks": "Cảm ơn bạn đã đánh giá!",
+    "rating.login": "Đăng nhập để đánh giá",
+    "comment.title": "💬 Bình luận",
+    "comment.login.hint1": "Bạn cần",
+    "comment.login.hint2": "đăng nhập",
+    "comment.login.hint3": "để bình luận",
+    "comment.placeholder": "Viết bình luận...",
+    "comment.send": "Gửi",
+    "comment.loading": "Đang tải bình luận...",
+    "comment.empty": "Chưa có bình luận nào. Hãy là người đầu tiên!",
+    "comment.del": "Xoá",
+    "comment.report": "Báo cáo",
+    "comment.reported": "Đã báo cáo bình luận",
+    "comment.confirm.del": "Xoá bình luận này?",
+    "comment.sent": "Đã gửi bình luận",
+    "comment.fail": "Không thể gửi bình luận",
+    "comment.deleted": "Đã xoá bình luận",
+    "comment.report.reason": "Nhập lý do báo cáo (VD: spam, thô tục...):",
+    "auth.eyebrow": "Tài khoản",
+    "auth.login": "Đăng nhập",
+    "auth.register": "Đăng ký",
+    "auth.email": "Email",
+    "auth.password": "Mật khẩu",
+    "auth.password.placeholder": "Ít nhất 6 ký tự",
+    "auth.name": "Tên hiển thị",
+    "auth.or": "hoặc",
+    "auth.google.login": "Đăng nhập bằng Google",
+    "auth.google.register": "Đăng ký bằng Google",
+    "auth.captcha": "🔒 Xác minh bạn không phải robot",
+    "auth.captcha.placeholder": "Đáp án",
+    "auth.captcha.wrong": "❌ Câu trả lời xác minh không đúng. Vui lòng thử lại.",
+    "auth.login.ok": "Đăng nhập thành công!",
+    "auth.register.ok": "Đăng ký thành công!",
+    "auth.google.ok": "Đăng nhập Google thành công!",
+    "auth.logout.ok": "Đã đăng xuất",
+    "auth.err.already": "Email này đã được đăng ký",
+    "auth.err.email": "Email không hợp lệ",
+    "auth.err.weak": "Mật khẩu quá yếu (cần ≥ 6 ký tự)",
+    "auth.err.notfound": "Không tìm thấy tài khoản",
+    "auth.err.wrong": "Sai mật khẩu",
+    "auth.err.cred": "Email hoặc mật khẩu không đúng",
+    "auth.err.many": "Quá nhiều lần thử. Vui lòng đợi.",
+    "auth.err.popup": "Bạn đã đóng cửa sổ đăng nhập",
+    "auth.err.network": "Lỗi mạng, kiểm tra kết nối",
+    "auth.err.domain": "Domain chưa được cấp phép",
+    "auth.err.default": "Đã xảy ra lỗi, vui lòng thử lại",
+    "profile.eyebrow": "Tài khoản",
+    "profile.title": "Trang cá nhân",
+    "profile.stat.favs": "Yêu thích",
+    "profile.stat.views": "Lượt xem",
+    "profile.stat.comments": "Bình luận",
+    "profile.edit.name": "Đổi tên hiển thị",
+    "profile.save": "Lưu thay đổi",
+    "profile.saved": "Đã lưu thay đổi",
+    "profile.avatar.max": "Ảnh quá lớn (tối đa 1MB)",
+    "profile.login.required": "Bạn cần đăng nhập",
+    "guide.eyebrow": "Hướng dẫn",
+    "guide.title": "Cách sử dụng Script Hub",
+    "guide.step1": "Bấm 'Xem' trên card script bạn muốn dùng",
+    "guide.step2": "Đọc script trong khung màu đen",
+    "guide.step3": "Bấm 'Copy Script' để sao chép toàn bộ",
+    "guide.step4": "Mở Executor (Delta, Fluxus, Solara, Xeno...)",
+    "guide.step5": "Dán script vào và bấm Execute",
+    "toast.copied": "Đã copy \"{name}\"",
+    "toast.copy.fail": "Không thể copy script",
+    "toast.fav.add": "Đã thêm yêu thích",
+    "toast.fav.remove": "Đã bỏ yêu thích",
+    "toast.fav.login": "Bạn cần đăng nhập để yêu thích",
+    "toast.history.cleared": "Đã xóa lịch sử xem",
+    "toast.report.opening": "Đang mở email báo lỗi..."
+  },
+  en: {
+    "app.title": "Script Hub",
+    "app.subtitle": "Free Roblox Script Library",
+    "btn.guide": "📖 Guide",
+    "btn.login": "Sign in",
+    "btn.logout": "Sign out",
+    "btn.profile": "My Profile",
+    "btn.close": "Close",
+    "btn.copy.script": "Copy Script",
+    "hero.title": "🎮 Roblox Script Vault",
+    "hero.subtitle": "All hottest scripts, updated regularly, 100% free",
+    "stat.scripts": "Scripts",
+    "stat.favs": "Favorites",
+    "tab.all": "📦 All",
+    "tab.fav": "❤️ Favorites",
+    "search.placeholder": "Search scripts...",
+    "history.title": "🕐 Recently viewed",
+    "history.clear": "Clear history",
+    "toolbar.sort": "Sort:",
+    "toolbar.tags": "Filter tags:",
+    "sort.newest": "Newest",
+    "sort.az": "Name A-Z",
+    "sort.views": "Most viewed",
+    "sort.copied": "Most copied",
+    "sort.rating": "Top rated",
+    "empty.text": "No matching scripts",
+    "empty.fav": "You have no favorites yet",
+    "modal.script.eyebrow": "Script details",
+    "rating.title": "⭐ Rate this script",
+    "rating.count": "No ratings yet",
+    "rating.count.n": "{n} ratings",
+    "rating.hint": "Click a star to rate",
+    "rating.thanks": "Thanks for your rating!",
+    "rating.login": "Sign in to rate",
+    "comment.title": "💬 Comments",
+    "comment.login.hint1": "You need to",
+    "comment.login.hint2": "sign in",
+    "comment.login.hint3": "to comment",
+    "comment.placeholder": "Write a comment...",
+    "comment.send": "Send",
+    "comment.loading": "Loading comments...",
+    "comment.empty": "No comments yet. Be the first!",
+    "comment.del": "Delete",
+    "comment.report": "Report",
+    "comment.reported": "Comment reported",
+    "comment.confirm.del": "Delete this comment?",
+    "comment.sent": "Comment sent",
+    "comment.fail": "Could not send comment",
+    "comment.deleted": "Comment deleted",
+    "comment.report.reason": "Enter reason (e.g. spam, offensive):",
+    "auth.eyebrow": "Account",
+    "auth.login": "Sign in",
+    "auth.register": "Sign up",
+    "auth.email": "Email",
+    "auth.password": "Password",
+    "auth.password.placeholder": "At least 6 characters",
+    "auth.name": "Display name",
+    "auth.or": "or",
+    "auth.google.login": "Sign in with Google",
+    "auth.google.register": "Sign up with Google",
+    "auth.captcha": "🔒 Verify you are not a robot",
+    "auth.captcha.placeholder": "Answer",
+    "auth.captcha.wrong": "❌ Wrong captcha. Please try again.",
+    "auth.login.ok": "Signed in successfully!",
+    "auth.register.ok": "Registered successfully!",
+    "auth.google.ok": "Google sign-in successful!",
+    "auth.logout.ok": "Signed out",
+    "auth.err.already": "Email already registered",
+    "auth.err.email": "Invalid email",
+    "auth.err.weak": "Password too weak (min 6 chars)",
+    "auth.err.notfound": "Account not found",
+    "auth.err.wrong": "Wrong password",
+    "auth.err.cred": "Wrong email or password",
+    "auth.err.many": "Too many attempts. Please wait.",
+    "auth.err.popup": "You closed the sign-in window",
+    "auth.err.network": "Network error",
+    "auth.err.domain": "Domain not authorized",
+    "auth.err.default": "Something went wrong, try again",
+    "profile.eyebrow": "Account",
+    "profile.title": "My Profile",
+    "profile.stat.favs": "Favorites",
+    "profile.stat.views": "Views",
+    "profile.stat.comments": "Comments",
+    "profile.edit.name": "Change display name",
+    "profile.save": "Save changes",
+    "profile.saved": "Changes saved",
+    "profile.avatar.max": "Image too large (max 1MB)",
+    "profile.login.required": "Please sign in",
+    "guide.eyebrow": "Guide",
+    "guide.title": "How to use Script Hub",
+    "guide.step1": "Click 'View' on the script card you want",
+    "guide.step2": "Read the script in the dark box",
+    "guide.step3": "Click 'Copy Script' to copy the whole thing",
+    "guide.step4": "Open Executor (Delta, Fluxus, Solara, Xeno...)",
+    "guide.step5": "Paste the script and click Execute",
+    "toast.copied": "Copied \"{name}\"",
+    "toast.copy.fail": "Could not copy script",
+    "toast.fav.add": "Added to favorites",
+    "toast.fav.remove": "Removed from favorites",
+    "toast.fav.login": "Sign in to favorite",
+    "toast.history.cleared": "History cleared",
+    "toast.report.opening": "Opening email..."
+  },
+  th: {
+    "app.title": "Script Hub",
+    "app.subtitle": "คลังสคริปต์ Roblox ฟรี",
+    "btn.guide": "📖 คู่มือ",
+    "btn.login": "เข้าสู่ระบบ",
+    "btn.logout": "ออกจากระบบ",
+    "btn.profile": "โปรไฟล์",
+    "btn.close": "ปิด",
+    "btn.copy.script": "คัดลอกสคริปต์",
+    "hero.title": "🎮 คลังสคริปต์ Roblox",
+    "hero.subtitle": "รวมสคริปต์ยอดนิยม อัปเดตตลอด ฟรี 100%",
+    "stat.scripts": "สคริปต์",
+    "stat.favs": "รายการโปรด",
+    "tab.all": "📦 ทั้งหมด",
+    "tab.fav": "❤️ รายการโปรด",
+    "search.placeholder": "ค้นหาสคริปต์...",
+    "history.title": "🕐 ดูเมื่อเร็วๆ นี้",
+    "history.clear": "ล้างประวัติ",
+    "toolbar.sort": "เรียง:",
+    "toolbar.tags": "กรองแท็ก:",
+    "sort.newest": "ใหม่สุด",
+    "sort.az": "ชื่อ A-Z",
+    "sort.views": "ดูมากสุด",
+    "sort.copied": "คัดลอกมากสุด",
+    "sort.rating": "คะแนนสูงสุด",
+    "empty.text": "ไม่พบสคริปต์",
+    "empty.fav": "ยังไม่มีรายการโปรด",
+    "modal.script.eyebrow": "รายละเอียดสคริปต์",
+    "rating.title": "⭐ ให้คะแนนสคริปต์นี้",
+    "rating.count": "ยังไม่มีคะแนน",
+    "rating.count.n": "{n} คะแนน",
+    "rating.hint": "คลิกดาวเพื่อให้คะแนน",
+    "rating.thanks": "ขอบคุณสำหรับคะแนน!",
+    "rating.login": "เข้าสู่ระบบเพื่อให้คะแนน",
+    "comment.title": "💬 ความคิดเห็น",
+    "comment.login.hint1": "คุณต้อง",
+    "comment.login.hint2": "เข้าสู่ระบบ",
+    "comment.login.hint3": "เพื่อแสดงความคิดเห็น",
+    "comment.placeholder": "เขียนความคิดเห็น...",
+    "comment.send": "ส่ง",
+    "comment.loading": "กำลังโหลด...",
+    "comment.empty": "ยังไม่มีความคิดเห็น มาเป็นคนแรก!",
+    "comment.del": "ลบ",
+    "comment.report": "รายงาน",
+    "comment.reported": "รายงานแล้ว",
+    "comment.confirm.del": "ลบความคิดเห็นนี้?",
+    "comment.sent": "ส่งความคิดเห็นแล้ว",
+    "comment.fail": "ส่งไม่สำเร็จ",
+    "comment.deleted": "ลบแล้ว",
+    "comment.report.reason": "ระบุเหตุผล (เช่น สแปม, หยาบคาย):",
+    "auth.eyebrow": "บัญชี",
+    "auth.login": "เข้าสู่ระบบ",
+    "auth.register": "สมัครสมาชิก",
+    "auth.email": "อีเมล",
+    "auth.password": "รหัสผ่าน",
+    "auth.password.placeholder": "อย่างน้อย 6 ตัวอักษร",
+    "auth.name": "ชื่อที่แสดง",
+    "auth.or": "หรือ",
+    "auth.google.login": "เข้าสู่ระบบด้วย Google",
+    "auth.google.register": "สมัครด้วย Google",
+    "auth.captcha": "🔒 ยืนยันว่าคุณไม่ใช่บอท",
+    "auth.captcha.placeholder": "คำตอบ",
+    "auth.captcha.wrong": "❌ คำตอบไม่ถูกต้อง",
+    "auth.login.ok": "เข้าสู่ระบบสำเร็จ!",
+    "auth.register.ok": "สมัครสำเร็จ!",
+    "auth.google.ok": "เข้าสู่ระบบ Google สำเร็จ!",
+    "auth.logout.ok": "ออกจากระบบแล้ว",
+    "auth.err.already": "อีเมลนี้ถูกใช้แล้ว",
+    "auth.err.email": "อีเมลไม่ถูกต้อง",
+    "auth.err.weak": "รหัสผ่านอ่อนเกินไป",
+    "auth.err.notfound": "ไม่พบบัญชี",
+    "auth.err.wrong": "รหัสผ่านผิด",
+    "auth.err.cred": "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
+    "auth.err.many": "พยายามหลายครั้งเกินไป",
+    "auth.err.popup": "คุณปิดหน้าต่างเข้าสู่ระบบ",
+    "auth.err.network": "เครือข่ายผิดพลาด",
+    "auth.err.domain": "โดเมนไม่ได้รับอนุญาต",
+    "auth.err.default": "เกิดข้อผิดพลาด ลองใหม่",
+    "profile.eyebrow": "บัญชี",
+    "profile.title": "โปรไฟล์",
+    "profile.stat.favs": "รายการโปรด",
+    "profile.stat.views": "ยอดดู",
+    "profile.stat.comments": "ความคิดเห็น",
+    "profile.edit.name": "เปลี่ยนชื่อที่แสดง",
+    "profile.save": "บันทึก",
+    "profile.saved": "บันทึกแล้ว",
+    "profile.avatar.max": "รูปใหญ่เกินไป (สูงสุด 1MB)",
+    "profile.login.required": "กรุณาเข้าสู่ระบบ",
+    "guide.eyebrow": "คู่มือ",
+    "guide.title": "วิธีใช้ Script Hub",
+    "guide.step1": "คลิก 'ดู' บนการ์ดที่ต้องการ",
+    "guide.step2": "อ่านสคริปต์ในกล่องสีดำ",
+    "guide.step3": "คลิก 'คัดลอกสคริปต์'",
+    "guide.step4": "เปิด Executor",
+    "guide.step5": "วางและกด Execute",
+    "toast.copied": "คัดลอก \"{name}\" แล้ว",
+    "toast.copy.fail": "คัดลอกไม่สำเร็จ",
+    "toast.fav.add": "เพิ่มในรายการโปรดแล้ว",
+    "toast.fav.remove": "ลบออกจากรายการโปรดแล้ว",
+    "toast.fav.login": "เข้าสู่ระบบเพื่อบันทึก",
+    "toast.history.cleared": "ล้างประวัติแล้ว",
+    "toast.report.opening": "กำลังเปิดอีเมล..."
+  }
+};
+
+function t(key, vars = {}) {
+  let str = (I18N[currentLang] && I18N[currentLang][key]) || I18N.vi[key] || key;
+  Object.entries(vars).forEach(([k, v]) => {
+    str = str.replaceAll(`{${k}}`, v);
+  });
+  return str;
+}
+
+/* =========================================================
+   SCRIPT DATA
+========================================================== */
 const SCRIPTS = [
   {
     id: "gravity-hub", game: "Blox Fruits", name: "Gravity Hub",
@@ -590,7 +1285,7 @@ const SCRIPTS = [
     category: "Universal", platform: "PC/PE",
     updated: "2026-10-03", version: "1.0",
     tags: ["Blox Fruits", "Farm"], maintenance: true,
-    content: ``
+    content: `-- Gravity Hub - Đang bảo trì\nprint("[Gravity Hub] Maintenance")`
   },
   {
     id: "quantum-hub", game: "Blox Fruits", name: "Quantum Hub",
@@ -617,8 +1312,7 @@ const SCRIPTS = [
     category: "Universal", platform: "PC/PE",
     updated: "2026-09-30", version: "1.0",
     tags: ["Fishing Master", "Auto Fish", "PC"], maintenance: false,
-    content: `-- Fish Hub
-loadstring(game:HttpGet("https://link-fish-hub.lua"))()`
+    content: `-- Fish Hub\nloadstring(game:HttpGet("https://link-fish-hub.lua"))()`
   },
   {
     id: "auto-hub-fsm", game: "Fishing Master", name: "Ouroboros Hub",
@@ -627,41 +1321,40 @@ loadstring(game:HttpGet("https://link-fish-hub.lua"))()`
     category: "Universal", platform: "PC/PE",
     updated: "2026-09-27", version: "1.0",
     tags: ["Fishing Master", "Auto", "Mobile"], maintenance: false,
-    content: `-- Auto Hub
-loadstring(game:HttpGet("https://link-auto-hub.lua"))()`
+    content: `-- Ouroboros Hub\nloadstring(game:HttpGet("https://link-ouroboros-hub.lua"))()`
   },
   {
     id: "egg-hub", game: "Steal an Egg", name: "Egg Hub",
-    icon: "<a href='https://postimg.cc/BXKHTkH4' target='_blank'><img src='https://i.postimg.cc/BXKHTkH4/stealanegg-f314x314-png.webp' border='0' alt='stealanegg-f314x314-png'></a>",
+    icon: "https://i.postimg.cc/BXKHTkH4/stealanegg-f314x314-png.webp",
     description: "Hub tổng hợp cho Steal an Egg, auto steal và teleport.",
     category: "Universal", platform: "Mobile",
     updated: "2026-09-25", version: "1.3.2",
     tags: ["Steal an Egg", "Farm", "Mobile"], maintenance: false,
-    content: `-- Egg Hub
-loadstring(game:HttpGet("https://link-egg-hub.lua"))()`
+    content: `-- Egg Hub\nloadstring(game:HttpGet("https://link-egg-hub.lua"))()`
   },
   {
     id: "farm-hub-sae", game: "Steal an Egg", name: "Farm Hub",
-    icon: "🥚",
+    icon: "https://i.postimg.cc/BXKHTkH4/stealanegg-f314x314-png.webp",
     description: "Hub auto farm egg, hỗ trợ PC với tốc độ cao.",
     category: "Utility", platform: "PC",
     updated: "2026-09-20", version: "1.1.0",
     tags: ["Steal an Egg", "Farm", "PC"], maintenance: false,
-    content: `-- Farm Hub
-loadstring(game:HttpGet("https://link-farm-hub.lua"))()`
+    content: `-- Farm Hub\nloadstring(game:HttpGet("https://link-farm-hub.lua"))()`
   },
   {
     id: "auto-hub-sae", game: "Steal an Egg", name: "Auto Hub",
-    icon: "🥚",
+    icon: "https://i.postimg.cc/BXKHTkH4/stealanegg-f314x314-png.webp",
     description: "Hub auto all-in-one cho Steal an Egg, tối ưu cho mobile.",
     category: "Universal", platform: "Mobile",
     updated: "2026-10-01", version: "2.0.0",
     tags: ["Steal an Egg", "Auto", "Mobile"], maintenance: false,
-    content: `-- Auto Hub
-loadstring(game:HttpGet("https://link-auto-hub-sae.lua"))()`
+    content: `-- Auto Hub\nloadstring(game:HttpGet("https://link-auto-hub-sae.lua"))()`
   }
 ];
 
+/* =========================================================
+   HELPERS
+========================================================== */
 const $ = (sel) => document.querySelector(sel);
 const $$ = (sel) => [...document.querySelectorAll(sel)];
 
@@ -675,12 +1368,12 @@ function escapeHTML(str) {
 function timeAgo(dateStr) {
   const date = new Date(dateStr + "T00:00:00");
   const days = Math.floor((Date.now() - date.getTime()) / 86400000);
-  if (days === 0) return "Hôm nay";
-  if (days === 1) return "Hôm qua";
-  if (days < 7) return days + " ngày trước";
-  if (days < 30) return Math.floor(days / 7) + " tuần trước";
-  if (days < 365) return Math.floor(days / 30) + " tháng trước";
-  return Math.floor(days / 365) + " năm trước";
+  if (days === 0) return currentLang === "vi" ? "Hôm nay" : currentLang === "en" ? "Today" : "วันนี้";
+  if (days === 1) return currentLang === "vi" ? "Hôm qua" : currentLang === "en" ? "Yesterday" : "เมื่อวาน";
+  if (days < 7) return currentLang === "vi" ? days + " ngày trước" : currentLang === "en" ? days + "d ago" : days + " วันที่แล้ว";
+  if (days < 30) return Math.floor(days / 7) + (currentLang === "vi" ? " tuần trước" : currentLang === "en" ? "w ago" : " สัปดาห์");
+  if (days < 365) return Math.floor(days / 30) + (currentLang === "vi" ? " tháng trước" : currentLang === "en" ? "mo ago" : " เดือน");
+  return Math.floor(days / 365) + (currentLang === "vi" ? " năm trước" : currentLang === "en" ? "y ago" : " ปี");
 }
 
 function isNew(dateStr) {
@@ -699,8 +1392,9 @@ function showToast(message, type = "info") {
 }
 
 function getUserInitial(name) { return (name || "?").charAt(0).toUpperCase(); }
-
-/* CAPTCHA */
+  /* =========================================================
+   CAPTCHA
+========================================================== */
 function generateCaptcha() {
   const ops = ["+", "-", "×"];
   const op = ops[Math.floor(Math.random() * ops.length)];
@@ -724,7 +1418,9 @@ function generateCaptcha() {
   $("#captchaInput").value = "";
 }
 
-/* RENDER SCRIPT GRID */
+/* =========================================================
+   RENDER
+========================================================== */
 function renderScripts() {
   const grid = $("#scriptGrid");
   const empty = $("#emptyState");
@@ -742,27 +1438,55 @@ function renderScripts() {
     );
   }
 
+  if (currentTagFilter) list = list.filter(s => s.tags.includes(currentTagFilter));
+
+  // SORT
+  if (currentSort === "newest") {
+    list.sort((a, b) => new Date(b.updated) - new Date(a.updated));
+  } else if (currentSort === "az") {
+    list.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (currentSort === "views") {
+    list.sort((a, b) => (views[b.id] || 0) - (views[a.id] || 0));
+  } else if (currentSort === "copied") {
+    list.sort((a, b) => (copyCounts[b.id] || 0) - (copyCounts[a.id] || 0));
+  } else if (currentSort === "rating") {
+    list.sort((a, b) => ((ratings[b.id] && ratings[b.id].avg) || 0) - ((ratings[a.id] && ratings[a.id].avg) || 0));
+  }
+
   if (list.length === 0) {
     grid.innerHTML = "";
     empty.hidden = false;
-    empty.querySelector("p").textContent = currentTab === "fav"
-      ? "Bạn chưa yêu thích script nào"
-      : "Không tìm thấy script nào phù hợp";
+    empty.querySelector("p").textContent = currentTab === "fav" ? t("empty.fav") : t("empty.text");
     return;
   }
   empty.hidden = true;
 
+  // #6: hiệu ứng chuyển tab
+  grid.style.animation = "none";
+  void grid.offsetWidth;
+  grid.style.animation = "fadeInUp .3s ease";
+
   grid.innerHTML = list.map(s => {
     const isFav = favorites.has(s.id);
     const copyCount = copyCounts[s.id] || 0;
+    const viewCount = views[s.id] || 0;
     const isHot = copyCount >= 10;
+    const rating = ratings[s.id] || { avg: 0, count: 0 };
     const iconHTML = s.icon && s.icon.startsWith("http")
       ? `<img src="${s.icon}" alt="${escapeHTML(s.game)}" loading="lazy">`
       : escapeHTML(s.icon || "🎮");
 
+    // Sao hiển thị
+    let starsHTML = "";
+    for (let i = 1; i <= 5; i++) {
+      starsHTML += `<span class="star ${i <= Math.round(rating.avg) ? "filled" : ""}">★</span>`;
+    }
+
     return `
       <article class="script-card" data-id="${s.id}">
-        <button class="fav-btn ${isFav ? "active" : ""}" data-action="fav" title="${isFav ? "Bỏ yêu thích" : "Yêu thích"}">${isFav ? "❤️" : "🤍"}</button>
+        <button class="fav-btn ${isFav ? "active" : ""}" data-action="fav" title="${isFav ? "❤️" : "🤍"}">${isFav ? "❤️" : "🤍"}</button>
+        <button class="report-btn-card" data-action="report" title="🚩">🚩</button>
+
         <div class="card-header">
           <div class="card-logo">${iconHTML}</div>
           <div class="card-header-text">
@@ -770,21 +1494,35 @@ function renderScripts() {
             <h3 class="card-title">${escapeHTML(s.name)}</h3>
           </div>
         </div>
+
         <div class="card-badges">
           ${isNew(s.updated) ? '<span class="badge badge-new">NEW</span>' : ""}
           ${isHot ? '<span class="badge badge-hot">🔥 HOT</span>' : ""}
-          <span class="badge badge-status ${s.maintenance ? "maintenance" : "online"}"><i></i>${s.maintenance ? "Bảo trì" : "Online"}</span>
+          <span class="badge badge-status ${s.maintenance ? "maintenance" : "online"}"><i></i>${s.maintenance ? "🔧" : "●"} ${s.maintenance ? (currentLang === "vi" ? "Bảo trì" : currentLang === "en" ? "Maintenance" : "ปิดปรับปรุง") : "Online"}</span>
         </div>
+
         <p class="card-desc">${escapeHTML(s.description)}</p>
-        <div class="card-tags">${s.tags.map(t => `<span>${escapeHTML(t)}</span>`).join("")}</div>
-        <div class="card-meta"><span>v${escapeHTML(s.version)}</span><span>${timeAgo(s.updated)}</span></div>
-        <div class="card-meta" style="border:0;padding-top:0;">
-          <span>📋 ${copyCount} lượt copy</span>
-          <span>${escapeHTML(s.platform)}</span>
+
+        <div class="card-tags">${s.tags.map(tag => `<span data-tag="${escapeHTML(tag)}">${escapeHTML(tag)}</span>`).join("")}</div>
+
+        <div class="card-rating">
+          <div class="stars-display">${starsHTML}</div>
+          <span>${rating.count > 0 ? rating.avg.toFixed(1) + " (" + rating.count + ")" : t("rating.count")}</span>
         </div>
+
+        <div class="card-meta">
+          <span>v${escapeHTML(s.version)}</span>
+          <span>${timeAgo(s.updated)}</span>
+        </div>
+
+        <div class="card-meta" style="border:0;padding-top:0;">
+          <span class="card-views">👁 ${viewCount}</span>
+          <span>📋 ${copyCount}</span>
+        </div>
+
         <div class="card-actions">
-          <button class="btn-copy" data-action="copy" ${s.maintenance ? "disabled" : ""}>${s.maintenance ? "Bảo trì" : "📋 Copy"}</button>
-          <button class="btn-view" data-action="view">👁 Xem</button>
+          <button class="btn-copy" data-action="copy" ${s.maintenance ? "disabled" : ""}>${s.maintenance ? "🔧" : "📋 Copy"}</button>
+          <button class="btn-view" data-action="view">👁 ${currentLang === "vi" ? "Xem" : currentLang === "en" ? "View" : "ดู"}</button>
         </div>
       </article>
     `;
@@ -798,6 +1536,9 @@ function updateCounts() {
   $("#totalFavs").textContent = favorites.size;
 }
 
+/* =========================================================
+   TABS / SEARCH / SORT
+========================================================== */
 function initTabs() {
   $$(".tab-btn").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -829,6 +1570,37 @@ function initSearch() {
   });
 }
 
+function initSort() {
+  const sel = $("#sortSelect");
+  if (!sel) return;
+  sel.value = currentSort;
+  sel.addEventListener("change", () => {
+    currentSort = sel.value;
+    renderScripts();
+  });
+}
+
+function updateTagFilterUI() {
+  const container = $("#tagFilter");
+  if (!container) return;
+  const allTags = new Set();
+  SCRIPTS.forEach(s => s.tags.forEach(tag => allTags.add(tag)));
+  const sortedTags = [...allTags].sort();
+  container.innerHTML = sortedTags.map(tag => `
+    <button class="tag-chip ${currentTagFilter === tag ? "active" : ""}" data-filter-tag="${escapeHTML(tag)}">${escapeHTML(tag)}</button>
+  `).join("");
+  container.querySelectorAll("[data-filter-tag]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      currentTagFilter = currentTagFilter === btn.dataset.filterTag ? "" : btn.dataset.filterTag;
+      updateTagFilterUI();
+      renderScripts();
+    });
+  });
+}
+
+/* =========================================================
+   CLIPBOARD + VIEWS + COPY
+========================================================== */
 async function copyToClipboard(text) {
   try {
     await navigator.clipboard.writeText(text);
@@ -857,8 +1629,34 @@ async function incrementCopyCount(scriptId) {
   renderScripts();
 }
 
+async function incrementViews(scriptId) {
+  views[scriptId] = (views[scriptId] || 0) + 1;
+  localStorage.setItem("views", JSON.stringify(views));
+  if (fb && fb.db) {
+    try {
+      const ref = fb.doc(fb.db, "views", scriptId);
+      const snap = await fb.getDoc(ref);
+      if (snap.exists()) await fb.updateDoc(ref, { count: fb.increment(1) });
+      else await fb.setDoc(ref, { count: 1 });
+    } catch (e) { console.warn(e); }
+  }
+  renderScripts();
+}
+
+/* =========================================================
+   SCRIPT ACTIONS
+========================================================== */
 function initScriptActions() {
   $("#scriptGrid").addEventListener("click", async (e) => {
+    // Tag filter
+    const tagEl = e.target.closest("[data-tag]");
+    if (tagEl) {
+      currentTagFilter = tagEl.dataset.tag;
+      updateTagFilterUI();
+      renderScripts();
+      return;
+    }
+
     const card = e.target.closest(".script-card");
     if (!card) return;
     const scriptId = card.dataset.id;
@@ -867,19 +1665,20 @@ function initScriptActions() {
     const action = e.target.dataset.action;
 
     if (action === "fav") { await toggleFavorite(script.id); return; }
+    if (action === "report") { reportScript(script); return; }
 
     if (action === "copy") {
       if (script.maintenance) return;
       const btn = e.target;
       const oldText = btn.textContent;
-      btn.disabled = true; btn.textContent = "Đang copy...";
+      btn.disabled = true; btn.textContent = "...";
       const ok = await copyToClipboard(script.content);
       if (ok) {
         await incrementCopyCount(script.id);
-        showToast(`Đã copy "${script.name}"`, "success");
-      } else showToast("Không thể copy script", "error");
-      btn.textContent = ok ? "✓ Đã copy" : "Lỗi";
-      setTimeout(() => { btn.disabled = false; btn.textContent = oldText; }, 1200);
+        showToast(t("toast.copied", { name: script.name }), "success");
+      } else showToast(t("toast.copy.fail"), "error");
+      btn.textContent = ok ? "✓" : "✗";
+      setTimeout(() => { btn.disabled = false; btn.textContent = oldText; }, 1000);
       return;
     }
 
@@ -887,9 +1686,19 @@ function initScriptActions() {
   });
 }
 
+function reportScript(script) {
+  const email = "kenhmatchat@gmail.com";
+  showToast(t("toast.report.opening"), "info");
+  const subject = encodeURIComponent(`[Script Hub] Báo lỗi: ${script.name} (${script.id})`);
+  const body = encodeURIComponent(
+    `Script: ${script.name}\nID: ${script.id}\nGame: ${script.game}\nVersion: ${script.version}\nPlatform: ${script.platform}\n\nMô tả lỗi:\n\n\nThiết bị / Executor:\n`
+  );
+  window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+}
+
 async function toggleFavorite(scriptId) {
   if (!currentUser) {
-    showToast("Bạn cần đăng nhập để yêu thích", "info");
+    showToast(t("toast.fav.login"), "info");
     openAuthModal("login");
     return;
   }
@@ -902,10 +1711,91 @@ async function toggleFavorite(scriptId) {
       favorites: [...favorites]
     }, { merge: true });
   } catch (e) { console.warn(e); }
-  showToast(isFav ? "Đã bỏ yêu thích" : "Đã thêm yêu thích", "success");
+  showToast(isFav ? t("toast.fav.remove") : t("toast.fav.add"), "success");
   updateCounts(); renderScripts();
 }
 
+/* =========================================================
+   HISTORY (#14)
+========================================================== */
+function pushHistory(scriptId) {
+  viewHistory = [scriptId, ...viewHistory.filter(x => x !== scriptId)].slice(0, 10);
+  localStorage.setItem("viewHistory", JSON.stringify(viewHistory));
+  renderHistory();
+}
+
+function renderHistory() {
+  const section = $("#historySection");
+  const list = $("#historyList");
+  if (!section || !list) return;
+  if (viewHistory.length === 0) { section.hidden = true; return; }
+  section.hidden = false;
+  list.innerHTML = viewHistory.map(id => {
+    const s = SCRIPTS.find(x => x.id === id);
+    if (!s) return "";
+    const iconHTML = s.icon && s.icon.startsWith("http")
+      ? `<img src="${s.icon}" alt="">`
+      : `<span style="font-size:1.1rem;">${s.icon || "🎮"}</span>`;
+    return `<div class="history-item" data-history-id="${s.id}">${iconHTML}<span>${escapeHTML(s.name)}</span></div>`;
+  }).join("");
+  list.querySelectorAll("[data-history-id]").forEach(item => {
+    item.addEventListener("click", () => {
+      const s = SCRIPTS.find(x => x.id === item.dataset.historyId);
+      if (s) openScriptModal(s);
+    });
+  });
+}
+
+function initHistory() {
+  const clearBtn = $("#historyClear");
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      viewHistory = [];
+      localStorage.removeItem("viewHistory");
+      renderHistory();
+      showToast(t("toast.history.cleared"), "info");
+    });
+  }
+  try {
+    const saved = localStorage.getItem("viewHistory");
+    if (saved) viewHistory = JSON.parse(saved);
+  } catch {}
+  renderHistory();
+}
+
+/* =========================================================
+   #4: 3D TILT
+========================================================== */
+function initTiltEffect() {
+  if (window.matchMedia("(max-width: 900px)").matches) return;
+  if (window.matchMedia("(hover: none)").matches) return;
+
+  document.addEventListener("mousemove", (e) => {
+    const card = e.target.closest(".script-card");
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+    const rX = ((y - cy) / cy) * -3;
+    const rY = ((x - cx) / cx) * 3;
+    card.style.transform = `perspective(900px) rotateX(${rX}deg) rotateY(${rY}deg)`;
+    card.classList.add("tilting");
+  });
+
+  document.addEventListener("mouseout", (e) => {
+    const card = e.target.closest(".script-card");
+    if (!card) return;
+    if (card.contains(e.relatedTarget)) return;
+    card.style.transform = "";
+    card.classList.remove("tilting");
+  });
+}
+
+/* =========================================================
+   MODAL SCRIPT
+========================================================== */
 function openScriptModal(script) {
   currentScriptId = script.id;
   $("#modalTitle").textContent = script.name;
@@ -913,7 +1803,7 @@ function openScriptModal(script) {
     <span>${escapeHTML(script.game)}</span>
     <span>${escapeHTML(script.platform)}</span>
     <span>v${escapeHTML(script.version)}</span>
-    <span class="${script.maintenance ? "meta-maintenance" : "meta-online"}">${script.maintenance ? "Đang bảo trì" : "Online"}</span>
+    <span class="${script.maintenance ? "meta-maintenance" : "meta-online"}">${script.maintenance ? "🔧" : "● Online"}</span>
   `;
   $("#modalCode").textContent = script.content;
 
@@ -923,12 +1813,16 @@ function openScriptModal(script) {
     const ok = await copyToClipboard(script.content);
     if (ok) {
       await incrementCopyCount(script.id);
-      showToast(`Đã copy "${script.name}"`, "success");
-    } else showToast("Không thể copy", "error");
+      showToast(t("toast.copied", { name: script.name }), "success");
+    } else showToast(t("toast.copy.fail"), "error");
   };
 
   $("#scriptModal").classList.add("show");
   document.body.style.overflow = "hidden";
+
+  incrementViews(script.id);
+  pushHistory(script.id);
+  renderRating(script.id);
   loadComments(script.id);
 }
 
@@ -952,9 +1846,97 @@ function initModals() {
   });
 }
 
+/* =========================================================
+   #17: RATING
+========================================================== */
+function renderRating(scriptId) {
+  const rating = ratings[scriptId] || { avg: 0, count: 0, userRatings: {} };
+  $("#ratingAvg").textContent = rating.avg.toFixed(1);
+  $("#ratingCount").textContent = rating.count > 0
+    ? t("rating.count.n", { n: rating.count })
+    : t("rating.count");
+  $("#ratingHint").textContent = currentUser ? t("rating.hint") : t("rating.login");
+
+  const userStar = currentUser && rating.userRatings ? rating.userRatings[currentUser.uid] : 0;
+  const stars = $("#starsInteractive");
+  stars.querySelectorAll(".star").forEach((s, i) => {
+    s.classList.toggle("hover", false);
+    s.classList.toggle("filled", (i + 1) <= userStar);
+    s.style.color = (i + 1) <= userStar ? "var(--star)" : "";
+  });
+}
+
+function initStarsInteraction() {
+  const stars = $("#starsInteractive");
+  if (!stars) return;
+  stars.querySelectorAll(".star").forEach(star => {
+    star.addEventListener("mouseenter", () => {
+      const val = parseInt(star.dataset.value);
+      stars.querySelectorAll(".star").forEach((s, i) => {
+        s.classList.toggle("hover", (i + 1) <= val);
+      });
+    });
+    star.addEventListener("click", () => {
+      if (!currentUser) { showToast(t("rating.login"), "info"); return; }
+      const val = parseInt(star.dataset.value);
+      saveRating(currentScriptId, val);
+    });
+  });
+  stars.addEventListener("mouseleave", () => {
+    stars.querySelectorAll(".star").forEach(s => s.classList.remove("hover"));
+  });
+}
+
+async function saveRating(scriptId, star) {
+  if (!currentUser) return;
+  try {
+    const ref = fb.doc(fb.db, "ratings", scriptId);
+    const snap = await fb.getDoc(ref);
+    let data = snap.exists() ? snap.data() : { userRatings: {}, sum: 0, count: 0 };
+    if (!data.userRatings) data.userRatings = {};
+
+    const oldStar = data.userRatings[currentUser.uid] || 0;
+    data.sum = (data.sum || 0) - oldStar + star;
+    data.count = data.count || 0;
+    if (oldStar === 0) data.count += 1;
+    data.userRatings[currentUser.uid] = star;
+    data.avg = data.sum / data.count;
+
+    await fb.setDoc(ref, data);
+    ratings[scriptId] = data;
+    renderRating(scriptId);
+    renderScripts();
+    showToast(t("rating.thanks"), "success");
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function loadRatings() {
+  if (!fb || !fb.db) return;
+  try {
+    const promises = SCRIPTS.map(async s => {
+      const snap = await fb.getDoc(fb.doc(fb.db, "ratings", s.id));
+      if (snap.exists()) {
+        const data = snap.data();
+        ratings[s.id] = {
+          avg: data.avg || 0,
+          count: data.count || 0,
+          userRatings: data.userRatings || {}
+        };
+      }
+    });
+    await Promise.all(promises);
+    renderScripts();
+  } catch (e) { console.warn(e); }
+}
+
+/* =========================================================
+   COMMENTS (+ #22: REPORT)
+========================================================== */
 function loadComments(scriptId) {
   const list = $("#commentList");
-  list.innerHTML = '<div class="comments-loading">Đang tải bình luận...</div>';
+  list.innerHTML = `<div class="comments-loading">${t("comment.loading")}</div>`;
   if (unsubscribeComments) unsubscribeComments();
 
   const q = fb.query(fb.collection(fb.db, "comments"), fb.orderBy("createdAt", "desc"));
@@ -966,10 +1948,12 @@ function loadComments(scriptId) {
       if (data.scriptId === scriptId) comments.push({ id: doc.id, ...data });
     });
     $("#commentCount").textContent = comments.length;
+
     if (comments.length === 0) {
-      list.innerHTML = '<div class="comments-empty">Chưa có bình luận nào. Hãy là người đầu tiên!</div>';
+      list.innerHTML = `<div class="comments-empty">${t("comment.empty")}</div>`;
       return;
     }
+
     list.innerHTML = comments.map(c => {
       const time = c.createdAt?.toDate ? timeAgoStr(c.createdAt.toDate()) : "vừa xong";
       const isOwner = currentUser && currentUser.uid === c.uid;
@@ -977,12 +1961,18 @@ function loadComments(scriptId) {
         ? `<img src="${c.photoURL}" alt="">`
         : getUserInitial(c.displayName || c.email);
       return `
-        <div class="comment-item">
+        <div class="comment-item" data-comment-id="${c.id}">
           <div class="comment-avatar">${avatarHTML}</div>
           <div class="comment-content">
             <div class="comment-header">
               <span class="comment-author">${escapeHTML(c.displayName || "Ẩn danh")}</span>
-              <span class="comment-time">${time}${isOwner ? `<button class="comment-delete" data-del="${c.id}">Xoá</button>` : ""}</span>
+              <span class="comment-time">
+                ${time}
+                ${isOwner
+                  ? `<button class="comment-btn del" data-del="${c.id}">${t("comment.del")}</button>`
+                  : `<button class="comment-btn report" data-report="${c.id}">${t("comment.report")}</button>`
+                }
+              </span>
             </div>
             <p class="comment-text">${escapeHTML(c.text)}</p>
           </div>
@@ -992,11 +1982,38 @@ function loadComments(scriptId) {
 
     list.querySelectorAll("[data-del]").forEach(btn => {
       btn.addEventListener("click", async () => {
-        if (!confirm("Xoá bình luận này?")) return;
+        if (!confirm(t("comment.confirm.del"))) return;
         try {
           await fb.deleteDoc(fb.doc(fb.db, "comments", btn.dataset.del));
-          showToast("Đã xoá bình luận", "success");
-        } catch (e) { showToast("Không thể xoá", "error"); }
+          showToast(t("comment.deleted"), "success");
+        } catch (e) { showToast("Error", "error"); }
+      });
+    });
+
+    list.querySelectorAll("[data-report]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        if (!currentUser) {
+          showToast(t("comment.login.hint2"), "info");
+          return;
+        }
+        const reason = prompt(t("comment.report.reason"));
+        if (!reason || !reason.trim()) return;
+        const comment = comments.find(c => c.id === btn.dataset.report);
+        try {
+          await fb.addDoc(fb.collection(fb.db, "reports"), {
+            commentId: btn.dataset.report,
+            commentText: comment ? comment.text : "",
+            commentAuthor: comment ? (comment.displayName || "") : "",
+            reporterUid: currentUser.uid,
+            reporterEmail: currentUser.email,
+            reason: reason.trim(),
+            createdAt: fb.serverTimestamp()
+          });
+          showToast(t("comment.reported"), "success");
+        } catch (e) {
+          showToast("Error", "error");
+          console.error(e);
+        }
       });
     });
   });
@@ -1005,13 +2022,13 @@ function loadComments(scriptId) {
 function timeAgoStr(date) {
   const diff = Date.now() - date.getTime();
   const mins = Math.floor(diff / 60000);
-  if (mins < 1) return "vừa xong";
-  if (mins < 60) return mins + " phút trước";
+  if (mins < 1) return currentLang === "vi" ? "vừa xong" : currentLang === "en" ? "just now" : "เมื่อสักครู่";
+  if (mins < 60) return mins + (currentLang === "vi" ? " phút trước" : currentLang === "en" ? "m ago" : " นาที");
   const hours = Math.floor(mins / 60);
-  if (hours < 24) return hours + " giờ trước";
+  if (hours < 24) return hours + (currentLang === "vi" ? " giờ trước" : currentLang === "en" ? "h ago" : " ชม.");
   const days = Math.floor(hours / 24);
-  if (days < 30) return days + " ngày trước";
-  return date.toLocaleDateString("vi-VN");
+  if (days < 30) return days + (currentLang === "vi" ? " ngày trước" : currentLang === "en" ? "d ago" : " วัน");
+  return date.toLocaleDateString();
 }
 
 function initCommentForm() {
@@ -1030,9 +2047,9 @@ function initCommentForm() {
         createdAt: fb.serverTimestamp()
       });
       input.value = "";
-      showToast("Đã gửi bình luận", "success");
+      showToast(t("comment.sent"), "success");
     } catch (e) {
-      showToast("Không thể gửi bình luận", "error");
+      showToast(t("comment.fail"), "error");
     }
   });
   $("#commentLoginBtn").addEventListener("click", () => {
@@ -1041,6 +2058,9 @@ function initCommentForm() {
   });
 }
 
+/* =========================================================
+   AUTH
+========================================================== */
 function openAuthModal(tab = "login") {
   switchAuthTab(tab);
   $("#authModal").classList.add("show");
@@ -1052,7 +2072,7 @@ function switchAuthTab(tab) {
   $$(".auth-tab").forEach(t => t.classList.toggle("active", t.dataset.authTab === tab));
   $("#loginForm").hidden = tab !== "login";
   $("#registerForm").hidden = tab !== "register";
-  $("#authTitle").textContent = tab === "login" ? "Đăng nhập" : "Đăng ký";
+  $("#authTitle").textContent = tab === "login" ? t("auth.login") : t("auth.register");
   hideAuthError();
   if (tab === "register") generateCaptcha();
 }
@@ -1066,18 +2086,18 @@ function hideAuthError() { $("#authError").classList.remove("show"); }
 
 function translateAuthError(code) {
   const map = {
-    "auth/email-already-in-use": "Email này đã được đăng ký",
-    "auth/invalid-email": "Email không hợp lệ",
-    "auth/weak-password": "Mật khẩu quá yếu (cần ≥ 6 ký tự)",
-    "auth/user-not-found": "Không tìm thấy tài khoản",
-    "auth/wrong-password": "Sai mật khẩu",
-    "auth/invalid-credential": "Email hoặc mật khẩu không đúng",
-    "auth/too-many-requests": "Quá nhiều lần thử. Vui lòng đợi.",
-    "auth/popup-closed-by-user": "Bạn đã đóng cửa sổ đăng nhập",
-    "auth/network-request-failed": "Lỗi mạng, kiểm tra kết nối",
-    "auth/unauthorized-domain": "Domain chưa được cấp phép"
+    "auth/email-already-in-use": t("auth.err.already"),
+    "auth/invalid-email": t("auth.err.email"),
+    "auth/weak-password": t("auth.err.weak"),
+    "auth/user-not-found": t("auth.err.notfound"),
+    "auth/wrong-password": t("auth.err.wrong"),
+    "auth/invalid-credential": t("auth.err.cred"),
+    "auth/too-many-requests": t("auth.err.many"),
+    "auth/popup-closed-by-user": t("auth.err.popup"),
+    "auth/network-request-failed": t("auth.err.network"),
+    "auth/unauthorized-domain": t("auth.err.domain")
   };
-  return map[code] || "Đã xảy ra lỗi, vui lòng thử lại";
+  return map[code] || t("auth.err.default");
 }
 
 function initAuth() {
@@ -1092,7 +2112,7 @@ function initAuth() {
     hideAuthError();
     try {
       await fb.signInWithEmailAndPassword(fb.auth, $("#loginEmail").value, $("#loginPassword").value);
-      showToast("Đăng nhập thành công!", "success");
+      showToast(t("auth.login.ok"), "success");
       closeModal($("#authModal"));
     } catch (err) { showAuthError(translateAuthError(err.code)); }
   });
@@ -1102,7 +2122,7 @@ function initAuth() {
     hideAuthError();
     const userAnswer = parseInt($("#captchaInput").value, 10);
     if (isNaN(userAnswer) || userAnswer !== captchaAnswer) {
-      showAuthError("❌ Câu trả lời xác minh không đúng. Vui lòng thử lại.");
+      showAuthError(t("auth.captcha.wrong"));
       generateCaptcha();
       return;
     }
@@ -1110,7 +2130,7 @@ function initAuth() {
     try {
       const cred = await fb.createUserWithEmailAndPassword(fb.auth, $("#registerEmail").value, $("#registerPassword").value);
       await fb.updateProfile(cred.user, { displayName: name });
-      showToast("Đăng ký thành công!", "success");
+      showToast(t("auth.register.ok"), "success");
       closeModal($("#authModal"));
     } catch (err) { showAuthError(translateAuthError(err.code)); }
   });
@@ -1120,7 +2140,7 @@ function initAuth() {
     const provider = new fb.GoogleAuthProvider();
     try {
       await fb.signInWithPopup(fb.auth, provider);
-      showToast("Đăng nhập Google thành công!", "success");
+      showToast(t("auth.google.ok"), "success");
       closeModal($("#authModal"));
     } catch (err) { showAuthError(translateAuthError(err.code)); }
   };
@@ -1128,10 +2148,13 @@ function initAuth() {
   $("#googleRegisterBtn").addEventListener("click", googleHandler);
 }
 
+/* =========================================================
+   USER AREA + PROFILE
+========================================================== */
 function renderUserArea() {
   const area = $("#userArea");
   if (!currentUser) {
-    area.innerHTML = `<button class="btn btn-primary" id="loginBtn">Đăng nhập</button>`;
+    area.innerHTML = `<button class="btn btn-primary" id="loginBtn">${t("btn.login")}</button>`;
     $("#loginBtn").addEventListener("click", () => openAuthModal("login"));
     return;
   }
@@ -1151,7 +2174,8 @@ function renderUserArea() {
           <strong>${escapeHTML(name)}</strong>
           <span>${escapeHTML(currentUser.email)}</span>
         </div>
-        <button class="user-dropdown-item danger" id="logoutBtn">Đăng xuất</button>
+        <button class="user-dropdown-item" id="profileBtn">👤 ${t("btn.profile")}</button>
+        <button class="user-dropdown-item danger" id="logoutBtn">🚪 ${t("btn.logout")}</button>
       </div>
     </div>
   `;
@@ -1162,12 +2186,123 @@ function renderUserArea() {
   });
   document.addEventListener("click", () => menu.classList.remove("open"));
 
+  $("#profileBtn").addEventListener("click", () => {
+    menu.classList.remove("open");
+    openProfileModal();
+  });
+
   $("#logoutBtn").addEventListener("click", async () => {
     await fb.signOut(fb.auth);
-    showToast("Đã đăng xuất", "info");
+    showToast(t("auth.logout.ok"), "info");
   });
 }
 
+function openProfileModal() {
+  if (!currentUser) { showToast(t("profile.login.required"), "info"); return; }
+  const name = currentUser.displayName || currentUser.email.split("@")[0];
+  $("#profileName").textContent = name;
+  $("#profileEmail").textContent = currentUser.email;
+  $("#profileNameInput").value = name;
+  $("#profileInitial").textContent = getUserInitial(name);
+
+  if (currentUser.photoURL) {
+    $("#profileAvatarLarge").innerHTML = `
+      <img src="${currentUser.photoURL}" alt="">
+      <label class="profile-avatar-edit" for="avatarInput">📷</label>
+      <input type="file" id="avatarInput" accept="image/*" style="display:none;">
+    `;
+    reattachAvatarInput();
+  } else {
+    $("#profileAvatarLarge").innerHTML = `
+      <span id="profileInitial">${getUserInitial(name)}</span>
+      <label class="profile-avatar-edit" for="avatarInput">📷</label>
+      <input type="file" id="avatarInput" accept="image/*" style="display:none;">
+    `;
+    reattachAvatarInput();
+  }
+
+  $("#profileFavsCount").textContent = favorites.size;
+  const totalViews = Object.values(views).reduce((a, b) => a + b, 0);
+  $("#profileViewsCount").textContent = totalViews;
+
+  // Đếm comment của user
+  countUserComments().then(n => { $("#profileCommentsCount").textContent = n; });
+
+  $("#profileModal").classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+
+async function countUserComments() {
+  if (!currentUser || !fb) return 0;
+  try {
+    const q = fb.query(fb.collection(fb.db, "comments"), fb.where("uid", "==", currentUser.uid));
+    const snap = await fb.getDoc(fb.doc(fb.db, "meta", "ping")); // trick để load
+    // Dùng onSnapshot 1 lần:
+    return new Promise((resolve) => {
+      const unsub = fb.onSnapshot(q, (s) => {
+        resolve(s.size);
+        unsub();
+      }, () => resolve(0));
+    });
+  } catch { return 0; }
+}
+
+function reattachAvatarInput() {
+  const input = $("#avatarInput");
+  if (!input) return;
+  input.addEventListener("change", handleAvatarUpload);
+}
+
+async function handleAvatarUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 1024 * 1024) {
+    showToast(t("profile.avatar.max"), "error");
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = async (event) => {
+    const dataUrl = event.target.result;
+    try {
+      await fb.updateProfile(currentUser, { photoURL: dataUrl });
+      await fb.setDoc(fb.doc(fb.db, "users", currentUser.uid), {
+        photoURL: dataUrl
+      }, { merge: true });
+      showToast(t("profile.saved"), "success");
+      renderUserArea();
+      openProfileModal();
+    } catch (err) {
+      showToast("Error", "error");
+      console.error(err);
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+function initProfile() {
+  const saveBtn = $("#profileSaveBtn");
+  if (saveBtn) {
+    saveBtn.addEventListener("click", async () => {
+      const newName = $("#profileNameInput").value.trim();
+      if (!newName || !currentUser) return;
+      try {
+        await fb.updateProfile(currentUser, { displayName: newName });
+        await fb.setDoc(fb.doc(fb.db, "users", currentUser.uid), {
+          displayName: newName
+        }, { merge: true });
+        showToast(t("profile.saved"), "success");
+        renderUserArea();
+        $("#profileName").textContent = newName;
+      } catch (err) {
+        showToast("Error", "error");
+      }
+    });
+  }
+}
+
+/* =========================================================
+   LOAD USER DATA
+========================================================== */
 async function loadUserData() {
   if (!currentUser) return;
   try {
@@ -1194,10 +2329,15 @@ async function loadCopyCounts() {
   try {
     const saved = localStorage.getItem("copyCounts");
     if (saved) copyCounts = JSON.parse(saved);
+    const savedViews = localStorage.getItem("views");
+    if (savedViews) views = JSON.parse(savedViews);
   } catch {}
   renderScripts();
 }
 
+/* =========================================================
+   THEME / GUIDE / LANG
+========================================================== */
 function initTheme() {
   const saved = localStorage.getItem("theme") || "light";
   document.documentElement.dataset.theme = saved;
@@ -1210,10 +2350,7 @@ function initTheme() {
     updateThemeIcon(next);
   });
 }
-
-function updateThemeIcon(theme) {
-  $("#themeIcon").textContent = theme === "dark" ? "☀️" : "🌙";
-}
+function updateThemeIcon(theme) { $("#themeIcon").textContent = theme === "dark" ? "☀️" : "🌙"; }
 
 function initGuide() {
   $("#guideBtn").addEventListener("click", () => {
@@ -1222,51 +2359,1042 @@ function initGuide() {
   });
 }
 
-window.addEventListener("firebase-ready", async () => {
-  fb = window.__firebase;
-  console.log("✅ Firebase đã sẵn sàng");
+function applyI18n() {
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+    el.placeholder = t(el.dataset.i18nPlaceholder);
+  });
+  // Update lang button
+  const flags = { vi: "🇻🇳", en: "🇬🇧", th: "🇹🇭" };
+  const labels = { vi: "Tiếng Việt", en: "English", th: "ภาษาไทย" };
+  $("#langFlag").textContent = flags[currentLang] || "🇻🇳";
+  $("#langLabel").textContent = labels[currentLang] || "Tiếng Việt";
+  $$(".lang-option").forEach(o => o.classList.toggle("active", o.dataset.lang === currentLang));
+  renderScripts();
+  renderUserArea();
+  if ($("#scriptModal").classList.contains("show") && currentScriptId) {
+    renderRating(currentScriptId);
+  }
+}
 
-  fb.onAuthStateChanged(fb.auth, async (user) => {
-    currentUser = user;
-    if (user) {
-      favorites = new Set();
-      await loadUserData();
-    } else {
-      try {
-        const saved = localStorage.getItem("favorites");
-        if (saved) favorites = new Set(JSON.parse(saved));
-      } catch {}
-      updateCounts(); renderScripts(); updateCommentForm();
+function initLang() {
+  const sw = $("#langSwitcher");
+  $("#langBtn").addEventListener("click", (e) => {
+    e.stopPropagation();
+    sw.classList.toggle("open");
+  });
+  document.addEventListener("click", () => sw.classList.remove("open"));
+  $$(".lang-option").forEach(o => {
+    o.addEventListener("click", () => {
+      currentLang = o.dataset.lang;
+      localStorage.setItem("lang", currentLang);
+      sw.classList.remove("open");
+      applyI18n();
+    });
+  });
+        }
+  /* =========================================================
+   CAPTCHA
+========================================================== */
+function generateCaptcha() {
+  const ops = ["+", "-", "×"];
+  const op = ops[Math.floor(Math.random() * ops.length)];
+  let a, b, result;
+  if (op === "+") {
+    a = Math.floor(Math.random() * 10) + 1;
+    b = Math.floor(Math.random() * 10) + 1;
+    result = a + b;
+  } else if (op === "-") {
+    a = Math.floor(Math.random() * 10) + 5;
+    b = Math.floor(Math.random() * 5) + 1;
+    if (a < b) [a, b] = [b, a];
+    result = a - b;
+  } else {
+    a = Math.floor(Math.random() * 5) + 1;
+    b = Math.floor(Math.random() * 5) + 1;
+    result = a * b;
+  }
+  captchaAnswer = result;
+  $("#captchaQuestion").textContent = `${a} ${op} ${b} = ?`;
+  $("#captchaInput").value = "";
+}
+
+/* =========================================================
+   RENDER
+========================================================== */
+function renderScripts() {
+  const grid = $("#scriptGrid");
+  const empty = $("#emptyState");
+
+  let list = SCRIPTS.slice();
+  if (currentTab === "fav") list = list.filter(s => favorites.has(s.id));
+
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    list = list.filter(s =>
+      s.name.toLowerCase().includes(q) ||
+      s.description.toLowerCase().includes(q) ||
+      s.game.toLowerCase().includes(q) ||
+      s.tags.some(t => t.toLowerCase().includes(q))
+    );
+  }
+
+  if (currentTagFilter) list = list.filter(s => s.tags.includes(currentTagFilter));
+
+  // SORT
+  if (currentSort === "newest") {
+    list.sort((a, b) => new Date(b.updated) - new Date(a.updated));
+  } else if (currentSort === "az") {
+    list.sort((a, b) => a.name.localeCompare(b.name));
+  } else if (currentSort === "views") {
+    list.sort((a, b) => (views[b.id] || 0) - (views[a.id] || 0));
+  } else if (currentSort === "copied") {
+    list.sort((a, b) => (copyCounts[b.id] || 0) - (copyCounts[a.id] || 0));
+  } else if (currentSort === "rating") {
+    list.sort((a, b) => ((ratings[b.id] && ratings[b.id].avg) || 0) - ((ratings[a.id] && ratings[a.id].avg) || 0));
+  }
+
+  if (list.length === 0) {
+    grid.innerHTML = "";
+    empty.hidden = false;
+    empty.querySelector("p").textContent = currentTab === "fav" ? t("empty.fav") : t("empty.text");
+    return;
+  }
+  empty.hidden = true;
+
+  // #6: hiệu ứng chuyển tab
+  grid.style.animation = "none";
+  void grid.offsetWidth;
+  grid.style.animation = "fadeInUp .3s ease";
+
+  grid.innerHTML = list.map(s => {
+    const isFav = favorites.has(s.id);
+    const copyCount = copyCounts[s.id] || 0;
+    const viewCount = views[s.id] || 0;
+    const isHot = copyCount >= 10;
+    const rating = ratings[s.id] || { avg: 0, count: 0 };
+    const iconHTML = s.icon && s.icon.startsWith("http")
+      ? `<img src="${s.icon}" alt="${escapeHTML(s.game)}" loading="lazy">`
+      : escapeHTML(s.icon || "🎮");
+
+    // Sao hiển thị
+    let starsHTML = "";
+    for (let i = 1; i <= 5; i++) {
+      starsHTML += `<span class="star ${i <= Math.round(rating.avg) ? "filled" : ""}">★</span>`;
     }
-    renderUserArea(); renderScripts(); updateCounts();
+
+    return `
+      <article class="script-card" data-id="${s.id}">
+        <button class="fav-btn ${isFav ? "active" : ""}" data-action="fav" title="${isFav ? "❤️" : "🤍"}">${isFav ? "❤️" : "🤍"}</button>
+        <button class="report-btn-card" data-action="report" title="🚩">🚩</button>
+
+        <div class="card-header">
+          <div class="card-logo">${iconHTML}</div>
+          <div class="card-header-text">
+            <span class="card-category">${escapeHTML(s.game)}</span>
+            <h3 class="card-title">${escapeHTML(s.name)}</h3>
+          </div>
+        </div>
+
+        <div class="card-badges">
+          ${isNew(s.updated) ? '<span class="badge badge-new">NEW</span>' : ""}
+          ${isHot ? '<span class="badge badge-hot">🔥 HOT</span>' : ""}
+          <span class="badge badge-status ${s.maintenance ? "maintenance" : "online"}"><i></i>${s.maintenance ? "🔧" : "●"} ${s.maintenance ? (currentLang === "vi" ? "Bảo trì" : currentLang === "en" ? "Maintenance" : "ปิดปรับปรุง") : "Online"}</span>
+        </div>
+
+        <p class="card-desc">${escapeHTML(s.description)}</p>
+
+        <div class="card-tags">${s.tags.map(tag => `<span data-tag="${escapeHTML(tag)}">${escapeHTML(tag)}</span>`).join("")}</div>
+
+        <div class="card-rating">
+          <div class="stars-display">${starsHTML}</div>
+          <span>${rating.count > 0 ? rating.avg.toFixed(1) + " (" + rating.count + ")" : t("rating.count")}</span>
+        </div>
+
+        <div class="card-meta">
+          <span>v${escapeHTML(s.version)}</span>
+          <span>${timeAgo(s.updated)}</span>
+        </div>
+
+        <div class="card-meta" style="border:0;padding-top:0;">
+          <span class="card-views">👁 ${viewCount}</span>
+          <span>📋 ${copyCount}</span>
+        </div>
+
+        <div class="card-actions">
+          <button class="btn-copy" data-action="copy" ${s.maintenance ? "disabled" : ""}>${s.maintenance ? "🔧" : "📋 Copy"}</button>
+          <button class="btn-view" data-action="view">👁 ${currentLang === "vi" ? "Xem" : currentLang === "en" ? "View" : "ดู"}</button>
+        </div>
+      </article>
+    `;
+  }).join("");
+}
+
+function updateCounts() {
+  $("#countAll").textContent = SCRIPTS.length;
+  $("#countFav").textContent = favorites.size;
+  $("#totalScripts").textContent = SCRIPTS.length;
+  $("#totalFavs").textContent = favorites.size;
+}
+
+/* =========================================================
+   TABS / SEARCH / SORT
+========================================================== */
+function initTabs() {
+  $$(".tab-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      $$(".tab-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      currentTab = btn.dataset.tab;
+      renderScripts();
+    });
+  });
+}
+
+function initSearch() {
+  const input = $("#searchInput");
+  const clear = $("#searchClear");
+  let timer;
+  input.addEventListener("input", () => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      searchQuery = input.value.trim();
+      clear.hidden = !searchQuery;
+      renderScripts();
+    }, 200);
+  });
+  clear.addEventListener("click", () => {
+    input.value = "";
+    searchQuery = "";
+    clear.hidden = true;
+    renderScripts();
+  });
+}
+
+function initSort() {
+  const sel = $("#sortSelect");
+  if (!sel) return;
+  sel.value = currentSort;
+  sel.addEventListener("change", () => {
+    currentSort = sel.value;
+    renderScripts();
+  });
+}
+
+function updateTagFilterUI() {
+  const container = $("#tagFilter");
+  if (!container) return;
+  const allTags = new Set();
+  SCRIPTS.forEach(s => s.tags.forEach(tag => allTags.add(tag)));
+  const sortedTags = [...allTags].sort();
+  container.innerHTML = sortedTags.map(tag => `
+    <button class="tag-chip ${currentTagFilter === tag ? "active" : ""}" data-filter-tag="${escapeHTML(tag)}">${escapeHTML(tag)}</button>
+  `).join("");
+  container.querySelectorAll("[data-filter-tag]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      currentTagFilter = currentTagFilter === btn.dataset.filterTag ? "" : btn.dataset.filterTag;
+      updateTagFilterUI();
+      renderScripts();
+    });
+  });
+}
+
+/* =========================================================
+   CLIPBOARD + VIEWS + COPY
+========================================================== */
+async function copyToClipboard(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position = "fixed"; ta.style.left = "-9999px";
+    document.body.appendChild(ta); ta.select();
+    const ok = document.execCommand("copy");
+    ta.remove(); return ok;
+  }
+}
+
+async function incrementCopyCount(scriptId) {
+  copyCounts[scriptId] = (copyCounts[scriptId] || 0) + 1;
+  localStorage.setItem("copyCounts", JSON.stringify(copyCounts));
+  if (fb && fb.db) {
+    try {
+      const ref = fb.doc(fb.db, "copyCounts", scriptId);
+      const snap = await fb.getDoc(ref);
+      if (snap.exists()) await fb.updateDoc(ref, { count: fb.increment(1) });
+      else await fb.setDoc(ref, { count: 1 });
+    } catch (e) { console.warn(e); }
+  }
+  renderScripts();
+}
+
+async function incrementViews(scriptId) {
+  views[scriptId] = (views[scriptId] || 0) + 1;
+  localStorage.setItem("views", JSON.stringify(views));
+  if (fb && fb.db) {
+    try {
+      const ref = fb.doc(fb.db, "views", scriptId);
+      const snap = await fb.getDoc(ref);
+      if (snap.exists()) await fb.updateDoc(ref, { count: fb.increment(1) });
+      else await fb.setDoc(ref, { count: 1 });
+    } catch (e) { console.warn(e); }
+  }
+  renderScripts();
+}
+
+/* =========================================================
+   SCRIPT ACTIONS
+========================================================== */
+function initScriptActions() {
+  $("#scriptGrid").addEventListener("click", async (e) => {
+    // Tag filter
+    const tagEl = e.target.closest("[data-tag]");
+    if (tagEl) {
+      currentTagFilter = tagEl.dataset.tag;
+      updateTagFilterUI();
+      renderScripts();
+      return;
+    }
+
+    const card = e.target.closest(".script-card");
+    if (!card) return;
+    const scriptId = card.dataset.id;
+    const script = SCRIPTS.find(s => s.id === scriptId);
+    if (!script) return;
+    const action = e.target.dataset.action;
+
+    if (action === "fav") { await toggleFavorite(script.id); return; }
+    if (action === "report") { reportScript(script); return; }
+
+    if (action === "copy") {
+      if (script.maintenance) return;
+      const btn = e.target;
+      const oldText = btn.textContent;
+      btn.disabled = true; btn.textContent = "...";
+      const ok = await copyToClipboard(script.content);
+      if (ok) {
+        await incrementCopyCount(script.id);
+        showToast(t("toast.copied", { name: script.name }), "success");
+      } else showToast(t("toast.copy.fail"), "error");
+      btn.textContent = ok ? "✓" : "✗";
+      setTimeout(() => { btn.disabled = false; btn.textContent = oldText; }, 1000);
+      return;
+    }
+
+    if (action === "view") openScriptModal(script);
+  });
+}
+
+function reportScript(script) {
+  const email = "kenhmatchat@gmail.com";
+  showToast(t("toast.report.opening"), "info");
+  const subject = encodeURIComponent(`[Script Hub] Báo lỗi: ${script.name} (${script.id})`);
+  const body = encodeURIComponent(
+    `Script: ${script.name}\nID: ${script.id}\nGame: ${script.game}\nVersion: ${script.version}\nPlatform: ${script.platform}\n\nMô tả lỗi:\n\n\nThiết bị / Executor:\n`
+  );
+  window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+}
+
+async function toggleFavorite(scriptId) {
+  if (!currentUser) {
+    showToast(t("toast.fav.login"), "info");
+    openAuthModal("login");
+    return;
+  }
+  const isFav = favorites.has(scriptId);
+  if (isFav) favorites.delete(scriptId);
+  else favorites.add(scriptId);
+  localStorage.setItem("favorites", JSON.stringify([...favorites]));
+  try {
+    await fb.setDoc(fb.doc(fb.db, "users", currentUser.uid), {
+      favorites: [...favorites]
+    }, { merge: true });
+  } catch (e) { console.warn(e); }
+  showToast(isFav ? t("toast.fav.remove") : t("toast.fav.add"), "success");
+  updateCounts(); renderScripts();
+}
+
+/* =========================================================
+   HISTORY (#14)
+========================================================== */
+function pushHistory(scriptId) {
+  viewHistory = [scriptId, ...viewHistory.filter(x => x !== scriptId)].slice(0, 10);
+  localStorage.setItem("viewHistory", JSON.stringify(viewHistory));
+  renderHistory();
+}
+
+function renderHistory() {
+  const section = $("#historySection");
+  const list = $("#historyList");
+  if (!section || !list) return;
+  if (viewHistory.length === 0) { section.hidden = true; return; }
+  section.hidden = false;
+  list.innerHTML = viewHistory.map(id => {
+    const s = SCRIPTS.find(x => x.id === id);
+    if (!s) return "";
+    const iconHTML = s.icon && s.icon.startsWith("http")
+      ? `<img src="${s.icon}" alt="">`
+      : `<span style="font-size:1.1rem;">${s.icon || "🎮"}</span>`;
+    return `<div class="history-item" data-history-id="${s.id}">${iconHTML}<span>${escapeHTML(s.name)}</span></div>`;
+  }).join("");
+  list.querySelectorAll("[data-history-id]").forEach(item => {
+    item.addEventListener("click", () => {
+      const s = SCRIPTS.find(x => x.id === item.dataset.historyId);
+      if (s) openScriptModal(s);
+    });
+  });
+}
+
+function initHistory() {
+  const clearBtn = $("#historyClear");
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      viewHistory = [];
+      localStorage.removeItem("viewHistory");
+      renderHistory();
+      showToast(t("toast.history.cleared"), "info");
+    });
+  }
+  try {
+    const saved = localStorage.getItem("viewHistory");
+    if (saved) viewHistory = JSON.parse(saved);
+  } catch {}
+  renderHistory();
+}
+
+/* =========================================================
+   #4: 3D TILT
+========================================================== */
+function initTiltEffect() {
+  if (window.matchMedia("(max-width: 900px)").matches) return;
+  if (window.matchMedia("(hover: none)").matches) return;
+
+  document.addEventListener("mousemove", (e) => {
+    const card = e.target.closest(".script-card");
+    if (!card) return;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const cx = rect.width / 2;
+    const cy = rect.height / 2;
+    const rX = ((y - cy) / cy) * -3;
+    const rY = ((x - cx) / cx) * 3;
+    card.style.transform = `perspective(900px) rotateX(${rX}deg) rotateY(${rY}deg)`;
+    card.classList.add("tilting");
   });
 
-  await loadCopyCounts();
-  if (!currentUser) {
-    try {
-      const saved = localStorage.getItem("favorites");
-      if (saved) favorites = new Set(JSON.parse(saved));
-    } catch {}
-    updateCounts(); renderScripts();
-  }
-});
+  document.addEventListener("mouseout", (e) => {
+    const card = e.target.closest(".script-card");
+    if (!card) return;
+    if (card.contains(e.relatedTarget)) return;
+    card.style.transform = "";
+    card.classList.remove("tilting");
+  });
+}
 
-document.addEventListener("DOMContentLoaded", () => {
-  initTabs();
-  initSearch();
-  initScriptActions();
-  initModals();
-  initCommentForm();
-  initAuth();
-  initTheme();
-  initGuide();
-  generateCaptcha();
-  $("#captchaRefresh").addEventListener("click", generateCaptcha);
-  updateCommentForm();
+/* =========================================================
+   MODAL SCRIPT
+========================================================== */
+function openScriptModal(script) {
+  currentScriptId = script.id;
+  $("#modalTitle").textContent = script.name;
+  $("#modalMeta").innerHTML = `
+    <span>${escapeHTML(script.game)}</span>
+    <span>${escapeHTML(script.platform)}</span>
+    <span>v${escapeHTML(script.version)}</span>
+    <span class="${script.maintenance ? "meta-maintenance" : "meta-online"}">${script.maintenance ? "🔧" : "● Online"}</span>
+  `;
+  $("#modalCode").textContent = script.content;
+
+  const copyBtn = $("#modalCopyBtn");
+  copyBtn.disabled = script.maintenance;
+  copyBtn.onclick = async () => {
+    const ok = await copyToClipboard(script.content);
+    if (ok) {
+      await incrementCopyCount(script.id);
+      showToast(t("toast.copied", { name: script.name }), "success");
+    } else showToast(t("toast.copy.fail"), "error");
+  };
+
+  $("#scriptModal").classList.add("show");
+  document.body.style.overflow = "hidden";
+
+  incrementViews(script.id);
+  pushHistory(script.id);
+  renderRating(script.id);
+  loadComments(script.id);
+}
+
+function closeModal(el) {
+  el.classList.remove("show");
+  document.body.style.overflow = "";
+  if (unsubscribeComments) { unsubscribeComments(); unsubscribeComments = null; }
+}
+
+function initModals() {
+  $$(".modal-overlay").forEach(overlay => {
+    overlay.addEventListener("click", (e) => {
+      if (e.target === overlay) closeModal(overlay);
+    });
+    overlay.querySelectorAll("[data-close]").forEach(btn => {
+      btn.addEventListener("click", () => closeModal(overlay));
+    });
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") $$(".modal-overlay.show").forEach(closeModal);
+  });
+}
+
+/* =========================================================
+   #17: RATING
+========================================================== */
+function renderRating(scriptId) {
+  const rating = ratings[scriptId] || { avg: 0, count: 0, userRatings: {} };
+  $("#ratingAvg").textContent = rating.avg.toFixed(1);
+  $("#ratingCount").textContent = rating.count > 0
+    ? t("rating.count.n", { n: rating.count })
+    : t("rating.count");
+  $("#ratingHint").textContent = currentUser ? t("rating.hint") : t("rating.login");
+
+  const userStar = currentUser && rating.userRatings ? rating.userRatings[currentUser.uid] : 0;
+  const stars = $("#starsInteractive");
+  stars.querySelectorAll(".star").forEach((s, i) => {
+    s.classList.toggle("hover", false);
+    s.classList.toggle("filled", (i + 1) <= userStar);
+    s.style.color = (i + 1) <= userStar ? "var(--star)" : "";
+  });
+}
+
+function initStarsInteraction() {
+  const stars = $("#starsInteractive");
+  if (!stars) return;
+  stars.querySelectorAll(".star").forEach(star => {
+    star.addEventListener("mouseenter", () => {
+      const val = parseInt(star.dataset.value);
+      stars.querySelectorAll(".star").forEach((s, i) => {
+        s.classList.toggle("hover", (i + 1) <= val);
+      });
+    });
+    star.addEventListener("click", () => {
+      if (!currentUser) { showToast(t("rating.login"), "info"); return; }
+      const val = parseInt(star.dataset.value);
+      saveRating(currentScriptId, val);
+    });
+  });
+  stars.addEventListener("mouseleave", () => {
+    stars.querySelectorAll(".star").forEach(s => s.classList.remove("hover"));
+  });
+}
+
+async function saveRating(scriptId, star) {
+  if (!currentUser) return;
+  try {
+    const ref = fb.doc(fb.db, "ratings", scriptId);
+    const snap = await fb.getDoc(ref);
+    let data = snap.exists() ? snap.data() : { userRatings: {}, sum: 0, count: 0 };
+    if (!data.userRatings) data.userRatings = {};
+
+    const oldStar = data.userRatings[currentUser.uid] || 0;
+    data.sum = (data.sum || 0) - oldStar + star;
+    data.count = data.count || 0;
+    if (oldStar === 0) data.count += 1;
+    data.userRatings[currentUser.uid] = star;
+    data.avg = data.sum / data.count;
+
+    await fb.setDoc(ref, data);
+    ratings[scriptId] = data;
+    renderRating(scriptId);
+    renderScripts();
+    showToast(t("rating.thanks"), "success");
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+async function loadRatings() {
+  if (!fb || !fb.db) return;
+  try {
+    const promises = SCRIPTS.map(async s => {
+      const snap = await fb.getDoc(fb.doc(fb.db, "ratings", s.id));
+      if (snap.exists()) {
+        const data = snap.data();
+        ratings[s.id] = {
+          avg: data.avg || 0,
+          count: data.count || 0,
+          userRatings: data.userRatings || {}
+        };
+      }
+    });
+    await Promise.all(promises);
+    renderScripts();
+  } catch (e) { console.warn(e); }
+}
+
+/* =========================================================
+   COMMENTS (+ #22: REPORT)
+========================================================== */
+function loadComments(scriptId) {
+  const list = $("#commentList");
+  list.innerHTML = `<div class="comments-loading">${t("comment.loading")}</div>`;
+  if (unsubscribeComments) unsubscribeComments();
+
+  const q = fb.query(fb.collection(fb.db, "comments"), fb.orderBy("createdAt", "desc"));
+
+  unsubscribeComments = fb.onSnapshot(q, (snap) => {
+    const comments = [];
+    snap.forEach(doc => {
+      const data = doc.data();
+      if (data.scriptId === scriptId) comments.push({ id: doc.id, ...data });
+    });
+    $("#commentCount").textContent = comments.length;
+
+    if (comments.length === 0) {
+      list.innerHTML = `<div class="comments-empty">${t("comment.empty")}</div>`;
+      return;
+    }
+
+    list.innerHTML = comments.map(c => {
+      const time = c.createdAt?.toDate ? timeAgoStr(c.createdAt.toDate()) : "vừa xong";
+      const isOwner = currentUser && currentUser.uid === c.uid;
+      const avatarHTML = c.photoURL
+        ? `<img src="${c.photoURL}" alt="">`
+        : getUserInitial(c.displayName || c.email);
+      return `
+        <div class="comment-item" data-comment-id="${c.id}">
+          <div class="comment-avatar">${avatarHTML}</div>
+          <div class="comment-content">
+            <div class="comment-header">
+              <span class="comment-author">${escapeHTML(c.displayName || "Ẩn danh")}</span>
+              <span class="comment-time">
+                ${time}
+                ${isOwner
+                  ? `<button class="comment-btn del" data-del="${c.id}">${t("comment.del")}</button>`
+                  : `<button class="comment-btn report" data-report="${c.id}">${t("comment.report")}</button>`
+                }
+              </span>
+            </div>
+            <p class="comment-text">${escapeHTML(c.text)}</p>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+    list.querySelectorAll("[data-del]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        if (!confirm(t("comment.confirm.del"))) return;
+        try {
+          await fb.deleteDoc(fb.doc(fb.db, "comments", btn.dataset.del));
+          showToast(t("comment.deleted"), "success");
+        } catch (e) { showToast("Error", "error"); }
+      });
+    });
+
+    list.querySelectorAll("[data-report]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        if (!currentUser) {
+          showToast(t("comment.login.hint2"), "info");
+          return;
+        }
+        const reason = prompt(t("comment.report.reason"));
+        if (!reason || !reason.trim()) return;
+        const comment = comments.find(c => c.id === btn.dataset.report);
+        try {
+          await fb.addDoc(fb.collection(fb.db, "reports"), {
+            commentId: btn.dataset.report,
+            commentText: comment ? comment.text : "",
+            commentAuthor: comment ? (comment.displayName || "") : "",
+            reporterUid: currentUser.uid,
+            reporterEmail: currentUser.email,
+            reason: reason.trim(),
+            createdAt: fb.serverTimestamp()
+          });
+          showToast(t("comment.reported"), "success");
+        } catch (e) {
+          showToast("Error", "error");
+          console.error(e);
+        }
+      });
+    });
+  });
+}
+
+function timeAgoStr(date) {
+  const diff = Date.now() - date.getTime();
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return currentLang === "vi" ? "vừa xong" : currentLang === "en" ? "just now" : "เมื่อสักครู่";
+  if (mins < 60) return mins + (currentLang === "vi" ? " phút trước" : currentLang === "en" ? "m ago" : " นาที");
+  const hours = Math.floor(mins / 60);
+  if (hours < 24) return hours + (currentLang === "vi" ? " giờ trước" : currentLang === "en" ? "h ago" : " ชม.");
+  const days = Math.floor(hours / 24);
+  if (days < 30) return days + (currentLang === "vi" ? " ngày trước" : currentLang === "en" ? "d ago" : " วัน");
+  return date.toLocaleDateString();
+}
+
+function initCommentForm() {
+  $("#commentForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const input = $("#commentInput");
+    const text = input.value.trim();
+    if (!text || !currentUser) return;
+    try {
+      await fb.addDoc(fb.collection(fb.db, "comments"), {
+        scriptId: currentScriptId,
+        uid: currentUser.uid,
+        displayName: currentUser.displayName || currentUser.email.split("@")[0],
+        photoURL: currentUser.photoURL || "",
+        text: text,
+        createdAt: fb.serverTimestamp()
+      });
+      input.value = "";
+      showToast(t("comment.sent"), "success");
+    } catch (e) {
+      showToast(t("comment.fail"), "error");
+    }
+  });
+  $("#commentLoginBtn").addEventListener("click", () => {
+    closeModal($("#scriptModal"));
+    openAuthModal("login");
+  });
+}
+
+/* =========================================================
+   AUTH
+========================================================== */
+function openAuthModal(tab = "login") {
+  switchAuthTab(tab);
+  $("#authModal").classList.add("show");
+  document.body.style.overflow = "hidden";
+  hideAuthError();
+}
+
+function switchAuthTab(tab) {
+  $$(".auth-tab").forEach(t => t.classList.toggle("active", t.dataset.authTab === tab));
+  $("#loginForm").hidden = tab !== "login";
+  $("#registerForm").hidden = tab !== "register";
+  $("#authTitle").textContent = tab === "login" ? t("auth.login") : t("auth.register");
+  hideAuthError();
+  if (tab === "register") generateCaptcha();
+}
+
+function showAuthError(msg) {
+  const el = $("#authError");
+  el.textContent = msg;
+  el.classList.add("show");
+}
+function hideAuthError() { $("#authError").classList.remove("show"); }
+
+function translateAuthError(code) {
+  const map = {
+    "auth/email-already-in-use": t("auth.err.already"),
+    "auth/invalid-email": t("auth.err.email"),
+    "auth/weak-password": t("auth.err.weak"),
+    "auth/user-not-found": t("auth.err.notfound"),
+    "auth/wrong-password": t("auth.err.wrong"),
+    "auth/invalid-credential": t("auth.err.cred"),
+    "auth/too-many-requests": t("auth.err.many"),
+    "auth/popup-closed-by-user": t("auth.err.popup"),
+    "auth/network-request-failed": t("auth.err.network"),
+    "auth/unauthorized-domain": t("auth.err.domain")
+  };
+  return map[code] || t("auth.err.default");
+}
+
+function initAuth() {
+  $$(".auth-tab").forEach(tab => {
+    tab.addEventListener("click", () => switchAuthTab(tab.dataset.authTab));
+  });
+
+  $("#loginBtn").addEventListener("click", () => openAuthModal("login"));
+
+  $("#loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    hideAuthError();
+    try {
+      await fb.signInWithEmailAndPassword(fb.auth, $("#loginEmail").value, $("#loginPassword").value);
+      showToast(t("auth.login.ok"), "success");
+      closeModal($("#authModal"));
+    } catch (err) { showAuthError(translateAuthError(err.code)); }
+  });
+
+  $("#registerForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    hideAuthError();
+    const userAnswer = parseInt($("#captchaInput").value, 10);
+    if (isNaN(userAnswer) || userAnswer !== captchaAnswer) {
+      showAuthError(t("auth.captcha.wrong"));
+      generateCaptcha();
+      return;
+    }
+    const name = $("#registerName").value.trim();
+    try {
+      const cred = await fb.createUserWithEmailAndPassword(fb.auth, $("#registerEmail").value, $("#registerPassword").value);
+      await fb.updateProfile(cred.user, { displayName: name });
+      showToast(t("auth.register.ok"), "success");
+      closeModal($("#authModal"));
+    } catch (err) { showAuthError(translateAuthError(err.code)); }
+  });
+
+  const googleHandler = async () => {
+    hideAuthError();
+    const provider = new fb.GoogleAuthProvider();
+    try {
+      await fb.signInWithPopup(fb.auth, provider);
+      showToast(t("auth.google.ok"), "success");
+      closeModal($("#authModal"));
+    } catch (err) { showAuthError(translateAuthError(err.code)); }
+  };
+  $("#googleLoginBtn").addEventListener("click", googleHandler);
+  $("#googleRegisterBtn").addEventListener("click", googleHandler);
+}
+
+/* =========================================================
+   USER AREA + PROFILE
+========================================================== */
+function renderUserArea() {
+  const area = $("#userArea");
+  if (!currentUser) {
+    area.innerHTML = `<button class="btn btn-primary" id="loginBtn">${t("btn.login")}</button>`;
+    $("#loginBtn").addEventListener("click", () => openAuthModal("login"));
+    return;
+  }
+  const name = currentUser.displayName || currentUser.email.split("@")[0];
+  const avatarHTML = currentUser.photoURL
+    ? `<img src="${currentUser.photoURL}" alt="">`
+    : getUserInitial(name);
+
+  area.innerHTML = `
+    <div class="user-menu" id="userMenu">
+      <button class="user-avatar-btn" id="userMenuBtn">
+        <div class="user-avatar">${avatarHTML}</div>
+        <span class="user-name">${escapeHTML(name)}</span>
+      </button>
+      <div class="user-dropdown">
+        <div class="user-dropdown-header">
+          <strong>${escapeHTML(name)}</strong>
+          <span>${escapeHTML(currentUser.email)}</span>
+        </div>
+        <button class="user-dropdown-item" id="profileBtn">👤 ${t("btn.profile")}</button>
+        <button class="user-dropdown-item danger" id="logoutBtn">🚪 ${t("btn.logout")}</button>
+      </div>
+    </div>
+  `;
+  const menu = $("#userMenu");
+  $("#userMenuBtn").addEventListener("click", (e) => {
+    e.stopPropagation();
+    menu.classList.toggle("open");
+  });
+  document.addEventListener("click", () => menu.classList.remove("open"));
+
+  $("#profileBtn").addEventListener("click", () => {
+    menu.classList.remove("open");
+    openProfileModal();
+  });
+
+  $("#logoutBtn").addEventListener("click", async () => {
+    await fb.signOut(fb.auth);
+    showToast(t("auth.logout.ok"), "info");
+  });
+}
+
+function openProfileModal() {
+  if (!currentUser) { showToast(t("profile.login.required"), "info"); return; }
+  const name = currentUser.displayName || currentUser.email.split("@")[0];
+  $("#profileName").textContent = name;
+  $("#profileEmail").textContent = currentUser.email;
+  $("#profileNameInput").value = name;
+  $("#profileInitial").textContent = getUserInitial(name);
+
+  if (currentUser.photoURL) {
+    $("#profileAvatarLarge").innerHTML = `
+      <img src="${currentUser.photoURL}" alt="">
+      <label class="profile-avatar-edit" for="avatarInput">📷</label>
+      <input type="file" id="avatarInput" accept="image/*" style="display:none;">
+    `;
+    reattachAvatarInput();
+  } else {
+    $("#profileAvatarLarge").innerHTML = `
+      <span id="profileInitial">${getUserInitial(name)}</span>
+      <label class="profile-avatar-edit" for="avatarInput">📷</label>
+      <input type="file" id="avatarInput" accept="image/*" style="display:none;">
+    `;
+    reattachAvatarInput();
+  }
+
+  $("#profileFavsCount").textContent = favorites.size;
+  const totalViews = Object.values(views).reduce((a, b) => a + b, 0);
+  $("#profileViewsCount").textContent = totalViews;
+
+  // Đếm comment của user
+  countUserComments().then(n => { $("#profileCommentsCount").textContent = n; });
+
+  $("#profileModal").classList.add("show");
+  document.body.style.overflow = "hidden";
+}
+
+async function countUserComments() {
+  if (!currentUser || !fb) return 0;
+  try {
+    const q = fb.query(fb.collection(fb.db, "comments"), fb.where("uid", "==", currentUser.uid));
+    const snap = await fb.getDoc(fb.doc(fb.db, "meta", "ping")); // trick để load
+    // Dùng onSnapshot 1 lần:
+    return new Promise((resolve) => {
+      const unsub = fb.onSnapshot(q, (s) => {
+        resolve(s.size);
+        unsub();
+      }, () => resolve(0));
+    });
+  } catch { return 0; }
+}
+
+function reattachAvatarInput() {
+  const input = $("#avatarInput");
+  if (!input) return;
+  input.addEventListener("change", handleAvatarUpload);
+}
+
+async function handleAvatarUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 1024 * 1024) {
+    showToast(t("profile.avatar.max"), "error");
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = async (event) => {
+    const dataUrl = event.target.result;
+    try {
+      await fb.updateProfile(currentUser, { photoURL: dataUrl });
+      await fb.setDoc(fb.doc(fb.db, "users", currentUser.uid), {
+        photoURL: dataUrl
+      }, { merge: true });
+      showToast(t("profile.saved"), "success");
+      renderUserArea();
+      openProfileModal();
+    } catch (err) {
+      showToast("Error", "error");
+      console.error(err);
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+function initProfile() {
+  const saveBtn = $("#profileSaveBtn");
+  if (saveBtn) {
+    saveBtn.addEventListener("click", async () => {
+      const newName = $("#profileNameInput").value.trim();
+      if (!newName || !currentUser) return;
+      try {
+        await fb.updateProfile(currentUser, { displayName: newName });
+        await fb.setDoc(fb.doc(fb.db, "users", currentUser.uid), {
+          displayName: newName
+        }, { merge: true });
+        showToast(t("profile.saved"), "success");
+        renderUserArea();
+        $("#profileName").textContent = newName;
+      } catch (err) {
+        showToast("Error", "error");
+      }
+    });
+  }
+}
+
+/* =========================================================
+   LOAD USER DATA
+========================================================== */
+async function loadUserData() {
+  if (!currentUser) return;
+  try {
+    const ref = fb.doc(fb.db, "users", currentUser.uid);
+    const snap = await fb.getDoc(ref);
+    if (snap.exists()) {
+      const data = snap.data();
+      if (Array.isArray(data.favorites)) favorites = new Set(data.favorites);
+    } else {
+      await fb.setDoc(ref, { favorites: [] });
+    }
+  } catch (e) { console.warn(e); }
+  updateCounts(); renderScripts(); updateCommentForm();
+}
+
+function updateCommentForm() {
+  const hint = $("#commentLoginHint");
+  const form = $("#commentForm");
+  if (currentUser) { hint.hidden = true; form.hidden = false; }
+  else { hint.hidden = false; form.hidden = true; }
+}
+
+async function loadCopyCounts() {
+  try {
+    const saved = localStorage.getItem("copyCounts");
+    if (saved) copyCounts = JSON.parse(saved);
+    const savedViews = localStorage.getItem("views");
+    if (savedViews) views = JSON.parse(savedViews);
+  } catch {}
   renderScripts();
-  updateCounts();
-});
-    </script>
-    
-</body>
-</html>
+}
+
+/* =========================================================
+   THEME / GUIDE / LANG
+========================================================== */
+function initTheme() {
+  const saved = localStorage.getItem("theme") || "light";
+  document.documentElement.dataset.theme = saved;
+  updateThemeIcon(saved);
+  $("#themeToggle").addEventListener("click", () => {
+    const cur = document.documentElement.dataset.theme;
+    const next = cur === "light" ? "dark" : "light";
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem("theme", next);
+    updateThemeIcon(next);
+  });
+}
+function updateThemeIcon(theme) { $("#themeIcon").textContent = theme === "dark" ? "☀️" : "🌙"; }
+
+function initGuide() {
+  $("#guideBtn").addEventListener("click", () => {
+    $("#guideModal").classList.add("show");
+    document.body.style.overflow = "hidden";
+  });
+}
+
+function applyI18n() {
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    el.textContent = t(el.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(el => {
+    el.placeholder = t(el.dataset.i18nPlaceholder);
+  });
+  // Update lang button
+  const flags = { vi: "🇻🇳", en: "🇬🇧", th: "🇹🇭" };
+  const labels = { vi: "Tiếng Việt", en: "English", th: "ภาษาไทย" };
+  $("#langFlag").textContent = flags[currentLang] || "🇻🇳";
+  $("#langLabel").textContent = labels[currentLang] || "Tiếng Việt";
+  $$(".lang-option").forEach(o => o.classList.toggle("active", o.dataset.lang === currentLang));
+  renderScripts();
+  renderUserArea();
+  if ($("#scriptModal").classList.contains("show") && currentScriptId) {
+    renderRating(currentScriptId);
+  }
+}
+
+function initLang() {
+  const sw = $("#langSwitcher");
+  $("#langBtn").addEventListener("click", (e) => {
+    e.stopPropagation();
+    sw.classList.toggle("open");
+  });
+  document.addEventListener("click", () => sw.classList.remove("open"));
+  $$(".lang-option").forEach(o => {
+    o.addEventListener("click", () => {
+      currentLang = o.dataset.lang;
+      localStorage.setItem("lang", currentLang);
+      sw.classList.remove("open");
+      applyI18n();
+    });
+  });
+  }
