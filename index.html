@@ -23,7 +23,7 @@ window.FIREBASE_CONFIG = {
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
-/* ============ THEME: XANH LÁ TỰ NHIÊN ============ */
+/* ============ THEME: ĐEN + XANH LÁ ============ */
 :root,
 [data-theme="dark"] {
   --green: #22c55e;
@@ -32,15 +32,15 @@ window.FIREBASE_CONFIG = {
   --green-glow: 0 0 16px rgba(34, 197, 94, .4);
   --green-glow-sm: 0 0 8px rgba(34, 197, 94, .3);
 
-  --bg: #0a1a0f;
-  --surface: #0f2418;
-  --surface-2: #142e1e;
-  --surface-hover: #1c3d28;
+  --bg: #000000;
+  --surface: #0a0a0a;
+  --surface-2: #141414;
+  --surface-hover: #1f1f1f;
   --text: #e8f5ed;
-  --text-soft: #a7c4b3;
-  --muted: #6b8f7a;
-  --line: #1f3a2a;
-  --line-strong: #2c5240;
+  --text-soft: #a7b8ac;
+  --muted: #6b7a6f;
+  --line: #1a1a1a;
+  --line-strong: #2a2a2a;
 
   --success: #22c55e;
   --success-bg: rgba(34, 197, 94, .12);
@@ -50,28 +50,28 @@ window.FIREBASE_CONFIG = {
   --warning-bg: rgba(245, 158, 11, .12);
   --star: #fbbf24;
 
-  --shadow: 0 4px 16px rgba(0, 0, 0, .3);
-  --shadow-lg: 0 12px 40px rgba(0, 0, 0, .4);
+  --shadow: 0 4px 16px rgba(0, 0, 0, .6);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, .8);
 }
 
 [data-theme="light"] {
-  --bg: #f0fdf4;
-  --surface: #ffffff;
+  --bg: #ffffff;
+  --surface: #f8fdf9;
   --surface-2: #f0fdf4;
   --surface-hover: #dcfce7;
-  --text: #14532d;
-  --text-soft: #4a6b56;
-  --muted: #6b8f7a;
-  --line: #bbf7d0;
-  --line-strong: #86efac;
+  --text: #0a0a0a;
+  --text-soft: #3a4a3f;
+  --muted: #6b7a6f;
+  --line: #e5e7eb;
+  --line-strong: #d1d5db;
 
   --success-bg: #dcfce7;
   --danger-bg: #fee2e2;
   --warning-bg: #fef3c7;
   --green-glow: 0 0 16px rgba(22, 163, 74, .25);
   --green-glow-sm: 0 0 8px rgba(22, 163, 74, .2);
-  --shadow: 0 4px 16px rgba(22, 163, 74, .08);
-  --shadow-lg: 0 12px 40px rgba(22, 163, 74, .12);
+  --shadow: 0 4px 16px rgba(0, 0, 0, .08);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, .12);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -105,7 +105,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   width: 42px; height: 42px;
   display: grid; place-items: center;
   background: linear-gradient(135deg, var(--green), var(--green-dark));
-  color: #fff; border-radius: 12px;
+  color: #000; border-radius: 12px;
   font-weight: 800; font-size: 1.1rem;
   box-shadow: var(--green-glow-sm);
 }
@@ -122,11 +122,12 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   white-space: nowrap;
 }
 .btn-primary {
-  background: linear-gradient(135deg, var(--green), var(--green-dark));
-  color: #fff;
+  background: var(--green);
+  color: #000;
 }
 .btn-primary:hover:not(:disabled) {
   background: var(--green-dark);
+  color: #fff;
   box-shadow: var(--green-glow-sm);
 }
 .btn-outline {
@@ -149,6 +150,31 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .btn-icon:hover { border-color: var(--green); color: var(--green); }
 .btn-block { width: 100%; padding: 12px; }
 
+/* LANG DROPDOWN */
+.lang-wrapper { position: relative; }
+.lang-menu {
+  position: absolute; top: calc(100% + 6px); right: 0;
+  min-width: 160px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: var(--shadow-lg);
+  padding: 6px;
+  opacity: 0; transform: translateY(-8px); pointer-events: none;
+  transition: all .15s; z-index: 300;
+}
+.lang-wrapper.open .lang-menu { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.lang-item {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; padding: 9px 12px; border-radius: 7px;
+  font-size: .84rem; font-weight: 500;
+  color: var(--text-soft); text-align: left;
+  transition: all .12s;
+}
+.lang-item:hover { background: var(--surface-2); color: var(--green); }
+.lang-item.active { background: var(--success-bg); color: var(--green); font-weight: 700; }
+.lang-item.active::after { content: "✓"; margin-left: auto; }
+
 /* USER */
 .user-menu { position: relative; }
 .user-btn {
@@ -163,7 +189,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .user-avatar {
   width: 30px; height: 30px; border-radius: 50%;
   background: linear-gradient(135deg, var(--green), var(--green-dark));
-  color: #fff; display: grid; place-items: center;
+  color: #000; display: grid; place-items: center;
   font-weight: 700; font-size: .82rem; overflow: hidden;
   flex-shrink: 0;
 }
@@ -244,14 +270,15 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 }
 .tab-btn:hover { color: var(--green); background: var(--surface-2); }
 .tab-btn.active {
-  background: linear-gradient(135deg, var(--green), var(--green-dark));
-  color: #fff;
+  background: var(--green);
+  color: #000;
 }
 .tab-btn .tab-count {
   padding: 2px 8px; border-radius: 999px;
-  background: rgba(255,255,255,.25); color: #fff;
+  background: rgba(0,0,0,.3); color: #fff;
   font-size: .68rem; font-weight: 700;
 }
+.tab-btn.active .tab-count { background: rgba(0,0,0,.2); color: #000; }
 
 .search-wrap { margin-bottom: 14px; }
 .search-box { position: relative; display: flex; align-items: center; max-width: 500px; }
@@ -306,7 +333,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 }
 .tag-chip:hover { border-color: var(--green); color: var(--green); }
 .tag-chip.active {
-  background: var(--green); color: #fff; border-color: var(--green);
+  background: var(--green); color: #000; border-color: var(--green);
 }
 
 .grid {
@@ -328,7 +355,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 }
 .card:hover {
   border-color: var(--green);
-  box-shadow: 0 8px 24px rgba(34, 197, 94, .1);
+  box-shadow: 0 8px 24px rgba(34, 197, 94, .15);
 }
 
 .card-header { display: flex; align-items: center; gap: 12px; }
@@ -336,7 +363,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   width: 54px; height: 54px; flex-shrink: 0;
   border-radius: 12px;
   background: linear-gradient(135deg, var(--green), var(--green-dark));
-  color: #fff;
+  color: #000;
   display: grid; place-items: center;
   font-size: 1.6rem;
   overflow: hidden;
@@ -403,12 +430,12 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 
 .card-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .btn-copy {
-  background: var(--green); color: #fff;
+  background: var(--green); color: #000;
   padding: 10px; border-radius: 10px;
   font-weight: 700; font-size: .82rem;
   transition: all .15s;
 }
-.btn-copy:hover:not(:disabled) { background: var(--green-dark); }
+.btn-copy:hover:not(:disabled) { background: var(--green-dark); color: #fff; }
 .btn-view {
   background: var(--surface-2);
   color: var(--text);
@@ -440,7 +467,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 /* MODAL */
 .modal-overlay {
   position: fixed; inset: 0;
-  background: rgba(0, 0, 0, .6);
+  background: rgba(0, 0, 0, .8);
   z-index: 1000;
   display: grid; place-items: center; padding: 20px;
   opacity: 0; pointer-events: none;
@@ -489,7 +516,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .modal-meta .meta-online { color: var(--green); border-color: var(--line-strong); }
 .modal-meta .meta-maintenance { color: var(--danger); }
 .script-code {
-  background: #051009;
+  background: #000;
   border: 1px solid var(--line);
   color: var(--green-light);
   padding: 16px; border-radius: 12px;
@@ -526,9 +553,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   transition: all .12s;
 }
 .stars-interactive .star.hover,
-.stars-interactive .star.filled {
-  color: var(--star);
-}
+.stars-interactive .star.filled { color: var(--star); }
 .rating-hint { font-size: .75rem; color: var(--muted); margin-top: 10px; }
 
 /* AUTH MODAL */
@@ -652,7 +677,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .avatar-large {
   width: 100px; height: 100px; border-radius: 50%;
   background: linear-gradient(135deg, var(--green), var(--green-dark));
-  color: #fff;
+  color: #000;
   display: grid; place-items: center;
   font-size: 2.5rem; font-weight: 800;
   overflow: hidden; position: relative;
@@ -662,13 +687,13 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .avatar-edit {
   position: absolute; bottom: 0; right: 0;
   width: 32px; height: 32px; border-radius: 50%;
-  background: var(--green); color: #fff;
+  background: var(--green); color: #000;
   display: grid; place-items: center;
   font-size: .85rem; cursor: pointer;
   border: 3px solid var(--surface);
   transition: all .15s;
 }
-.avatar-edit:hover { background: var(--green-dark); }
+.avatar-edit:hover { background: var(--green-dark); color: #fff; }
 .profile-name { font-size: 1.2rem; font-weight: 800; margin-top: 6px; }
 .profile-email { font-size: .82rem; color: var(--muted); }
 .profile-stats {
@@ -711,11 +736,11 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .comment-form textarea:focus { border-color: var(--green); }
 .comment-form button {
   align-self: flex-end; padding: 10px 18px;
-  background: var(--green); color: #fff;
+  background: var(--green); color: #000;
   border-radius: 10px;
   font-weight: 700; font-size: .82rem;
 }
-.comment-form button:hover { background: var(--green-dark); }
+.comment-form button:hover { background: var(--green-dark); color: #fff; }
 .comment-login-hint {
   padding: 14px; background: var(--surface-2);
   border-radius: 10px; text-align: center;
@@ -734,7 +759,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .comment-avatar {
   width: 34px; height: 34px; border-radius: 50%;
   background: linear-gradient(135deg, var(--green), var(--green-dark));
-  color: #fff;
+  color: #000;
   display: grid; place-items: center;
   font-weight: 700; font-size: .82rem;
   flex-shrink: 0; overflow: hidden;
@@ -790,7 +815,6 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .toast.info .toast-icon { background: var(--success-bg); color: var(--green); }
 @keyframes toastIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
-
 /* FOOTER / INFO / COOKIE */
 .site-footer {
   border-top: 1px solid var(--line);
@@ -812,15 +836,20 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .footer-links {
   display:flex; flex-wrap:wrap; justify-content:flex-end; gap:6px;
 }
-.footer-links button {
+.footer-links button, .footer-links a {
   color:var(--text-soft);
   padding:7px 9px;
   border-radius:7px;
   font-size:.76rem;
   font-weight:600;
   cursor:pointer;
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  gap:5px;
+  transition:all .15s;
 }
-.footer-links button:hover {
+.footer-links button:hover, .footer-links a:hover {
   color:var(--green);
   background:var(--surface-2);
 }
@@ -855,9 +884,11 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   line-height:1.7;
   font-size:.86rem;
 }
-#infoBody h4 { color:var(--text); margin:0 0 8px; }
+#infoBody h4 { color:var(--green); margin:0 0 8px; }
 #infoBody p { margin:0 0 12px; }
-#infoBody a { color:var(--green); }
+#infoBody a { color:var(--green); text-decoration:underline; }
+#infoBody ul { padding-left:20px; margin:0 0 12px; }
+#infoBody li { margin-bottom:5px; }
 
 @media (max-width: 640px) {
   .brand p { display: none; }
@@ -887,7 +918,17 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 </div>
 </a>
 <div class="header-actions">
+
+<!-- LANGUAGE DROPDOWN -->
+<div class="lang-wrapper" id="langWrapper">
 <button class="btn-icon" id="langBtn" title="Ngôn ngữ">🌐</button>
+<div class="lang-menu" id="langMenu">
+<button class="lang-item active" data-lang="vi">🇻🇳 Tiếng Việt</button>
+<button class="lang-item" data-lang="en">🇬🇧 English</button>
+<button class="lang-item" data-lang="th">🇹🇭 ภาษาไทย</button>
+</div>
+</div>
+
 <button class="btn-icon" id="themeToggle" title="Đổi theme">🌙</button>
 <button class="btn btn-outline" id="guideBtn">📖 Hướng dẫn</button>
 <div id="userArea">
@@ -1014,7 +1055,6 @@ Bạn cần <button id="commentLoginBtn">đăng nhập</button> để bình lu�
 </div>
 <div class="auth-error" id="authError"></div>
 
-<!-- LOGIN FORM -->
 <form id="loginForm">
 <div class="form-group">
 <label>Tên đăng nhập hoặc Email</label>
@@ -1033,7 +1073,6 @@ Bạn cần <button id="commentLoginBtn">đăng nhập</button> để bình lu�
 </button>
 </form>
 
-<!-- REGISTER FORM -->
 <form id="registerForm" hidden>
 <div class="form-group">
 <label>Tên đăng nhập</label>
@@ -1127,13 +1166,12 @@ Bạn cần <button id="commentLoginBtn">đăng nhập</button> để bình lu�
 </div>
 </div>
 
-
 <!-- FOOTER -->
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-brand">
       <strong>🌿 Script Hub</strong>
-      <span>Green Script Library</span>
+      <span>Green Script Library · 2026</span>
     </div>
     <nav class="footer-links" aria-label="Footer">
       <button type="button" data-info="about">About</button>
@@ -1141,6 +1179,9 @@ Bạn cần <button id="commentLoginBtn">đăng nhập</button> để bình lu�
       <button type="button" data-info="privacy">Privacy</button>
       <button type="button" data-info="legal">Legal</button>
       <button type="button" data-info="contact">Contact</button>
+      <a href="https://discord.com/invite/GrTCy2DHEX" target="_blank" rel="noopener" id="supportLink">
+        💬 Support Discord
+      </a>
     </nav>
   </div>
 </footer>
@@ -1180,8 +1221,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import {
   getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
   signOut, onAuthStateChanged, updateProfile,
-  GoogleAuthProvider, signInWithPopup,
-  fetchSignInMethodsForEmail
+  GoogleAuthProvider, signInWithPopup
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import {
   getFirestore, doc, getDoc, setDoc,
@@ -1197,7 +1237,7 @@ window.__firebase = {
   app, auth, db,
   createUserWithEmailAndPassword, signInWithEmailAndPassword,
   signOut, onAuthStateChanged, updateProfile,
-  GoogleAuthProvider, signInWithPopup, fetchSignInMethodsForEmail,
+  GoogleAuthProvider, signInWithPopup,
   doc, getDoc, setDoc,
   collection, addDoc, query, orderBy, onSnapshot,
   deleteDoc, serverTimestamp, increment, where
@@ -1703,7 +1743,7 @@ function initModals() {
 }
 
 /* =========================================================
-   RATING — lưu vào user doc để tránh lỗi quyền
+   RATING
 ========================================================== */
 function renderRating(scriptId) {
   const rating = ratings[scriptId] || { avg: 0, count: 0, userRatings: {} };
@@ -1900,7 +1940,7 @@ function initCommentForm() {
 }
 
 /* =========================================================
-   AUTH: LOGIN BẰNG TÊN HOẶC EMAIL
+   AUTH: LOGIN BẰNG TÊN QUA FIRESTORE LOOKUP
 ========================================================== */
 function openAuthModal(tab = "login") {
   switchAuthTab(tab);
@@ -1941,12 +1981,25 @@ function translateAuthError(code) {
   return map[code] || "Đã xảy ra lỗi, vui lòng thử lại";
 }
 
-// Nếu user nhập tên (không có @), tự động chuyển thành username@scripthub.local
-function normalizeIdentifier(input) {
-  const val = input.trim();
+// Nếu input là username (không có @), tìm email từ Firestore collection "usernames"
+async function resolveIdentifierToEmail(input) {
+  const val = input.trim().toLowerCase();
   if (!val) return val;
-  if (val.includes("@")) return val;
-  return val.toLowerCase() + "@scripthub.local";
+  if (val.includes("@")) return val; // Đã là email
+
+  // Tra cứu username trong Firestore
+  try {
+    const snap = await fb.getDoc(fb.doc(fb.db, "usernames", val));
+    if (snap.exists()) {
+      const data = snap.data();
+      return data.email; // Trả về email thật đã đăng ký
+    } else {
+      // Không tìm thấy username
+      throw new Error("username-not-found");
+    }
+  } catch (e) {
+    throw new Error("username-not-found");
+  }
 }
 
 function initAuth() {
@@ -1960,15 +2013,34 @@ function initAuth() {
   $("#loginForm").addEventListener("submit", async (e) => {
     e.preventDefault();
     hideAuthError();
-    const identifier = normalizeIdentifier($("#loginIdentifier").value);
+
+    const identifier = $("#loginIdentifier").value.trim();
     const password = $("#loginPassword").value;
+
     try {
-      await fb.signInWithEmailAndPassword(fb.auth, identifier, password);
+      // Nếu là username → tra Firestore lấy email
+      let email;
+      if (identifier.includes("@")) {
+        email = identifier;
+      } else {
+        try {
+          email = await resolveIdentifierToEmail(identifier);
+        } catch (err) {
+          showAuthError("Không tìm thấy tên đăng nhập này");
+          return;
+        }
+      }
+
+      await fb.signInWithEmailAndPassword(fb.auth, email, password);
       showToast("Đăng nhập thành công!", "success");
       closeModal($("#authModal"));
     } catch (err) {
       console.error("Login error:", err);
-      showAuthError(translateAuthError(err.code));
+      if (err.message === "username-not-found") {
+        showAuthError("Không tìm thấy tên đăng nhập này");
+      } else {
+        showAuthError(translateAuthError(err.code));
+      }
     }
   });
 
@@ -1977,7 +2049,6 @@ function initAuth() {
     e.preventDefault();
     hideAuthError();
 
-    // Check captcha
     const userAnswer = parseInt($("#captchaInput").value, 10);
     if (isNaN(userAnswer) || userAnswer !== captchaAnswer) {
       showAuthError("❌ Câu trả lời xác minh không đúng. Vui lòng thử lại.");
@@ -1990,20 +2061,24 @@ function initAuth() {
     const email = $("#registerEmail").value.trim();
     const password = $("#registerPassword").value;
 
-    // Validate username
     if (!/^[a-zA-Z0-9_]{3,30}$/.test(username)) {
       showAuthError("Tên đăng nhập chỉ gồm chữ, số, _ (3-30 ký tự)");
       return;
     }
 
-    // Tạo email nội bộ cho Firebase Auth (dùng để login bằng username)
-    const authEmail = email; // Dùng email thật để đăng ký
-
     try {
-      const cred = await fb.createUserWithEmailAndPassword(fb.auth, authEmail, password);
+      // Kiểm tra username đã tồn tại chưa
+      const unameSnap = await fb.getDoc(fb.doc(fb.db, "usernames", username));
+      if (unameSnap.exists()) {
+        showAuthError("Tên đăng nhập này đã được sử dụng");
+        return;
+      }
+
+      // Tạo user Firebase Auth bằng email
+      const cred = await fb.createUserWithEmailAndPassword(fb.auth, email, password);
       await fb.updateProfile(cred.user, { displayName: displayName });
 
-      // Lưu username + displayName + email vào Firestore
+      // Lưu user doc
       await fb.setDoc(fb.doc(fb.db, "users", cred.user.uid), {
         username: username,
         displayName: displayName,
@@ -2012,7 +2087,7 @@ function initAuth() {
         createdAt: fb.serverTimestamp()
       });
 
-      // Lưu username vào collection lookup để tra cứu khi login bằng username
+      // Lưu lookup username → email
       await fb.setDoc(fb.doc(fb.db, "usernames", username), {
         uid: cred.user.uid,
         email: email
@@ -2141,8 +2216,6 @@ async function handleAvatarUpload(e) {
   const reader = new FileReader();
   reader.onload = async (event) => {
     let dataUrl = event.target.result;
-
-    // Resize ảnh xuống tối đa 300x300 để tránh quá dài (Firebase Auth giới hạn ~2048 ký tự URL)
     dataUrl = await resizeImage(dataUrl, 300, 300);
 
     try {
@@ -2161,7 +2234,6 @@ async function handleAvatarUpload(e) {
   reader.readAsDataURL(file);
 }
 
-// Resize ảnh bằng canvas
 function resizeImage(dataUrl, maxW, maxH) {
   return new Promise((resolve) => {
     const img = new Image();
@@ -2169,7 +2241,6 @@ function resizeImage(dataUrl, maxW, maxH) {
       let w = img.width, h = img.height;
       if (w > maxW) { h = h * maxW / w; w = maxW; }
       if (h > maxH) { w = w * maxH / h; h = maxH; }
-
       const canvas = document.createElement("canvas");
       canvas.width = w; canvas.height = h;
       const ctx = canvas.getContext("2d");
@@ -2209,7 +2280,6 @@ async function loadUserData() {
     if (snap.exists()) {
       const data = snap.data();
       if (Array.isArray(data.favorites)) favorites = new Set(data.favorites);
-      // Nếu Firestore có photoURL lớn hơn Firebase Auth, dùng Firestore
       if (data.photoURL && !currentUser.photoURL) {
         currentUser.photoURL = data.photoURL;
       }
@@ -2238,24 +2308,35 @@ async function loadCopyCounts() {
 }
 
 /* =========================================================
-   THEME / GUIDE
+   THEME
 ========================================================== */
 function initTheme() {
   const saved = localStorage.getItem("theme") || "dark";
   document.documentElement.dataset.theme = saved;
   updateThemeIcon(saved);
+  $("#themeToggle").addEventListener("click", () => {
+    const cur = document.documentElement.dataset.theme;
+    const next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem("theme", next);
+    updateThemeIcon(next);
+    showToast(next === "dark" ? "Đã bật Dark mode" : "Đã bật Light mode", "info");
+  });
 }
-function updateThemeIcon(theme) {
-  const btn = $("#themeToggle");
-  if (btn) {
-    btn.textContent = theme === "dark" ? "☀️" : "🌙";
-    btn.title = theme === "dark" ? "Chuyển sang Light mode" : "Chuyển sang Dark mode";
-    btn.setAttribute("aria-label", btn.title);
-  }
-}
-function initGuide() {}
+function updateThemeIcon(theme) { $("#themeIcon").textContent = theme === "dark" ? "☀️" : "🌙"; }
+
 /* =========================================================
-   LANG (ĐƠN GIẢN - chỉ đổi text tĩnh)
+   GUIDE
+========================================================== */
+function initGuide() {
+  $("#guideBtn").addEventListener("click", () => {
+    $("#guideModal").classList.add("show");
+    document.body.style.overflow = "hidden";
+  });
+}
+
+/* =========================================================
+   LANGUAGE (DROPDOWN - CHỌN ĐƯỢC)
 ========================================================== */
 const TRANSLATIONS = {
   vi: {
@@ -2310,65 +2391,172 @@ function applyLang(lang) {
   if (tabAll) tabAll.innerHTML = tr.tabAll + ' <span class="tab-count" id="countAll">' + SCRIPTS.length + '</span>';
   if (tabFav) tabFav.innerHTML = tr.tabFav + ' <span class="tab-count" id="countFav">' + favorites.size + '</span>';
 
-  showToast("Ngôn ngữ: " + lang.toUpperCase(), "success");
+  // Cập nhật active item trong menu
+  $$(".lang-item").forEach(item => {
+    item.classList.toggle("active", item.dataset.lang === lang);
+  });
+
+  renderScripts();
+  showToast("Language: " + lang.toUpperCase(), "success");
 }
 
 function initLang() {
+  const wrapper = $("#langWrapper");
+  const btn = $("#langBtn");
+  const menu = $("#langMenu");
+
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    wrapper.classList.toggle("open");
+  });
+
+  document.addEventListener("click", () => wrapper.classList.remove("open"));
+
+  $$(".lang-item").forEach(item => {
+    item.addEventListener("click", () => {
+      applyLang(item.dataset.lang);
+      wrapper.classList.remove("open");
+    });
+  });
+
   applyLang(currentLang);
 }
 
 /* =========================================================
-   SAFE HEADER / FOOTER UI
+   FOOTER INFO MODAL
 ========================================================== */
-function initSafeUI() {
-  const langBtn = $("#langBtn");
-  const themeBtn = $("#themeToggle");
-  const guideBtn = $("#guideBtn");
-
-  if (langBtn && !langBtn.dataset.bound) {
-    langBtn.dataset.bound = "1";
-    langBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const langs = ["vi", "en", "th"];
-      const idx = langs.indexOf(currentLang);
-      applyLang(langs[(idx + 1) % langs.length]);
-    });
+const INFO_CONTENT = {
+  about: {
+    eyebrow: "Về chúng tôi",
+    title: "About Script Hub",
+    body: `
+      <h4>🌿 Script Hub</h4>
+      <p>Script Hub là cộng đồng chia sẻ script Roblox miễn phí, tổng hợp các hub script chất lượng cao cho nhiều tựa game phổ biến như Blox Fruits, Fishing Master, Steal an Egg...</p>
+      <p>Chúng tôi hoạt động phi lợi nhuận, mục tiêu là tạo ra một thư viện script mở, dễ truy cập, an toàn cho cộng đồng game thủ Việt Nam và quốc tế.</p>
+      <h4>🎯 Sứ mệnh</h4>
+      <ul>
+        <li>Cung cấp script miễn phí, chất lượng cao</li>
+        <li>Cập nhật liên tục, phản hồi nhanh với các bản update game</li>
+        <li>Xây dựng cộng đồng chia sẻ, hỗ trợ lẫn nhau</li>
+      </ul>
+      <h4>💬 Liên hệ</h4>
+      <p>Tham gia Discord của chúng tôi: <a href="https://discord.com/invite/GrTCy2DHEX" target="_blank">discord.gg/GrTCy2DHEX</a></p>
+    `
+  },
+  terms: {
+    eyebrow: "Điều khoản",
+    title: "Terms of Service",
+    body: `
+      <h4>📜 Điều khoản sử dụng</h4>
+      <p>Bằng việc truy cập Script Hub, bạn đồng ý với các điều khoản sau:</p>
+      <h4>1. Mục đích sử dụng</h4>
+      <p>Script Hub cung cấp script cho mục đích học tập và giải trí. Bạn tự chịu trách nhiệm về mọi hành vi sử dụng script của mình.</p>
+      <h4>2. Không bảo đảm</h4>
+      <p>Chúng tôi không bảo đảm script sẽ luôn hoạt động ổn định. Các script có thể bị ngừng hoạt động khi game cập nhật.</p>
+      <h4>3. Trách nhiệm người dùng</h4>
+      <ul>
+        <li>Không sử dụng script để gây hại cho người khác</li>
+        <li>Không bán lại script dưới mọi hình thức</li>
+        <li>Chấp nhận rủi ro có thể bị ban tài khoản Roblox</li>
+      </ul>
+      <h4>4. Bản quyền</h4>
+      <p>Mọi script trên web đều thuộc về tác giả gốc. Script Hub chỉ là nền tảng tổng hợp, không sở hữu script.</p>
+    `
+  },
+  privacy: {
+    eyebrow: "Quyền riêng tư",
+    title: "Privacy Policy",
+    body: `
+      <h4>🔒 Chính sách bảo mật</h4>
+      <p>Script Hub tôn trọng quyền riêng tư của bạn. Chúng tôi thu thập tối thiểu dữ liệu cần thiết:</p>
+      <h4>1. Dữ liệu thu thập</h4>
+      <ul>
+        <li><strong>Email + mật khẩu (mã hoá):</strong> khi bạn đăng ký tài khoản</li>
+        <li><strong>Tên hiển thị + ảnh đại diện:</strong> bạn tự nguyện cung cấp</li>
+        <li><strong>Yêu thích, lượt xem, bình luận:</strong> để cá nhân hoá trải nghiệm</li>
+        <li><strong>Cookies / localStorage:</strong> ghi nhớ theme, ngôn ngữ</li>
+      </ul>
+      <h4>2. Cách sử dụng dữ liệu</h4>
+      <p>Chúng tôi chỉ dùng dữ liệu để vận hành website. Không bán, không chia sẻ cho bên thứ ba.</p>
+      <h4>3. Bên thứ ba</h4>
+      <p>Chúng tôi dùng <strong>Google Firebase</strong> để xác thực và lưu trữ dữ liệu. Bạn có thể xem <a href="https://firebase.google.com/support/privacy" target="_blank">Privacy Policy của Google</a>.</p>
+      <h4>4. Quyền của bạn</h4>
+      <p>Bạn có thể yêu cầu xoá tài khoản bằng cách liên hệ qua Discord.</p>
+    `
+  },
+  legal: {
+    eyebrow: "Pháp lý",
+    title: "Legal Disclaimer",
+    body: `
+      <h4>⚖️ Tuyên bố miễn trừ trách nhiệm</h4>
+      <p><strong>Script Hub không liên kết với Roblox Corporation.</strong></p>
+      <p>Roblox là thương hiệu đã đăng ký của Roblox Corporation. Mọi thương hiệu, logo đều thuộc về chủ sở hữu gốc.</p>
+      <h4>1. Sử dụng script</h4>
+      <p>Việc sử dụng script có thể vi phạm <a href="https://en.help.roblox.com/hc/en-us/articles/115004647846-Roblox-Terms-of-Use" target="_blank">Điều khoản của Roblox</a>. Bạn tự chịu trách nhiệm nếu bị ban tài khoản.</p>
+      <h4>2. Nội dung bên thứ ba</h4>
+      <p>Script được tổng hợp từ nhiều nguồn công khai. Chúng tôi không chịu trách nhiệm về nội dung, mã độc (nếu có) từ script bên thứ ba.</p>
+      <h4>3. Giới hạn trách nhiệm</h4>
+      <p>Trong mọi trường hợp, Script Hub không chịu trách nhiệm cho bất kỳ thiệt hại trực tiếp hoặc gián tiếp nào phát sinh từ việc sử dụng website.</p>
+      <h4>4. Bản quyền DMCA</h4>
+      <p>Nếu bạn là tác giả và muốn gỡ script khỏi web, vui lòng liên hệ qua Discord để được xử lý trong 48h.</p>
+    `
+  },
+  contact: {
+    eyebrow: "Liên hệ",
+    title: "Contact Us",
+    body: `
+      <h4>📬 Liên hệ với chúng tôi</h4>
+      <p>Có câu hỏi, báo lỗi, hoặc muốn đóng góp script? Liên hệ qua các kênh sau:</p>
+      <h4>💬 Discord (nhanh nhất)</h4>
+      <p>Tham gia server Discord để được hỗ trợ trực tiếp:<br>
+      👉 <a href="https://discord.com/invite/GrTCy2DHEX" target="_blank"><strong>discord.gg/GrTCy2DHEX</strong></a></p>
+      <h4>📧 Email</h4>
+      <p>Gửi email tới: <a href="mailto:kenhmatchat@gmail.com">kenhmatchat@gmail.com</a></p>
+      <h4>⏱️ Thời gian phản hồi</h4>
+      <ul>
+        <li>Discord: trong vòng 1-2 giờ</li>
+        <li>Email: trong vòng 24-48 giờ</li>
+      </ul>
+      <h4>🐞 Báo lỗi script</h4>
+      <p>Nếu phát hiện script lỗi, dùng nút 🚩 báo lỗi trên card script để gửi email tự động.</p>
+    `
   }
+};
 
-  if (themeBtn && !themeBtn.dataset.bound) {
-    themeBtn.dataset.bound = "1";
-    themeBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const next = (document.documentElement.dataset.theme || "dark") === "dark" ? "light" : "dark";
-      document.documentElement.dataset.theme = next;
-      localStorage.setItem("theme", next);
-      updateThemeIcon(next);
-      showToast(next === "dark" ? "Đã bật Dark mode" : "Đã bật Light mode", "info");
-    });
-  }
+function openInfoModal(key) {
+  const info = INFO_CONTENT[key];
+  if (!info) return;
+  $("#infoEyebrow").textContent = info.eyebrow;
+  $("#infoTitle").textContent = info.title;
+  $("#infoBody").innerHTML = info.body;
+  $("#infoModal").classList.add("show");
+  document.body.style.overflow = "hidden";
+}
 
-  if (guideBtn && !guideBtn.dataset.bound) {
-    guideBtn.dataset.bound = "1";
-    guideBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      const modal = $("#guideModal");
-      if (modal) {
-        modal.classList.add("show");
-        document.body.style.overflow = "hidden";
-      }
-    });
-  }
-
-  $$(".footer-links [data-info]").forEach(btn => {
-    if (btn.dataset.bound) return;
-    btn.dataset.bound = "1";
+function initFooter() {
+  $$("[data-info]").forEach(btn => {
     btn.addEventListener("click", () => openInfoModal(btn.dataset.info));
   });
+}
 
-  initCookieBanner();
+/* =========================================================
+   COOKIE BANNER
+========================================================== */
+function initCookie() {
+  const banner = $("#cookieBanner");
+  const accepted = localStorage.getItem("cookieAccepted");
+  if (!accepted) banner.hidden = false;
+
+  $("#cookieAccept").addEventListener("click", () => {
+    localStorage.setItem("cookieAccepted", "1");
+    banner.hidden = true;
+    showToast("Đã chấp nhận cookies", "success");
+  });
+  $("#cookieDecline").addEventListener("click", () => {
+    localStorage.setItem("cookieAccepted", "0");
+    banner.hidden = true;
+    showToast("Đã từ chối cookies", "info");
+  });
 }
 
 /* =========================================================
@@ -2411,7 +2599,8 @@ document.addEventListener("DOMContentLoaded", () => {
   initTheme();
   initGuide();
   initLang();
-  initSafeUI();
+  initFooter();
+  initCookie();
   initStars();
   initProfile();
   updateTagFilterUI();
