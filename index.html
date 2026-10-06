@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Script Hub</title>
-<meta name="theme-color" content="#22c55e">
+<meta name="theme-color" content="#00ff88">
 
 <script type="module">
 window.FIREBASE_CONFIG = {
@@ -23,59 +23,75 @@ window.FIREBASE_CONFIG = {
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
-/* ============ THEME: ĐEN + XANH LÁ ============ */
+/* ============ NEON ĐEN + XANH LÁ ============ */
 :root,
 [data-theme="dark"] {
-  --green: #22c55e;
-  --green-dark: #16a34a;
-  --green-light: #4ade80;
-  --green-glow: 0 0 16px rgba(34, 197, 94, .4);
-  --green-glow-sm: 0 0 8px rgba(34, 197, 94, .3);
+  --green: #00ff88;
+  --green-dark: #00cc6a;
+  --green-light: #5effa8;
+  --green-glow: 0 0 20px rgba(0, 255, 136, .6);
+  --green-glow-sm: 0 0 10px rgba(0, 255, 136, .4);
+  --green-glow-lg: 0 0 40px rgba(0, 255, 136, .8);
+
+  --blue: #00d4ff;
+  --blue-dark: #0891b2;
+  --blue-glow: 0 0 20px rgba(0, 212, 255, .5);
 
   --bg: #000000;
-  --surface: #0a0a0a;
-  --surface-2: #141414;
-  --surface-hover: #1f1f1f;
-  --text: #e8f5ed;
-  --text-soft: #a7b8ac;
-  --muted: #6b7a6f;
-  --line: #1a1a1a;
-  --line-strong: #2a2a2a;
+  --surface: #0a0f0a;
+  --surface-2: #121a12;
+  --surface-hover: #1a261a;
+  --text: #e8ffe8;
+  --text-soft: #a7c4a7;
+  --muted: #5a6b5a;
+  --line: #1a2a1a;
+  --line-strong: #2a3a2a;
 
-  --success: #22c55e;
-  --success-bg: rgba(34, 197, 94, .12);
-  --danger: #ef4444;
-  --danger-bg: rgba(239, 68, 68, .12);
-  --warning: #f59e0b;
-  --warning-bg: rgba(245, 158, 11, .12);
-  --star: #fbbf24;
+  --success: #00ff88;
+  --success-bg: rgba(0, 255, 136, .1);
+  --danger: #ff3366;
+  --danger-bg: rgba(255, 51, 102, .1);
+  --warning: #ffaa00;
+  --warning-bg: rgba(255, 170, 0, .1);
+  --star: #ffd700;
 
-  --shadow: 0 4px 16px rgba(0, 0, 0, .6);
-  --shadow-lg: 0 12px 40px rgba(0, 0, 0, .8);
+  --shadow: 0 4px 16px rgba(0, 0, 0, .8);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, .9);
 }
 
 [data-theme="light"] {
-  --bg: #ffffff;
-  --surface: #f8fdf9;
+  --green: #00a854;
+  --green-dark: #007a3d;
+  --green-light: #22c55e;
+  --green-glow: 0 0 16px rgba(0, 168, 84, .3);
+  --green-glow-sm: 0 0 8px rgba(0, 168, 84, .2);
+  --green-glow-lg: 0 0 30px rgba(0, 168, 84, .4);
+
+  --blue: #0284c7;
+  --blue-dark: #0369a1;
+  --blue-glow: 0 0 16px rgba(2, 132, 199, .3);
+
+  --bg: #f0fdf4;
+  --surface: #ffffff;
   --surface-2: #f0fdf4;
   --surface-hover: #dcfce7;
-  --text: #0a0a0a;
-  --text-soft: #3a4a3f;
-  --muted: #6b7a6f;
-  --line: #e5e7eb;
-  --line-strong: #d1d5db;
+  --text: #0a2a15;
+  --text-soft: #3a5a45;
+  --muted: #6b8f7a;
+  --line: #d1fae5;
+  --line-strong: #86efac;
 
   --success-bg: #dcfce7;
   --danger-bg: #fee2e2;
   --warning-bg: #fef3c7;
-  --green-glow: 0 0 16px rgba(22, 163, 74, .25);
-  --green-glow-sm: 0 0 8px rgba(22, 163, 74, .2);
-  --shadow: 0 4px 16px rgba(0, 0, 0, .08);
-  --shadow-lg: 0 12px 40px rgba(0, 0, 0, .12);
+
+  --shadow: 0 4px 16px rgba(0, 168, 84, .1);
+  --shadow-lg: 0 12px 40px rgba(0, 168, 84, .15);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
+
 body {
   min-height: 100vh;
   background: var(--bg);
@@ -108,12 +124,18 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   color: #000; border-radius: 12px;
   font-weight: 800; font-size: 1.1rem;
   box-shadow: var(--green-glow-sm);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(0, 255, 136, .4); }
+  50%      { box-shadow: 0 0 25px rgba(0, 255, 136, .9); }
 }
 .brand h1 { font-size: 1.15rem; font-weight: 800; color: var(--text); }
 .brand p { font-size: .72rem; color: var(--muted); }
 
 .header-actions { display: flex; align-items: center; gap: 8px; }
 
+/* BUTTONS: xanh + xanh lá */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
   padding: 9px 16px; border-radius: 10px;
@@ -124,19 +146,32 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .btn-primary {
   background: var(--green);
   color: #000;
+  box-shadow: 0 0 10px rgba(0, 255, 136, .3);
 }
 .btn-primary:hover:not(:disabled) {
   background: var(--green-dark);
   color: #fff;
-  box-shadow: var(--green-glow-sm);
+  box-shadow: var(--green-glow);
+}
+.btn-blue {
+  background: var(--blue);
+  color: #000;
+  box-shadow: 0 0 10px rgba(0, 212, 255, .3);
+}
+.btn-blue:hover:not(:disabled) {
+  background: var(--blue-dark);
+  color: #fff;
+  box-shadow: var(--blue-glow);
 }
 .btn-outline {
   background: transparent;
   color: var(--green);
   border-color: var(--green);
+  box-shadow: inset 0 0 8px rgba(0, 255, 136, .15);
 }
 .btn-outline:hover:not(:disabled) {
   background: var(--success-bg);
+  box-shadow: var(--green-glow-sm), inset 0 0 12px rgba(0, 255, 136, .25);
 }
 .btn-icon {
   width: 38px; height: 38px; padding: 0;
@@ -147,18 +182,18 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   display: grid; place-items: center;
   transition: all .15s;
 }
-.btn-icon:hover { border-color: var(--green); color: var(--green); }
+.btn-icon:hover { border-color: var(--green); color: var(--green); box-shadow: var(--green-glow-sm); }
 .btn-block { width: 100%; padding: 12px; }
 
 /* LANG DROPDOWN */
 .lang-wrapper { position: relative; }
 .lang-menu {
   position: absolute; top: calc(100% + 6px); right: 0;
-  min-width: 160px;
+  min-width: 170px;
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: 10px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-lg), var(--green-glow-sm);
   padding: 6px;
   opacity: 0; transform: translateY(-8px); pointer-events: none;
   transition: all .15s; z-index: 300;
@@ -185,7 +220,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   border: 1px solid var(--line);
   transition: all .15s;
 }
-.user-btn:hover { border-color: var(--green); }
+.user-btn:hover { border-color: var(--green); box-shadow: var(--green-glow-sm); }
 .user-avatar {
   width: 30px; height: 30px; border-radius: 50%;
   background: linear-gradient(135deg, var(--green), var(--green-dark));
@@ -200,9 +235,9 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   position: absolute; top: calc(100% + 8px); right: 0;
   min-width: 220px;
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: 12px;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-lg), var(--green-glow-sm);
   padding: 6px;
   opacity: 0; transform: translateY(-8px); pointer-events: none;
   transition: all .15s; z-index: 200;
@@ -211,7 +246,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .user-dd-header {
   padding: 12px; border-bottom: 1px solid var(--line); margin-bottom: 4px;
 }
-.user-dd-header strong { display: block; font-size: .85rem; margin-bottom: 2px; }
+.user-dd-header strong { display: block; font-size: .85rem; margin-bottom: 2px; color: var(--green); }
 .user-dd-header span { font-size: .74rem; color: var(--muted); }
 .user-dd-item {
   display: flex; align-items: center; gap: 10px;
@@ -225,7 +260,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .user-dd-item.danger:hover { background: var(--danger-bg); }
 
 /* CONTAINER */
-.container { width: min(1200px, calc(100% - 32px)); margin: 0 auto; padding: 24px 0 60px; }
+.container { width: min(1200px, calc(100% - 32px)); margin: 0 auto; padding: 24px 0 60px; position: relative; z-index: 1; }
 
 .hero {
   padding: 24px 0 20px;
@@ -235,6 +270,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   font-size: clamp(1.4rem, 3vw, 1.9rem);
   font-weight: 800;
   color: var(--green);
+  text-shadow: 0 0 20px rgba(0, 255, 136, .5);
   margin-bottom: 6px;
 }
 .hero p { color: var(--text-soft); font-size: .9rem; }
@@ -242,7 +278,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .stat-box {
   text-align: center; padding: 10px 18px;
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: 12px;
   min-width: 90px;
 }
@@ -250,9 +286,11 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   display: block; font-size: 1.4rem; font-weight: 800;
   color: var(--green);
   font-family: "JetBrains Mono", monospace;
+  text-shadow: 0 0 10px rgba(0, 255, 136, .6);
 }
 .stat-box span { font-size: .7rem; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
 
+/* TABS - FIX CLICK */
 .tab-bar {
   display: flex; gap: 6px;
   margin-bottom: 16px; padding: 5px;
@@ -260,6 +298,8 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   border: 1px solid var(--line);
   border-radius: 14px;
   width: fit-content;
+  position: relative;
+  z-index: 10;
 }
 .tab-btn {
   padding: 9px 20px; border-radius: 10px;
@@ -267,40 +307,50 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   color: var(--text-soft);
   transition: all .15s;
   display: inline-flex; align-items: center; gap: 6px;
+  position: relative;
+  z-index: 11;
+  user-select: none;
 }
 .tab-btn:hover { color: var(--green); background: var(--surface-2); }
 .tab-btn.active {
-  background: var(--green);
+  background: linear-gradient(135deg, var(--green), var(--green-dark));
   color: #000;
+  box-shadow: var(--green-glow-sm);
 }
 .tab-btn .tab-count {
   padding: 2px 8px; border-radius: 999px;
-  background: rgba(0,0,0,.3); color: #fff;
+  background: rgba(0,0,0,.35); color: #fff;
   font-size: .68rem; font-weight: 700;
 }
-.tab-btn.active .tab-count { background: rgba(0,0,0,.2); color: #000; }
+.tab-btn.active .tab-count { background: rgba(0,0,0,.25); color: #000; }
 
-.search-wrap { margin-bottom: 14px; }
+/* SEARCH */
+.search-wrap { margin-bottom: 14px; position: relative; z-index: 5; }
 .search-box { position: relative; display: flex; align-items: center; max-width: 500px; }
-.search-box svg { position: absolute; left: 14px; width: 18px; color: var(--muted); pointer-events: none; }
+.search-box svg { position: absolute; left: 14px; width: 18px; color: var(--muted); pointer-events: none; z-index: 2; }
 #searchInput {
   width: 100%; padding: 12px 42px;
   border: 1px solid var(--line-strong); border-radius: 12px;
   background: var(--surface); color: var(--text);
   outline: none; font-size: .9rem;
   transition: all .15s;
+  position: relative;
+  z-index: 1;
 }
 #searchInput:focus {
   border-color: var(--green);
-  box-shadow: 0 0 0 3px rgba(34, 197, 94, .15);
+  box-shadow: 0 0 0 3px rgba(0, 255, 136, .15), var(--green-glow-sm);
 }
 .search-clear {
   position: absolute; right: 10px;
   width: 28px; height: 28px; border-radius: 6px;
   display: grid; place-items: center;
   color: var(--muted);
+  z-index: 3;
+  cursor: pointer;
 }
 
+/* TOOLBAR */
 .toolbar {
   display: flex; flex-wrap: wrap;
   gap: 8px; margin-bottom: 16px; padding: 10px;
@@ -308,6 +358,8 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   border: 1px solid var(--line);
   border-radius: 12px;
   align-items: center;
+  position: relative;
+  z-index: 5;
 }
 .toolbar-label {
   font-size: .72rem; color: var(--muted);
@@ -316,13 +368,13 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .sort-select {
   background: var(--surface-2);
   color: var(--text);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: 8px;
   padding: 7px 10px;
   font-size: .8rem; font-weight: 600;
   cursor: pointer;
 }
-.sort-select:focus { outline: none; border-color: var(--green); }
+.sort-select:focus { outline: none; border-color: var(--green); box-shadow: var(--green-glow-sm); }
 .tag-chip {
   padding: 5px 12px; border-radius: 999px;
   background: var(--surface-2);
@@ -334,15 +386,17 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .tag-chip:hover { border-color: var(--green); color: var(--green); }
 .tag-chip.active {
   background: var(--green); color: #000; border-color: var(--green);
+  box-shadow: var(--green-glow-sm);
 }
 
+/* GRID */
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 16px;
-  animation: fadeIn .3s ease;
+  position: relative;
+  z-index: 1;
 }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
 .card {
   background: var(--surface);
@@ -355,7 +409,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 }
 .card:hover {
   border-color: var(--green);
-  box-shadow: 0 8px 24px rgba(34, 197, 94, .15);
+  box-shadow: 0 0 30px rgba(0, 255, 136, .15);
 }
 
 .card-header { display: flex; align-items: center; gap: 12px; }
@@ -367,6 +421,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   display: grid; place-items: center;
   font-size: 1.6rem;
   overflow: hidden;
+  box-shadow: var(--green-glow-sm);
 }
 .card-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .card-header-text { min-width: 0; flex: 1; padding-right: 76px; }
@@ -376,6 +431,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   font-size: .66rem; text-transform: uppercase;
   color: var(--green);
   letter-spacing: .1em; font-weight: 700;
+  text-shadow: 0 0 8px rgba(0, 255, 136, .5);
 }
 .card-title { font-size: 1.05rem; font-weight: 800; color: var(--text); }
 
@@ -387,10 +443,10 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .badge-new { background: var(--success-bg); color: var(--green); border: 1px solid var(--line-strong); }
 .badge-hot { background: var(--danger-bg); color: var(--danger); }
 .badge-status { display: inline-flex; align-items: center; gap: 5px; }
-.badge-status i { width: 6px; height: 6px; border-radius: 50%; background: var(--green); }
+.badge-status i { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); }
 .badge-status.online { background: var(--success-bg); color: var(--green); }
 .badge-status.maintenance { background: var(--danger-bg); color: var(--danger); }
-.badge-status.maintenance i { background: var(--danger); }
+.badge-status.maintenance i { background: var(--danger); box-shadow: 0 0 6px var(--danger); }
 
 .card-desc {
   font-size: .84rem; color: var(--text-soft);
@@ -418,7 +474,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 }
 .stars-display { display: inline-flex; gap: 2px; }
 .star { color: var(--line-strong); font-size: .95rem; line-height: 1; }
-.star.filled { color: var(--star); }
+.star.filled { color: var(--star); text-shadow: 0 0 6px rgba(255, 215, 0, .5); }
 
 .card-meta {
   display: flex; justify-content: space-between;
@@ -434,17 +490,26 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   padding: 10px; border-radius: 10px;
   font-weight: 700; font-size: .82rem;
   transition: all .15s;
+  box-shadow: 0 0 8px rgba(0, 255, 136, .25);
 }
-.btn-copy:hover:not(:disabled) { background: var(--green-dark); color: #fff; }
+.btn-copy:hover:not(:disabled) {
+  background: var(--green-dark);
+  color: #fff;
+  box-shadow: var(--green-glow);
+}
 .btn-view {
   background: var(--surface-2);
   color: var(--text);
   padding: 10px; border-radius: 10px;
   font-weight: 700; font-size: .82rem;
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   transition: all .15s;
 }
-.btn-view:hover { border-color: var(--green); color: var(--green); }
+.btn-view:hover {
+  border-color: var(--blue);
+  color: var(--blue);
+  box-shadow: 0 0 8px rgba(0, 212, 255, .3);
+}
 
 .fav-btn, .report-btn-card {
   position: absolute; top: 14px;
@@ -467,7 +532,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 /* MODAL */
 .modal-overlay {
   position: fixed; inset: 0;
-  background: rgba(0, 0, 0, .8);
+  background: rgba(0, 0, 0, .85);
   z-index: 1000;
   display: grid; place-items: center; padding: 20px;
   opacity: 0; pointer-events: none;
@@ -478,8 +543,9 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   width: min(720px, 100%);
   max-height: calc(100vh - 40px);
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: 1px solid var(--green);
   border-radius: 16px;
+  box-shadow: var(--green-glow);
   overflow: hidden;
   display: flex; flex-direction: column;
   transform: translateY(10px);
@@ -491,11 +557,12 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   border-bottom: 1px solid var(--line);
   display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
 }
-.modal-header h3 { font-size: 1.15rem; font-weight: 800; }
+.modal-header h3 { font-size: 1.15rem; font-weight: 800; color: var(--green); }
 .modal-header .eyebrow {
   font-size: .68rem; text-transform: uppercase;
   color: var(--green); letter-spacing: .1em;
   font-weight: 700; margin-bottom: 4px; display: block;
+  text-shadow: 0 0 8px rgba(0, 255, 136, .5);
 }
 .modal-close {
   width: 34px; height: 34px; border-radius: 10px;
@@ -517,7 +584,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .modal-meta .meta-maintenance { color: var(--danger); }
 .script-code {
   background: #000;
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   color: var(--green-light);
   padding: 16px; border-radius: 12px;
   overflow: auto; max-height: 320px;
@@ -530,6 +597,129 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   border-top: 1px solid var(--line);
   display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap;
 }
+
+/* ============ AUTH MODAL — GỌN ============ */
+.auth-modal .modal { width: min(380px, 100%); }
+.auth-modal .modal-header { padding: 16px 18px; }
+.auth-modal .modal-header h3 { font-size: 1rem; }
+.auth-modal .modal-body { padding: 16px 18px; }
+
+.auth-tabs {
+  display: flex; gap: 4px; padding: 4px;
+  background: var(--surface-2);
+  border-radius: 10px;
+  margin-bottom: 16px;
+}
+.auth-tab {
+  flex: 1; padding: 8px; border-radius: 7px;
+  font-weight: 700; font-size: .8rem;
+  color: var(--text-soft);
+  transition: all .15s;
+}
+.auth-tab.active {
+  background: var(--green);
+  color: #000;
+  box-shadow: var(--green-glow-sm);
+}
+.form-group { margin-bottom: 10px; }
+.form-group label {
+  display: block; font-size: .74rem;
+  font-weight: 600; color: var(--text-soft);
+  margin-bottom: 5px;
+}
+.form-group input {
+  width: 100%; padding: 10px 12px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: .85rem; outline: none;
+  transition: all .15s;
+}
+.form-group input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(0, 255, 136, .15);
+}
+.form-hint {
+  font-size: .68rem; color: var(--muted);
+  margin-top: 3px; font-style: italic;
+}
+.captcha-box {
+  padding: 10px;
+  background: var(--surface-2);
+  border: 1px dashed var(--line-strong);
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.captcha-label {
+  display: block; font-size: .7rem;
+  color: var(--text-soft); margin-bottom: 6px; font-weight: 600;
+}
+.captcha-row { display: flex; align-items: center; gap: 6px; }
+.captcha-question {
+  padding: 7px 12px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-family: "JetBrains Mono", monospace;
+  font-weight: 700; font-size: .9rem;
+  color: var(--green);
+  white-space: nowrap;
+  text-shadow: 0 0 6px rgba(0, 255, 136, .5);
+}
+.captcha-input {
+  flex: 1; padding: 8px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  font-size: .85rem; outline: none;
+  text-align: center; font-weight: 700;
+  min-width: 0;
+}
+.captcha-input:focus { border-color: var(--green); }
+.captcha-refresh {
+  width: 32px; height: 32px; border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  display: grid; place-items: center;
+  color: var(--text-soft); font-size: .9rem;
+  transition: all .15s;
+  flex-shrink: 0;
+}
+.captcha-refresh:hover { border-color: var(--green); color: var(--green); }
+
+.divider {
+  display: flex; align-items: center; gap: 10px;
+  margin: 12px 0;
+  color: var(--muted); font-size: .72rem;
+}
+.divider::before, .divider::after {
+  content: ""; flex: 1; height: 1px;
+  background: var(--line);
+}
+.btn-google {
+  width: 100%; padding: 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  font-weight: 600; font-size: .82rem;
+  transition: all .15s;
+}
+.btn-google:hover { border-color: var(--blue); box-shadow: 0 0 8px rgba(0, 212, 255, .3); }
+.btn-google img { width: 16px; height: 16px; }
+
+.auth-error {
+  padding: 9px 12px;
+  background: var(--danger-bg);
+  color: var(--danger);
+  border-radius: 8px;
+  font-size: .78rem;
+  margin-bottom: 10px;
+  display: none;
+}
+.auth-error.show { display: block; }
 
 /* RATING */
 .rating-box {
@@ -544,6 +734,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   font-size: 2.2rem; font-weight: 800;
   color: var(--star); line-height: 1;
   font-family: "JetBrains Mono", monospace;
+  text-shadow: 0 0 15px rgba(255, 215, 0, .6);
 }
 .rating-count { font-size: .75rem; color: var(--muted); margin: 6px 0 12px; }
 .stars-interactive { display: inline-flex; gap: 4px; }
@@ -553,122 +744,11 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   transition: all .12s;
 }
 .stars-interactive .star.hover,
-.stars-interactive .star.filled { color: var(--star); }
+.stars-interactive .star.filled { color: var(--star); text-shadow: 0 0 10px rgba(255, 215, 0, .8); }
 .rating-hint { font-size: .75rem; color: var(--muted); margin-top: 10px; }
 
-/* AUTH MODAL */
-.auth-modal .modal { width: min(420px, 100%); }
-.auth-tabs {
-  display: flex; gap: 4px; padding: 4px;
-  background: var(--surface-2);
-  border-radius: 10px;
-  margin-bottom: 18px;
-}
-.auth-tab {
-  flex: 1; padding: 9px; border-radius: 8px;
-  font-weight: 700; font-size: .84rem;
-  color: var(--text-soft);
-  transition: all .15s;
-}
-.auth-tab.active { background: var(--surface); color: var(--green); }
-.form-group { margin-bottom: 12px; }
-.form-group label {
-  display: block; font-size: .78rem;
-  font-weight: 600; color: var(--text-soft);
-  margin-bottom: 6px;
-}
-.form-group input {
-  width: 100%; padding: 11px 14px;
-  border: 1px solid var(--line-strong);
-  border-radius: 10px;
-  background: var(--surface-2);
-  color: var(--text);
-  font-size: .88rem; outline: none;
-  transition: all .15s;
-}
-.form-group input:focus {
-  border-color: var(--green);
-  box-shadow: 0 0 0 3px rgba(34, 197, 94, .15);
-}
-.form-hint {
-  font-size: .7rem; color: var(--muted);
-  margin-top: 4px;
-  font-style: italic;
-}
-.captcha-box {
-  padding: 12px;
-  background: var(--surface-2);
-  border: 1px dashed var(--line-strong);
-  border-radius: 10px;
-  margin-bottom: 12px;
-}
-.captcha-label {
-  display: block; font-size: .74rem;
-  color: var(--text-soft); margin-bottom: 8px; font-weight: 600;
-}
-.captcha-row { display: flex; align-items: center; gap: 8px; }
-.captcha-question {
-  padding: 8px 14px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  font-family: "JetBrains Mono", monospace;
-  font-weight: 700; font-size: 1rem;
-  color: var(--green);
-  white-space: nowrap;
-}
-.captcha-input {
-  flex: 1; padding: 9px 12px;
-  border: 1px solid var(--line-strong);
-  border-radius: 8px;
-  background: var(--surface);
-  color: var(--text);
-  font-size: .88rem; outline: none;
-  text-align: center; font-weight: 700;
-}
-.captcha-input:focus { border-color: var(--green); }
-.captcha-refresh {
-  width: 36px; height: 36px; border-radius: 8px;
-  background: var(--surface);
-  border: 1px solid var(--line);
-  display: grid; place-items: center;
-  color: var(--text-soft); font-size: 1rem;
-  transition: all .15s;
-}
-.captcha-refresh:hover { border-color: var(--green); color: var(--green); }
-
-.divider {
-  display: flex; align-items: center; gap: 12px;
-  margin: 16px 0;
-  color: var(--muted); font-size: .78rem;
-}
-.divider::before, .divider::after {
-  content: ""; flex: 1; height: 1px;
-  background: var(--line);
-}
-.btn-google {
-  width: 100%; padding: 11px;
-  background: var(--surface-2);
-  border: 1px solid var(--line-strong);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center; gap: 10px;
-  font-weight: 600; font-size: .88rem;
-  transition: all .15s;
-}
-.btn-google:hover { border-color: var(--green); }
-.auth-error {
-  padding: 10px 14px;
-  background: var(--danger-bg);
-  color: var(--danger);
-  border-radius: 8px;
-  font-size: .82rem;
-  margin-bottom: 12px;
-  display: none;
-}
-.auth-error.show { display: block; }
-
 /* PROFILE */
-.profile-modal .modal { width: min(480px, 100%); }
+.profile-modal .modal { width: min(440px, 100%); }
 .profile-header {
   display: flex; flex-direction: column;
   align-items: center; gap: 10px;
@@ -682,6 +762,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   font-size: 2.5rem; font-weight: 800;
   overflow: hidden; position: relative;
   border: 3px solid var(--surface);
+  box-shadow: var(--green-glow);
 }
 .avatar-large img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .avatar-edit {
@@ -692,9 +773,10 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   font-size: .85rem; cursor: pointer;
   border: 3px solid var(--surface);
   transition: all .15s;
+  box-shadow: var(--green-glow-sm);
 }
 .avatar-edit:hover { background: var(--green-dark); color: #fff; }
-.profile-name { font-size: 1.2rem; font-weight: 800; margin-top: 6px; }
+.profile-name { font-size: 1.2rem; font-weight: 800; margin-top: 6px; color: var(--green); }
 .profile-email { font-size: .82rem; color: var(--muted); }
 .profile-stats {
   display: grid; grid-template-columns: repeat(3, 1fr);
@@ -711,6 +793,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   display: block; font-size: 1.3rem;
   font-weight: 800; color: var(--green);
   font-family: "JetBrains Mono", monospace;
+  text-shadow: 0 0 10px rgba(0, 255, 136, .5);
 }
 .profile-stat span {
   font-size: .7rem; color: var(--muted);
@@ -733,14 +816,15 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   font-size: .85rem; outline: none;
   font-family: inherit;
 }
-.comment-form textarea:focus { border-color: var(--green); }
+.comment-form textarea:focus { border-color: var(--green); box-shadow: var(--green-glow-sm); }
 .comment-form button {
   align-self: flex-end; padding: 10px 18px;
   background: var(--green); color: #000;
   border-radius: 10px;
   font-weight: 700; font-size: .82rem;
+  box-shadow: 0 0 8px rgba(0, 255, 136, .25);
 }
-.comment-form button:hover { background: var(--green-dark); color: #fff; }
+.comment-form button:hover { background: var(--green-dark); color: #fff; box-shadow: var(--green-glow); }
 .comment-login-hint {
   padding: 14px; background: var(--surface-2);
   border-radius: 10px; text-align: center;
@@ -767,7 +851,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .comment-avatar img { width: 100%; height: 100%; object-fit: cover; }
 .comment-content { flex: 1; min-width: 0; }
 .comment-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; gap: 8px; }
-.comment-author { font-weight: 700; font-size: .84rem; }
+.comment-author { font-weight: 700; font-size: .84rem; color: var(--green); }
 .comment-time { font-size: .7rem; color: var(--muted); display: flex; align-items: center; gap: 6px; }
 .comment-text { font-size: .85rem; color: var(--text-soft); word-break: break-word; white-space: pre-wrap; }
 .comment-btn {
@@ -795,14 +879,14 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   display: flex; align-items: center; gap: 10px;
   padding: 12px 16px;
   background: var(--surface);
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   border-radius: 12px;
   box-shadow: var(--shadow-lg);
   font-size: .85rem;
   animation: toastIn .25s ease;
 }
-.toast.success { border-left: 4px solid var(--success); }
-.toast.error { border-left: 4px solid var(--danger); }
+.toast.success { border-left: 4px solid var(--success); box-shadow: 0 0 15px rgba(0, 255, 136, .3); }
+.toast.error { border-left: 4px solid var(--danger); box-shadow: 0 0 15px rgba(255, 51, 102, .3); }
 .toast.info { border-left: 4px solid var(--green); }
 .toast-icon {
   width: 22px; height: 22px; border-radius: 50%;
@@ -815,7 +899,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .toast.info .toast-icon { background: var(--success-bg); color: var(--green); }
 @keyframes toastIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
 
-/* FOOTER / INFO / COOKIE */
+/* FOOTER */
 .site-footer {
   border-top: 1px solid var(--line);
   background: var(--surface);
@@ -831,7 +915,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   gap: 20px;
 }
 .footer-brand { display:flex; flex-direction:column; gap:3px; }
-.footer-brand strong { color:var(--text); font-size:.9rem; }
+.footer-brand strong { color:var(--green); font-size:.9rem; text-shadow: 0 0 8px rgba(0, 255, 136, .4); }
 .footer-brand span { color:var(--muted); font-size:.72rem; }
 .footer-links {
   display:flex; flex-wrap:wrap; justify-content:flex-end; gap:6px;
@@ -852,15 +936,17 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .footer-links button:hover, .footer-links a:hover {
   color:var(--green);
   background:var(--surface-2);
+  text-shadow: 0 0 8px rgba(0, 255, 136, .5);
 }
+
 .cookie-banner {
   position:fixed;
   left:16px; right:16px; bottom:16px;
   z-index:2500;
   background:var(--surface);
-  border:1px solid var(--line-strong);
+  border:1px solid var(--green);
   border-radius:14px;
-  box-shadow:var(--shadow-lg);
+  box-shadow:var(--shadow-lg), var(--green-glow-sm);
   padding:14px 16px;
 }
 .cookie-content {
@@ -871,7 +957,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   justify-content:space-between;
   gap:18px;
 }
-.cookie-content strong { font-size:.88rem; }
+.cookie-content strong { font-size:.88rem; color: var(--green); }
 .cookie-content p {
   margin-top:3px;
   color:var(--text-soft);
@@ -884,7 +970,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
   line-height:1.7;
   font-size:.86rem;
 }
-#infoBody h4 { color:var(--green); margin:0 0 8px; }
+#infoBody h4 { color:var(--green); margin:0 0 8px; text-shadow: 0 0 8px rgba(0, 255, 136, .4); }
 #infoBody p { margin:0 0 12px; }
 #infoBody a { color:var(--green); text-decoration:underline; }
 #infoBody ul { padding-left:20px; margin:0 0 12px; }
@@ -914,7 +1000,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 <div class="brand-mark">SH</div>
 <div>
 <h1>Script Hub</h1>
-<p>Green Script Library</p>
+<p>Neon Green Edition</p>
 </div>
 </a>
 <div class="header-actions">
@@ -941,7 +1027,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 <main class="container">
 <section class="hero">
 <div>
-<h2>🌿 Kho Script Xanh</h2>
+<h2>⚡ Kho Script Neon</h2>
 <p>Tổng hợp script Roblox hot nhất, cập nhật liên tục</p>
 </div>
 <div class="hero-stats">
@@ -950,16 +1036,16 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 </div>
 </section>
 
-<div class="tab-bar">
-<button class="tab-btn active" data-tab="all">📦 Tất cả <span class="tab-count" id="countAll">0</span></button>
-<button class="tab-btn" data-tab="fav">❤️ Yêu thích <span class="tab-count" id="countFav">0</span></button>
+<div class="tab-bar" id="tabBar">
+<button class="tab-btn active" data-tab="all" type="button">📦 Tất cả <span class="tab-count" id="countAll">0</span></button>
+<button class="tab-btn" data-tab="fav" type="button">❤️ Yêu thích <span class="tab-count" id="countFav">0</span></button>
 </div>
 
 <div class="search-wrap">
 <div class="search-box">
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path></svg>
 <input id="searchInput" type="search" placeholder="Tìm script...">
-<button class="search-clear" id="searchClear" hidden>✕</button>
+<button class="search-clear" id="searchClear" type="button" hidden>✕</button>
 </div>
 </div>
 
@@ -992,7 +1078,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 <span class="eyebrow">Chi tiết script</span>
 <h3 id="modalTitle">Script</h3>
 </div>
-<button class="modal-close" data-close>✕</button>
+<button class="modal-close" data-close type="button">✕</button>
 </div>
 <div class="modal-body">
 <div class="modal-meta" id="modalMeta"></div>
@@ -1019,7 +1105,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 </div>
 <div id="commentFormArea">
 <div class="comment-login-hint" id="commentLoginHint">
-Bạn cần <button id="commentLoginBtn">đăng nhập</button> để bình luận
+Bạn cần <button id="commentLoginBtn" type="button">đăng nhập</button> để bình luận
 </div>
 <form class="comment-form" id="commentForm" hidden>
 <textarea id="commentInput" placeholder="Viết bình luận..." maxlength="500"></textarea>
@@ -1032,13 +1118,13 @@ Bạn cần <button id="commentLoginBtn">đăng nhập</button> để bình lu�
 </div>
 </div>
 <div class="modal-actions">
-<button class="btn btn-primary" id="modalCopyBtn">📋 Copy Script</button>
-<button class="btn btn-outline" data-close>Đóng</button>
+<button class="btn btn-primary" id="modalCopyBtn" type="button">📋 Copy Script</button>
+<button class="btn btn-outline" data-close type="button">Đóng</button>
 </div>
 </div>
 </div>
 
-<!-- MODAL AUTH -->
+<!-- MODAL AUTH (GỌN) -->
 <div class="modal-overlay auth-modal" id="authModal">
 <div class="modal">
 <div class="modal-header">
@@ -1046,42 +1132,42 @@ Bạn cần <button id="commentLoginBtn">đăng nhập</button> để bình lu�
 <span class="eyebrow">Tài khoản</span>
 <h3 id="authTitle">Đăng nhập</h3>
 </div>
-<button class="modal-close" data-close>✕</button>
+<button class="modal-close" data-close type="button">✕</button>
 </div>
 <div class="modal-body">
 <div class="auth-tabs">
-<button class="auth-tab active" data-tab="login">Đăng nhập</button>
-<button class="auth-tab" data-tab="register">Đăng ký</button>
+<button class="auth-tab active" data-tab="login" type="button">Đăng nhập</button>
+<button class="auth-tab" data-tab="register" type="button">Đăng ký</button>
 </div>
 <div class="auth-error" id="authError"></div>
 
+<!-- LOGIN FORM (GỌN) -->
 <form id="loginForm">
 <div class="form-group">
 <label>Tên đăng nhập hoặc Email</label>
-<input type="text" id="loginIdentifier" required placeholder="VD: phuc03 hoặc phuc03@gmail.com" autocomplete="username">
-<div class="form-hint">Có thể dùng tên đăng nhập hoặc email</div>
+<input type="text" id="loginIdentifier" required placeholder="phuc03 hoặc email..." autocomplete="username">
 </div>
 <div class="form-group">
 <label>Mật khẩu</label>
-<input type="password" id="loginPassword" required placeholder="Ít nhất 6 ký tự" autocomplete="current-password">
+<input type="password" id="loginPassword" required placeholder="Tối thiểu 6 ký tự" autocomplete="current-password">
 </div>
 <button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
 <div class="divider">hoặc</div>
 <button type="button" class="btn-google" id="googleLoginBtn">
-<img src="https://www.google.com/favicon.ico" width="18" height="18" alt="">
-<span>Đăng nhập bằng Google</span>
+<img src="https://www.google.com/favicon.ico" alt="">
+<span>Đăng nhập với Google</span>
 </button>
 </form>
 
+<!-- REGISTER FORM (GỌN) -->
 <form id="registerForm" hidden>
 <div class="form-group">
 <label>Tên đăng nhập</label>
 <input type="text" id="registerUsername" required placeholder="VD: phuc03" maxlength="30" pattern="[a-zA-Z0-9_]{3,30}" autocomplete="username">
-<div class="form-hint">3-30 ký tự, chỉ chữ, số và dấu _</div>
 </div>
 <div class="form-group">
 <label>Tên hiển thị</label>
-<input type="text" id="registerName" required placeholder="VD: Phuc03" maxlength="30">
+<input type="text" id="registerName" required placeholder="VD: Phuc" maxlength="30">
 </div>
 <div class="form-group">
 <label>Email</label>
@@ -1089,21 +1175,21 @@ Bạn cần <button id="commentLoginBtn">đăng nhập</button> để bình lu�
 </div>
 <div class="form-group">
 <label>Mật khẩu</label>
-<input type="password" id="registerPassword" required placeholder="Ít nhất 6 ký tự" minlength="6" autocomplete="new-password">
+<input type="password" id="registerPassword" required placeholder="Tối thiểu 6 ký tự" minlength="6" autocomplete="new-password">
 </div>
 <div class="captcha-box">
-<label class="captcha-label">🔒 Xác minh bạn không phải robot</label>
+<label class="captcha-label">🔒 Xác minh robot</label>
 <div class="captcha-row">
 <div class="captcha-question" id="captchaQuestion">1 + 1 = ?</div>
-<input type="number" class="captcha-input" id="captchaInput" placeholder="Đáp án" required>
+<input type="number" class="captcha-input" id="captchaInput" placeholder="?" required>
 <button type="button" class="captcha-refresh" id="captchaRefresh">🔄</button>
 </div>
 </div>
 <button type="submit" class="btn btn-primary btn-block">Đăng ký</button>
 <div class="divider">hoặc</div>
 <button type="button" class="btn-google" id="googleRegisterBtn">
-<img src="https://www.google.com/favicon.ico" width="18" height="18" alt="">
-<span>Đăng ký bằng Google</span>
+<img src="https://www.google.com/favicon.ico" alt="">
+<span>Đăng ký với Google</span>
 </button>
 </form>
 </div>
@@ -1118,7 +1204,7 @@ Bạn cần <button id="commentLoginBtn">đăng nhập</button> để bình lu�
 <span class="eyebrow">Tài khoản</span>
 <h3>Trang cá nhân</h3>
 </div>
-<button class="modal-close" data-close>✕</button>
+<button class="modal-close" data-close type="button">✕</button>
 </div>
 <div class="modal-body">
 <div class="profile-header">
@@ -1139,7 +1225,7 @@ Bạn cần <button id="commentLoginBtn">đăng nhập</button> để bình lu�
 <label>Đổi tên hiển thị</label>
 <input type="text" id="profileNameInput" maxlength="30" placeholder="Tên mới">
 </div>
-<button class="btn btn-primary btn-block" id="profileSaveBtn">Lưu thay đổi</button>
+<button class="btn btn-primary btn-block" id="profileSaveBtn" type="button">Lưu thay đổi</button>
 </div>
 </div>
 </div>
@@ -1152,7 +1238,7 @@ Bạn cần <button id="commentLoginBtn">đăng nhập</button> để bình lu�
 <span class="eyebrow">Hướng dẫn</span>
 <h3>Cách sử dụng</h3>
 </div>
-<button class="modal-close" data-close>✕</button>
+<button class="modal-close" data-close type="button">✕</button>
 </div>
 <div class="modal-body">
 <ol style="padding-left:20px;line-height:2;color:var(--text-soft);">
@@ -1170,8 +1256,8 @@ Bạn cần <button id="commentLoginBtn">đăng nhập</button> để bình lu�
 <footer class="site-footer">
   <div class="footer-inner">
     <div class="footer-brand">
-      <strong>🌿 Script Hub</strong>
-      <span>Green Script Library · 2026</span>
+      <strong>⚡ Script Hub</strong>
+      <span>Neon Green Edition · 2026</span>
     </div>
     <nav class="footer-links" aria-label="Footer">
       <button type="button" data-info="about">About</button>
@@ -1179,7 +1265,7 @@ Bạn cần <button id="commentLoginBtn">đăng nhập</button> để bình lu�
       <button type="button" data-info="privacy">Privacy</button>
       <button type="button" data-info="legal">Legal</button>
       <button type="button" data-info="contact">Contact</button>
-      <a href="https://discord.com/invite/GrTCy2DHEX" target="_blank" rel="noopener" id="supportLink">
+      <a href="https://discord.com/invite/GrTCy2DHEX" target="_blank" rel="noopener">
         💬 Support Discord
       </a>
     </nav>
@@ -1208,7 +1294,7 @@ Bạn cần <button id="commentLoginBtn">đăng nhập</button> để bình lu�
         <span class="eyebrow" id="infoEyebrow">Thông tin</span>
         <h3 id="infoTitle">About</h3>
       </div>
-      <button class="modal-close" data-close>✕</button>
+      <button class="modal-close" data-close type="button">✕</button>
     </div>
     <div class="modal-body" id="infoBody"></div>
   </div>
@@ -1263,83 +1349,60 @@ let unsubscribeComments = null;
 let captchaAnswer = null;
 let currentSort = "newest";
 let currentTagFilter = "";
+let listenersBound = false;
 
 /* =========================================================
    SCRIPT DATA
 ========================================================== */
 const SCRIPTS = [
-  {
-    id: "gravity-hub", game: "Blox Fruits", name: "Gravity Hub",
+  { id: "gravity-hub", game: "Blox Fruits", name: "Gravity Hub",
     icon: "https://i.postimg.cc/BjdMrnS0/blox-fruits.jpg",
     description: "Hub Blox Fruits với auto farm, kill aura, teleport và nhiều tính năng khác.",
-    category: "Universal", platform: "PC/PE",
-    updated: "2026-10-03", version: "1.0",
+    category: "Universal", platform: "PC/PE", updated: "2026-10-03", version: "1.0",
     tags: ["Blox Fruits", "Farm"], maintenance: true,
-    content: `-- Gravity Hub - Đang bảo trì\nprint("[Gravity Hub] Maintenance")`
-  },
-  {
-    id: "quantum-hub", game: "Blox Fruits", name: "Quantum Hub",
+    content: `-- Gravity Hub - Đang bảo trì\nprint("[Gravity Hub] Maintenance")` },
+  { id: "quantum-hub", game: "Blox Fruits", name: "Quantum Hub",
     icon: "https://i.postimg.cc/BjdMrnS0/blox-fruits.jpg",
     description: "Hub Blox Fruits với auto farm, kill aura, teleport và nhiều tính năng khác.",
-    category: "Universal", platform: "PE",
-    updated: "2026-10-02", version: "1.0",
+    category: "Universal", platform: "PE", updated: "2026-10-02", version: "1.0",
     tags: ["Blox Fruits", "PE"], maintenance: false,
-    content: `loadstring(game:HttpGet("https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/QuantumOnyx.lua"))()`
-  },
-  {
-    id: "bacon-hub", game: "Blox Fruits", name: "Bacon Hub",
+    content: `loadstring(game:HttpGet("https://raw.githubusercontent.com/flazhy/QuantumOnyx/refs/heads/main/QuantumOnyx.lua"))()` },
+  { id: "bacon-hub", game: "Blox Fruits", name: "Bacon Hub",
     icon: "https://i.postimg.cc/BjdMrnS0/blox-fruits.jpg",
     description: "Hub Blox Fruits với auto farm, kill aura, teleport và nhiều tính năng khác.",
-    category: "Universal", platform: "PC/PE",
-    updated: "2026-10-05", version: "1.0",
+    category: "Universal", platform: "PC/PE", updated: "2026-10-05", version: "1.0",
     tags: ["Blox Fruits", "PC", "PE"], maintenance: false,
-    content: `#loadstring(game:HttpGet("https://raw.githubusercontent.com/Dev-BaconHub/hack/refs/heads/main/BaconHub.lua"))()`
-  },
-  {
-    id: "fish-hub", game: "Fishing Master", name: "Fish Hub",
+    content: `#loadstring(game:HttpGet("https://raw.githubusercontent.com/Dev-BaconHub/hack/refs/heads/main/BaconHub.lua"))()` },
+  { id: "fish-hub", game: "Fishing Master", name: "Fish Hub",
     icon: "https://i.postimg.cc/68sWTCcm/fishing-master.webp",
     description: "Hub tự động câu cá, auto sell và nâng cấp cho Fishing Master.",
-    category: "Universal", platform: "PC/PE",
-    updated: "2026-09-30", version: "1.0",
+    category: "Universal", platform: "PC/PE", updated: "2026-09-30", version: "1.0",
     tags: ["Fishing Master", "Auto Fish", "PC"], maintenance: false,
-    content: `-- Fish Hub\nloadstring(game:HttpGet("https://link-fish-hub.lua"))()`
-  },
-  {
-    id: "auto-hub-fsm", game: "Fishing Master", name: "Ouroboros Hub",
+    content: `-- Fish Hub\nloadstring(game:HttpGet("https://link-fish-hub.lua"))()` },
+  { id: "auto-hub-fsm", game: "Fishing Master", name: "Ouroboros Hub",
     icon: "https://i.postimg.cc/68sWTCcm/fishing-master.webp",
     description: "Hub auto farm toàn diện cho Fishing Master.",
-    category: "Universal", platform: "PC/PE",
-    updated: "2026-09-27", version: "1.0",
+    category: "Universal", platform: "PC/PE", updated: "2026-09-27", version: "1.0",
     tags: ["Fishing Master", "Auto", "Mobile"], maintenance: false,
-    content: `-- Ouroboros Hub\nloadstring(game:HttpGet("https://link-ouroboros-hub.lua"))()`
-  },
-  {
-    id: "egg-hub", game: "Steal an Egg", name: "Egg Hub",
+    content: `-- Ouroboros Hub\nloadstring(game:HttpGet("https://link-ouroboros-hub.lua"))()` },
+  { id: "egg-hub", game: "Steal an Egg", name: "Egg Hub",
     icon: "https://i.postimg.cc/BXKHTkH4/stealanegg-f314x314-png.webp",
     description: "Hub tổng hợp cho Steal an Egg, auto steal và teleport.",
-    category: "Universal", platform: "Mobile",
-    updated: "2026-09-25", version: "1.3.2",
+    category: "Universal", platform: "Mobile", updated: "2026-09-25", version: "1.3.2",
     tags: ["Steal an Egg", "Farm", "Mobile"], maintenance: false,
-    content: `-- Egg Hub\nloadstring(game:HttpGet("https://link-egg-hub.lua"))()`
-  },
-  {
-    id: "farm-hub-sae", game: "Steal an Egg", name: "Farm Hub",
+    content: `-- Egg Hub\nloadstring(game:HttpGet("https://link-egg-hub.lua"))()` },
+  { id: "farm-hub-sae", game: "Steal an Egg", name: "Farm Hub",
     icon: "https://i.postimg.cc/BXKHTkH4/stealanegg-f314x314-png.webp",
     description: "Hub auto farm egg, hỗ trợ PC với tốc độ cao.",
-    category: "Utility", platform: "PC",
-    updated: "2026-09-20", version: "1.1.0",
+    category: "Utility", platform: "PC", updated: "2026-09-20", version: "1.1.0",
     tags: ["Steal an Egg", "Farm", "PC"], maintenance: false,
-    content: `-- Farm Hub\nloadstring(game:HttpGet("https://link-farm-hub.lua"))()`
-  },
-  {
-    id: "auto-hub-sae", game: "Steal an Egg", name: "Auto Hub",
+    content: `-- Farm Hub\nloadstring(game:HttpGet("https://link-farm-hub.lua"))()` },
+  { id: "auto-hub-sae", game: "Steal an Egg", name: "Auto Hub",
     icon: "https://i.postimg.cc/BXKHTkH4/stealanegg-f314x314-png.webp",
     description: "Hub auto all-in-one cho Steal an Egg, tối ưu cho mobile.",
-    category: "Universal", platform: "Mobile",
-    updated: "2026-10-01", version: "2.0.0",
+    category: "Universal", platform: "Mobile", updated: "2026-10-01", version: "2.0.0",
     tags: ["Steal an Egg", "Auto", "Mobile"], maintenance: false,
-    content: `-- Auto Hub\nloadstring(game:HttpGet("https://link-auto-hub-sae.lua"))()`
-  }
+    content: `-- Auto Hub\nloadstring(game:HttpGet("https://link-auto-hub-sae.lua"))()` }
 ];
 
 /* =========================================================
@@ -1373,6 +1436,7 @@ function isNew(dateStr) {
 
 function showToast(message, type = "info") {
   const container = $("#toastContainer");
+  if (!container) return;
   const icons = { success: "✓", error: "!", info: "i" };
   const toast = document.createElement("div");
   toast.className = `toast ${type}`;
@@ -1405,8 +1469,10 @@ function generateCaptcha() {
     result = a * b;
   }
   captchaAnswer = result;
-  $("#captchaQuestion").textContent = `${a} ${op} ${b} = ?`;
-  $("#captchaInput").value = "";
+  const q = $("#captchaQuestion");
+  const inp = $("#captchaInput");
+  if (q) q.textContent = `${a} ${op} ${b} = ?`;
+  if (inp) inp.value = "";
 }
 
 /* =========================================================
@@ -1415,6 +1481,7 @@ function generateCaptcha() {
 function renderScripts() {
   const grid = $("#grid");
   const empty = $("#empty");
+  if (!grid) return;
 
   let list = SCRIPTS.slice();
   if (currentTab === "fav") list = list.filter(s => favorites.has(s.id));
@@ -1425,31 +1492,27 @@ function renderScripts() {
       s.name.toLowerCase().includes(q) ||
       s.description.toLowerCase().includes(q) ||
       s.game.toLowerCase().includes(q) ||
-      s.tags.some(t => t.toLowerCase().includes(q))
+      s.tags.some(tag => tag.toLowerCase().includes(q))
     );
   }
 
   if (currentTagFilter) list = list.filter(s => s.tags.includes(currentTagFilter));
 
-  if (currentSort === "newest") {
-    list.sort((a, b) => new Date(b.updated) - new Date(a.updated));
-  } else if (currentSort === "az") {
-    list.sort((a, b) => a.name.localeCompare(b.name));
-  } else if (currentSort === "views") {
-    list.sort((a, b) => (views[b.id] || 0) - (views[a.id] || 0));
-  } else if (currentSort === "copied") {
-    list.sort((a, b) => (copyCounts[b.id] || 0) - (copyCounts[a.id] || 0));
-  } else if (currentSort === "rating") {
-    list.sort((a, b) => ((ratings[b.id] && ratings[b.id].avg) || 0) - ((ratings[a.id] && ratings[a.id].avg) || 0));
-  }
+  if (currentSort === "newest") list.sort((a, b) => new Date(b.updated) - new Date(a.updated));
+  else if (currentSort === "az") list.sort((a, b) => a.name.localeCompare(b.name));
+  else if (currentSort === "views") list.sort((a, b) => (views[b.id] || 0) - (views[a.id] || 0));
+  else if (currentSort === "copied") list.sort((a, b) => (copyCounts[b.id] || 0) - (copyCounts[a.id] || 0));
+  else if (currentSort === "rating") list.sort((a, b) => ((ratings[b.id] && ratings[b.id].avg) || 0) - ((ratings[a.id] && ratings[a.id].avg) || 0));
 
   if (list.length === 0) {
     grid.innerHTML = "";
-    empty.hidden = false;
-    empty.querySelector("p").textContent = currentTab === "fav" ? "Bạn chưa yêu thích script nào" : "Không tìm thấy script nào";
+    if (empty) {
+      empty.hidden = false;
+      empty.querySelector("p").textContent = currentTab === "fav" ? "Bạn chưa yêu thích script nào" : "Không tìm thấy script nào";
+    }
     return;
   }
-  empty.hidden = true;
+  if (empty) empty.hidden = true;
 
   grid.innerHTML = list.map(s => {
     const isFav = favorites.has(s.id);
@@ -1468,9 +1531,8 @@ function renderScripts() {
 
     return `
       <article class="card" data-id="${s.id}">
-        <button class="fav-btn ${isFav ? "active" : ""}" data-action="fav">${isFav ? "❤️" : "🤍"}</button>
-        <button class="report-btn-card" data-action="report">🚩</button>
-
+        <button class="fav-btn ${isFav ? "active" : ""}" data-action="fav" type="button">${isFav ? "❤️" : "🤍"}</button>
+        <button class="report-btn-card" data-action="report" type="button">🚩</button>
         <div class="card-header">
           <div class="card-logo">${iconHTML}</div>
           <div class="card-header-text">
@@ -1478,35 +1540,25 @@ function renderScripts() {
             <h3 class="card-title">${escapeHTML(s.name)}</h3>
           </div>
         </div>
-
         <div class="badges">
           ${isNew(s.updated) ? '<span class="badge badge-new">NEW</span>' : ""}
           ${isHot ? '<span class="badge badge-hot">🔥 HOT</span>' : ""}
           <span class="badge badge-status ${s.maintenance ? "maintenance" : "online"}"><i></i>${s.maintenance ? "Bảo trì" : "Online"}</span>
         </div>
-
         <p class="card-desc">${escapeHTML(s.description)}</p>
-
         <div class="tags">${s.tags.map(tag => `<span data-tag="${escapeHTML(tag)}">${escapeHTML(tag)}</span>`).join("")}</div>
-
         <div class="card-rating">
           <div class="stars-display">${starsHTML}</div>
           <span>${rating.count > 0 ? rating.avg.toFixed(1) + " (" + rating.count + ")" : "Chưa có đánh giá"}</span>
         </div>
-
-        <div class="card-meta">
-          <span>v${escapeHTML(s.version)}</span>
-          <span>${timeAgo(s.updated)}</span>
-        </div>
-
+        <div class="card-meta"><span>v${escapeHTML(s.version)}</span><span>${timeAgo(s.updated)}</span></div>
         <div class="card-meta" style="border:0;padding-top:0;">
           <span class="card-views">👁 ${viewCount}</span>
           <span>📋 ${copyCount}</span>
         </div>
-
         <div class="card-actions">
-          <button class="btn-copy" data-action="copy" ${s.maintenance ? "disabled" : ""}>${s.maintenance ? "🔧" : "📋 Copy"}</button>
-          <button class="btn-view" data-action="view">👁 Xem</button>
+          <button class="btn-copy" data-action="copy" ${s.maintenance ? "disabled" : ""} type="button">${s.maintenance ? "🔧" : "📋 Copy"}</button>
+          <button class="btn-view" data-action="view" type="button">👁 Xem</button>
         </div>
       </article>
     `;
@@ -1514,45 +1566,62 @@ function renderScripts() {
 }
 
 function updateCounts() {
-  $("#countAll").textContent = SCRIPTS.length;
-  $("#countFav").textContent = favorites.size;
-  $("#totalScripts").textContent = SCRIPTS.length;
-  $("#totalFavs").textContent = favorites.size;
+  const cAll = $("#countAll"); if (cAll) cAll.textContent = SCRIPTS.length;
+  const cFav = $("#countFav"); if (cFav) cFav.textContent = favorites.size;
+  const tS = $("#totalScripts"); if (tS) tS.textContent = SCRIPTS.length;
+  const tF = $("#totalFavs"); if (tF) tF.textContent = favorites.size;
 }
 
+/* =========================================================
+   INIT: TABS — FIX CLICK
+========================================================== */
 function initTabs() {
-  $$(".tab-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      $$(".tab-btn").forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      currentTab = btn.dataset.tab;
-      renderScripts();
-    });
+  const bar = $("#tabBar");
+  if (!bar) return;
+
+  // Dùng event delegation — chắc chắn bắt được click
+  bar.addEventListener("click", (e) => {
+    const btn = e.target.closest(".tab-btn");
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Bỏ active tất cả
+    bar.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+
+    currentTab = btn.dataset.tab || "all";
+    renderScripts();
+    console.log("[Tab] Chuyển sang:", currentTab);
   });
 }
 
 function initSearch() {
   const input = $("#searchInput");
   const clear = $("#searchClear");
+  if (!input) return;
   let timer;
   input.addEventListener("input", () => {
     clearTimeout(timer);
     timer = setTimeout(() => {
       searchQuery = input.value.trim();
-      clear.hidden = !searchQuery;
+      if (clear) clear.hidden = !searchQuery;
       renderScripts();
     }, 200);
   });
-  clear.addEventListener("click", () => {
-    input.value = "";
-    searchQuery = "";
-    clear.hidden = true;
-    renderScripts();
-  });
+  if (clear) {
+    clear.addEventListener("click", () => {
+      input.value = "";
+      searchQuery = "";
+      clear.hidden = true;
+      renderScripts();
+    });
+  }
 }
 
 function initSort() {
   const sel = $("#sortSelect");
+  if (!sel) return;
   sel.value = currentSort;
   sel.addEventListener("change", () => {
     currentSort = sel.value;
@@ -1562,11 +1631,12 @@ function initSort() {
 
 function updateTagFilterUI() {
   const container = $("#tagFilter");
+  if (!container) return;
   const allTags = new Set();
   SCRIPTS.forEach(s => s.tags.forEach(tag => allTags.add(tag)));
   const sortedTags = [...allTags].sort();
   container.innerHTML = sortedTags.map(tag => `
-    <button class="tag-chip ${currentTagFilter === tag ? "active" : ""}" data-filter-tag="${escapeHTML(tag)}">${escapeHTML(tag)}</button>
+    <button class="tag-chip ${currentTagFilter === tag ? "active" : ""}" data-filter-tag="${escapeHTML(tag)}" type="button">${escapeHTML(tag)}</button>
   `).join("");
   container.querySelectorAll("[data-filter-tag]").forEach(btn => {
     btn.addEventListener("click", () => {
@@ -1626,9 +1696,13 @@ async function incrementViews(scriptId) {
    ACTIONS
 ========================================================== */
 function initActions() {
-  $("#grid").addEventListener("click", async (e) => {
+  const grid = $("#grid");
+  if (!grid) return;
+
+  grid.addEventListener("click", async (e) => {
+    // Tag click
     const tagEl = e.target.closest("[data-tag]");
-    if (tagEl) {
+    if (tagEl && !e.target.closest("[data-action]")) {
       currentTagFilter = tagEl.dataset.tag;
       updateTagFilterUI();
       renderScripts();
@@ -1695,26 +1769,30 @@ async function toggleFavorite(scriptId) {
 ========================================================== */
 function openScriptModal(script) {
   currentScriptId = script.id;
-  $("#modalTitle").textContent = script.name;
-  $("#modalMeta").innerHTML = `
+  const mt = $("#modalTitle"); if (mt) mt.textContent = script.name;
+  const mm = $("#modalMeta");
+  if (mm) mm.innerHTML = `
     <span>${escapeHTML(script.game)}</span>
     <span>${escapeHTML(script.platform)}</span>
     <span>v${escapeHTML(script.version)}</span>
     <span class="${script.maintenance ? "meta-maintenance" : "meta-online"}">${script.maintenance ? "🔧 Bảo trì" : "● Online"}</span>
   `;
-  $("#modalCode").textContent = script.content;
+  const mc = $("#modalCode"); if (mc) mc.textContent = script.content;
 
   const copyBtn = $("#modalCopyBtn");
-  copyBtn.disabled = script.maintenance;
-  copyBtn.onclick = async () => {
-    const ok = await copyToClipboard(script.content);
-    if (ok) {
-      await incrementCopyCount(script.id);
-      showToast(`Đã copy "${script.name}"`, "success");
-    } else showToast("Không thể copy", "error");
-  };
+  if (copyBtn) {
+    copyBtn.disabled = script.maintenance;
+    copyBtn.onclick = async () => {
+      const ok = await copyToClipboard(script.content);
+      if (ok) {
+        await incrementCopyCount(script.id);
+        showToast(`Đã copy "${script.name}"`, "success");
+      } else showToast("Không thể copy", "error");
+    };
+  }
 
-  $("#scriptModal").classList.add("show");
+  const modal = $("#scriptModal");
+  if (modal) modal.classList.add("show");
   document.body.style.overflow = "hidden";
 
   incrementViews(script.id);
@@ -1747,12 +1825,13 @@ function initModals() {
 ========================================================== */
 function renderRating(scriptId) {
   const rating = ratings[scriptId] || { avg: 0, count: 0, userRatings: {} };
-  $("#ratingAvg").textContent = rating.avg.toFixed(1);
-  $("#ratingCount").textContent = rating.count > 0 ? `${rating.count} đánh giá` : "Chưa có đánh giá";
-  $("#ratingHint").textContent = currentUser ? "Bấm vào sao để đánh giá" : "Đăng nhập để đánh giá";
+  const ra = $("#ratingAvg"); if (ra) ra.textContent = rating.avg.toFixed(1);
+  const rc = $("#ratingCount"); if (rc) rc.textContent = rating.count > 0 ? `${rating.count} đánh giá` : "Chưa có đánh giá";
+  const rh = $("#ratingHint"); if (rh) rh.textContent = currentUser ? "Bấm vào sao để đánh giá" : "Đăng nhập để đánh giá";
 
   const userStar = currentUser && rating.userRatings ? rating.userRatings[currentUser.uid] : 0;
   const stars = $("#starsInteractive");
+  if (!stars) return;
   stars.querySelectorAll(".star").forEach((s, i) => {
     s.classList.toggle("hover", false);
     s.classList.toggle("filled", (i + 1) <= userStar);
@@ -1761,6 +1840,7 @@ function renderRating(scriptId) {
 
 function initStars() {
   const stars = $("#starsInteractive");
+  if (!stars) return;
   stars.querySelectorAll(".star").forEach(star => {
     star.addEventListener("mouseenter", () => {
       const val = parseInt(star.dataset.value);
@@ -1823,6 +1903,7 @@ async function loadRatings() {
 ========================================================== */
 function loadComments(scriptId) {
   const list = $("#commentList");
+  if (!list) return;
   list.innerHTML = '<div class="comments-loading">Đang tải bình luận...</div>';
   if (unsubscribeComments) unsubscribeComments();
 
@@ -1834,7 +1915,7 @@ function loadComments(scriptId) {
       const data = doc.data();
       if (data.scriptId === scriptId) comments.push({ id: doc.id, ...data });
     });
-    $("#commentCount").textContent = comments.length;
+    const cc = $("#commentCount"); if (cc) cc.textContent = comments.length;
 
     if (comments.length === 0) {
       list.innerHTML = '<div class="comments-empty">Chưa có bình luận nào. Hãy là người đầu tiên!</div>';
@@ -1856,8 +1937,8 @@ function loadComments(scriptId) {
               <span class="comment-time">
                 ${time}
                 ${isOwner
-                  ? `<button class="comment-btn del" data-del="${c.id}">Xoá</button>`
-                  : `<button class="comment-btn report" data-report="${c.id}">Báo cáo</button>`
+                  ? `<button class="comment-btn del" data-del="${c.id}" type="button">Xoá</button>`
+                  : `<button class="comment-btn report" data-report="${c.id}" type="button">Báo cáo</button>`
                 }
               </span>
             </div>
@@ -1880,7 +1961,7 @@ function loadComments(scriptId) {
     list.querySelectorAll("[data-report]").forEach(btn => {
       btn.addEventListener("click", async () => {
         if (!currentUser) { showToast("Đăng nhập để báo cáo", "info"); return; }
-        const reason = prompt("Nhập lý do báo cáo (VD: spam, thô tục...):");
+        const reason = prompt("Nhập lý do báo cáo:");
         if (!reason || !reason.trim()) return;
         const comment = comments.find(c => c.id === btn.dataset.report);
         try {
@@ -1913,7 +1994,9 @@ function timeAgoStr(date) {
 }
 
 function initCommentForm() {
-  $("#commentForm").addEventListener("submit", async (e) => {
+  const form = $("#commentForm");
+  if (!form) return;
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const input = $("#commentInput");
     const text = input.value.trim();
@@ -1933,7 +2016,8 @@ function initCommentForm() {
       showToast("Không thể gửi", "error");
     }
   });
-  $("#commentLoginBtn").addEventListener("click", () => {
+  const clb = $("#commentLoginBtn");
+  if (clb) clb.addEventListener("click", () => {
     closeModal($("#scriptModal"));
     openAuthModal("login");
   });
@@ -1944,26 +2028,31 @@ function initCommentForm() {
 ========================================================== */
 function openAuthModal(tab = "login") {
   switchAuthTab(tab);
-  $("#authModal").classList.add("show");
+  const modal = $("#authModal");
+  if (modal) modal.classList.add("show");
   document.body.style.overflow = "hidden";
   hideAuthError();
 }
 
 function switchAuthTab(tab) {
   $$(".auth-tab").forEach(t => t.classList.toggle("active", t.dataset.tab === tab));
-  $("#loginForm").hidden = tab !== "login";
-  $("#registerForm").hidden = tab !== "register";
-  $("#authTitle").textContent = tab === "login" ? "Đăng nhập" : "Đăng ký";
+  const lf = $("#loginForm"); if (lf) lf.hidden = tab !== "login";
+  const rf = $("#registerForm"); if (rf) rf.hidden = tab !== "register";
+  const at = $("#authTitle"); if (at) at.textContent = tab === "login" ? "Đăng nhập" : "Đăng ký";
   hideAuthError();
   if (tab === "register") generateCaptcha();
 }
 
 function showAuthError(msg) {
   const el = $("#authError");
+  if (!el) return;
   el.textContent = msg;
   el.classList.add("show");
 }
-function hideAuthError() { $("#authError").classList.remove("show"); }
+function hideAuthError() {
+  const el = $("#authError");
+  if (el) el.classList.remove("show");
+}
 
 function translateAuthError(code) {
   const map = {
@@ -1981,22 +2070,14 @@ function translateAuthError(code) {
   return map[code] || "Đã xảy ra lỗi, vui lòng thử lại";
 }
 
-// Nếu input là username (không có @), tìm email từ Firestore collection "usernames"
 async function resolveIdentifierToEmail(input) {
   const val = input.trim().toLowerCase();
   if (!val) return val;
-  if (val.includes("@")) return val; // Đã là email
-
-  // Tra cứu username trong Firestore
+  if (val.includes("@")) return val;
   try {
     const snap = await fb.getDoc(fb.doc(fb.db, "usernames", val));
-    if (snap.exists()) {
-      const data = snap.data();
-      return data.email; // Trả về email thật đã đăng ký
-    } else {
-      // Không tìm thấy username
-      throw new Error("username-not-found");
-    }
+    if (snap.exists()) return snap.data().email;
+    throw new Error("username-not-found");
   } catch (e) {
     throw new Error("username-not-found");
   }
@@ -2007,99 +2088,87 @@ function initAuth() {
     tab.addEventListener("click", () => switchAuthTab(tab.dataset.tab));
   });
 
-  $("#loginBtn").addEventListener("click", () => openAuthModal("login"));
-
-  // LOGIN: hỗ trợ cả tên đăng nhập hoặc email
-  $("#loginForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    hideAuthError();
-
-    const identifier = $("#loginIdentifier").value.trim();
-    const password = $("#loginPassword").value;
-
-    try {
-      // Nếu là username → tra Firestore lấy email
-      let email;
-      if (identifier.includes("@")) {
-        email = identifier;
-      } else {
-        try {
-          email = await resolveIdentifierToEmail(identifier);
-        } catch (err) {
+  const loginForm = $("#loginForm");
+  if (loginForm) {
+    loginForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      hideAuthError();
+      const identifier = $("#loginIdentifier").value.trim();
+      const password = $("#loginPassword").value;
+      try {
+        let email;
+        if (identifier.includes("@")) {
+          email = identifier;
+        } else {
+          try {
+            email = await resolveIdentifierToEmail(identifier);
+          } catch (err) {
+            showAuthError("Không tìm thấy tên đăng nhập này");
+            return;
+          }
+        }
+        await fb.signInWithEmailAndPassword(fb.auth, email, password);
+        showToast("Đăng nhập thành công!", "success");
+        closeModal($("#authModal"));
+      } catch (err) {
+        console.error("Login error:", err);
+        if (err.message === "username-not-found") {
           showAuthError("Không tìm thấy tên đăng nhập này");
-          return;
+        } else {
+          showAuthError(translateAuthError(err.code));
         }
       }
+    });
+  }
 
-      await fb.signInWithEmailAndPassword(fb.auth, email, password);
-      showToast("Đăng nhập thành công!", "success");
-      closeModal($("#authModal"));
-    } catch (err) {
-      console.error("Login error:", err);
-      if (err.message === "username-not-found") {
-        showAuthError("Không tìm thấy tên đăng nhập này");
-      } else {
-        showAuthError(translateAuthError(err.code));
+  const registerForm = $("#registerForm");
+  if (registerForm) {
+    registerForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      hideAuthError();
+      const userAnswer = parseInt($("#captchaInput").value, 10);
+      if (isNaN(userAnswer) || userAnswer !== captchaAnswer) {
+        showAuthError("❌ Câu trả lời xác minh không đúng. Vui lòng thử lại.");
+        generateCaptcha();
+        return;
       }
-    }
-  });
+      const username = $("#registerUsername").value.trim().toLowerCase();
+      const displayName = $("#registerName").value.trim();
+      const email = $("#registerEmail").value.trim();
+      const password = $("#registerPassword").value;
 
-  // REGISTER
-  $("#registerForm").addEventListener("submit", async (e) => {
-    e.preventDefault();
-    hideAuthError();
-
-    const userAnswer = parseInt($("#captchaInput").value, 10);
-    if (isNaN(userAnswer) || userAnswer !== captchaAnswer) {
-      showAuthError("❌ Câu trả lời xác minh không đúng. Vui lòng thử lại.");
-      generateCaptcha();
-      return;
-    }
-
-    const username = $("#registerUsername").value.trim().toLowerCase();
-    const displayName = $("#registerName").value.trim();
-    const email = $("#registerEmail").value.trim();
-    const password = $("#registerPassword").value;
-
-    if (!/^[a-zA-Z0-9_]{3,30}$/.test(username)) {
-      showAuthError("Tên đăng nhập chỉ gồm chữ, số, _ (3-30 ký tự)");
-      return;
-    }
-
-    try {
-      // Kiểm tra username đã tồn tại chưa
-      const unameSnap = await fb.getDoc(fb.doc(fb.db, "usernames", username));
-      if (unameSnap.exists()) {
-        showAuthError("Tên đăng nhập này đã được sử dụng");
+      if (!/^[a-zA-Z0-9_]{3,30}$/.test(username)) {
+        showAuthError("Tên đăng nhập chỉ gồm chữ, số, _ (3-30 ký tự)");
         return;
       }
 
-      // Tạo user Firebase Auth bằng email
-      const cred = await fb.createUserWithEmailAndPassword(fb.auth, email, password);
-      await fb.updateProfile(cred.user, { displayName: displayName });
-
-      // Lưu user doc
-      await fb.setDoc(fb.doc(fb.db, "users", cred.user.uid), {
-        username: username,
-        displayName: displayName,
-        email: email,
-        favorites: [],
-        createdAt: fb.serverTimestamp()
-      });
-
-      // Lưu lookup username → email
-      await fb.setDoc(fb.doc(fb.db, "usernames", username), {
-        uid: cred.user.uid,
-        email: email
-      });
-
-      showToast("Đăng ký thành công!", "success");
-      closeModal($("#authModal"));
-    } catch (err) {
-      console.error("Register error:", err);
-      showAuthError(translateAuthError(err.code));
-    }
-  });
+      try {
+        const unameSnap = await fb.getDoc(fb.doc(fb.db, "usernames", username));
+        if (unameSnap.exists()) {
+          showAuthError("Tên đăng nhập này đã được sử dụng");
+          return;
+        }
+        const cred = await fb.createUserWithEmailAndPassword(fb.auth, email, password);
+        await fb.updateProfile(cred.user, { displayName: displayName });
+        await fb.setDoc(fb.doc(fb.db, "users", cred.user.uid), {
+          username: username,
+          displayName: displayName,
+          email: email,
+          favorites: [],
+          createdAt: fb.serverTimestamp()
+        });
+        await fb.setDoc(fb.doc(fb.db, "usernames", username), {
+          uid: cred.user.uid,
+          email: email
+        });
+        showToast("Đăng ký thành công!", "success");
+        closeModal($("#authModal"));
+      } catch (err) {
+        console.error("Register error:", err);
+        showAuthError(translateAuthError(err.code));
+      }
+    });
+  }
 
   const googleHandler = async () => {
     hideAuthError();
@@ -2110,8 +2179,8 @@ function initAuth() {
       closeModal($("#authModal"));
     } catch (err) { showAuthError(translateAuthError(err.code)); }
   };
-  $("#googleLoginBtn").addEventListener("click", googleHandler);
-  $("#googleRegisterBtn").addEventListener("click", googleHandler);
+  const gl = $("#googleLoginBtn"); if (gl) gl.addEventListener("click", googleHandler);
+  const gr = $("#googleRegisterBtn"); if (gr) gr.addEventListener("click", googleHandler);
 }
 
 /* =========================================================
@@ -2119,8 +2188,9 @@ function initAuth() {
 ========================================================== */
 function renderUserArea() {
   const area = $("#userArea");
+  if (!area) return;
   if (!currentUser) {
-    area.innerHTML = `<button class="btn btn-primary" id="loginBtn">Đăng nhập</button>`;
+    area.innerHTML = `<button class="btn btn-primary" id="loginBtn" type="button">Đăng nhập</button>`;
     $("#loginBtn").addEventListener("click", () => openAuthModal("login"));
     return;
   }
@@ -2131,7 +2201,7 @@ function renderUserArea() {
 
   area.innerHTML = `
     <div class="user-menu" id="userMenu">
-      <button class="user-btn" id="userMenuBtn">
+      <button class="user-btn" id="userMenuBtn" type="button">
         <div class="user-avatar">${avatarHTML}</div>
         <span class="user-name">${escapeHTML(name)}</span>
       </button>
@@ -2140,8 +2210,8 @@ function renderUserArea() {
           <strong>${escapeHTML(name)}</strong>
           <span>${escapeHTML(currentUser.email)}</span>
         </div>
-        <button class="user-dd-item" id="profileBtn">👤 Trang cá nhân</button>
-        <button class="user-dd-item danger" id="logoutBtn">🚪 Đăng xuất</button>
+        <button class="user-dd-item" id="profileBtn" type="button">👤 Trang cá nhân</button>
+        <button class="user-dd-item danger" id="logoutBtn" type="button">🚪 Đăng xuất</button>
       </div>
     </div>
   `;
@@ -2164,44 +2234,46 @@ function renderUserArea() {
 }
 
 /* =========================================================
-   PROFILE + AVATAR UPLOAD
+   PROFILE
 ========================================================== */
 function openProfileModal() {
   if (!currentUser) { showToast("Bạn cần đăng nhập", "info"); return; }
   const name = currentUser.displayName || currentUser.email.split("@")[0];
-  $("#profileName").textContent = name;
-  $("#profileEmail").textContent = currentUser.email;
-  $("#profileNameInput").value = name;
+  const pn = $("#profileName"); if (pn) pn.textContent = name;
+  const pe = $("#profileEmail"); if (pe) pe.textContent = currentUser.email;
+  const pni = $("#profileNameInput"); if (pni) pni.value = name;
 
   const avatarLarge = $("#avatarLarge");
-  if (currentUser.photoURL) {
-    avatarLarge.innerHTML = `
-      <img src="${currentUser.photoURL}" alt="">
-      <label class="avatar-edit" for="avatarInput">📷</label>
-      <input type="file" id="avatarInput" accept="image/*" style="display:none;">
-    `;
-  } else {
-    avatarLarge.innerHTML = `
-      <span>${getUserInitial(name)}</span>
-      <label class="avatar-edit" for="avatarInput">📷</label>
-      <input type="file" id="avatarInput" accept="image/*" style="display:none;">
-    `;
+  if (avatarLarge) {
+    if (currentUser.photoURL) {
+      avatarLarge.innerHTML = `
+        <img src="${currentUser.photoURL}" alt="">
+        <label class="avatar-edit" for="avatarInput">📷</label>
+        <input type="file" id="avatarInput" accept="image/*" style="display:none;">
+      `;
+    } else {
+      avatarLarge.innerHTML = `
+        <span>${getUserInitial(name)}</span>
+        <label class="avatar-edit" for="avatarInput">📷</label>
+        <input type="file" id="avatarInput" accept="image/*" style="display:none;">
+      `;
+    }
+    const ai = $("#avatarInput"); if (ai) ai.addEventListener("change", handleAvatarUpload);
   }
-  $("#avatarInput").addEventListener("change", handleAvatarUpload);
 
-  $("#profileFavs").textContent = favorites.size;
+  const pf = $("#profileFavs"); if (pf) pf.textContent = favorites.size;
   const totalViews = Object.values(views).reduce((a, b) => a + b, 0);
-  $("#profileViews").textContent = totalViews;
+  const pv = $("#profileViews"); if (pv) pv.textContent = totalViews;
 
   if (fb && currentUser) {
     const q = fb.query(fb.collection(fb.db, "comments"), fb.where("uid", "==", currentUser.uid));
     const unsub = fb.onSnapshot(q, (snap) => {
-      $("#profileComments").textContent = snap.size;
+      const pc = $("#profileComments"); if (pc) pc.textContent = snap.size;
       unsub();
-    }, () => { $("#profileComments").textContent = "0"; });
+    }, () => { const pc = $("#profileComments"); if (pc) pc.textContent = "0"; });
   }
 
-  $("#profileModal").classList.add("show");
+  const modal = $("#profileModal"); if (modal) modal.classList.add("show");
   document.body.style.overflow = "hidden";
 }
 
@@ -2212,12 +2284,10 @@ async function handleAvatarUpload(e) {
     showToast("Ảnh quá lớn (tối đa 1MB)", "error");
     return;
   }
-
   const reader = new FileReader();
   reader.onload = async (event) => {
     let dataUrl = event.target.result;
     dataUrl = await resizeImage(dataUrl, 300, 300);
-
     try {
       await fb.updateProfile(currentUser, { photoURL: dataUrl });
       await fb.setDoc(fb.doc(fb.db, "users", currentUser.uid), {
@@ -2228,7 +2298,7 @@ async function handleAvatarUpload(e) {
       openProfileModal();
     } catch (err) {
       console.error("Avatar upload error:", err);
-      showToast("Không thể cập nhật ảnh (ảnh quá lớn?)", "error");
+      showToast("Không thể cập nhật ảnh", "error");
     }
   };
   reader.readAsDataURL(file);
@@ -2252,7 +2322,9 @@ function resizeImage(dataUrl, maxW, maxH) {
 }
 
 function initProfile() {
-  $("#profileSaveBtn").addEventListener("click", async () => {
+  const btn = $("#profileSaveBtn");
+  if (!btn) return;
+  btn.addEventListener("click", async () => {
     const newName = $("#profileNameInput").value.trim();
     if (!newName || !currentUser) return;
     try {
@@ -2262,7 +2334,7 @@ function initProfile() {
       }, { merge: true });
       showToast("Đã lưu thay đổi", "success");
       renderUserArea();
-      $("#profileName").textContent = newName;
+      const pn = $("#profileName"); if (pn) pn.textContent = newName;
     } catch (err) {
       showToast("Lỗi", "error");
     }
@@ -2280,9 +2352,7 @@ async function loadUserData() {
     if (snap.exists()) {
       const data = snap.data();
       if (Array.isArray(data.favorites)) favorites = new Set(data.favorites);
-      if (data.photoURL && !currentUser.photoURL) {
-        currentUser.photoURL = data.photoURL;
-      }
+      if (data.photoURL && !currentUser.photoURL) currentUser.photoURL = data.photoURL;
     } else {
       await fb.setDoc(ref, { favorites: [] });
     }
@@ -2293,6 +2363,7 @@ async function loadUserData() {
 function updateCommentForm() {
   const hint = $("#commentLoginHint");
   const form = $("#commentForm");
+  if (!hint || !form) return;
   if (currentUser) { hint.hidden = true; form.hidden = false; }
   else { hint.hidden = false; form.hidden = true; }
 }
@@ -2314,58 +2385,42 @@ function initTheme() {
   const saved = localStorage.getItem("theme") || "dark";
   document.documentElement.dataset.theme = saved;
   updateThemeIcon(saved);
-  $("#themeToggle").addEventListener("click", () => {
-    const cur = document.documentElement.dataset.theme;
-    const next = cur === "dark" ? "light" : "dark";
-    document.documentElement.dataset.theme = next;
-    localStorage.setItem("theme", next);
-    updateThemeIcon(next);
-    showToast(next === "dark" ? "Đã bật Dark mode" : "Đã bật Light mode", "info");
-  });
+  const btn = $("#themeToggle");
+  if (btn) {
+    btn.addEventListener("click", () => {
+      const cur = document.documentElement.dataset.theme;
+      const next = cur === "dark" ? "light" : "dark";
+      document.documentElement.dataset.theme = next;
+      localStorage.setItem("theme", next);
+      updateThemeIcon(next);
+      showToast(next === "dark" ? "Dark mode" : "Light mode", "info");
+    });
+  }
 }
-function updateThemeIcon(theme) { $("#themeIcon").textContent = theme === "dark" ? "☀️" : "🌙"; }
+function updateThemeIcon(theme) {
+  const el = $("#themeToggle");
+  if (el) el.textContent = theme === "dark" ? "☀️" : "🌙";
+}
 
-/* =========================================================
-   GUIDE
-========================================================== */
 function initGuide() {
-  $("#guideBtn").addEventListener("click", () => {
-    $("#guideModal").classList.add("show");
-    document.body.style.overflow = "hidden";
+  const btn = $("#guideBtn");
+  if (!btn) return;
+  btn.addEventListener("click", () => {
+    const m = $("#guideModal");
+    if (m) {
+      m.classList.add("show");
+      document.body.style.overflow = "hidden";
+    }
   });
 }
 
 /* =========================================================
-   LANGUAGE (DROPDOWN - CHỌN ĐƯỢC)
+   LANGUAGE DROPDOWN
 ========================================================== */
 const TRANSLATIONS = {
-  vi: {
-    title: "Kho Script Xanh",
-    subtitle: "Tổng hợp script Roblox hot nhất, cập nhật liên tục",
-    login: "Đăng nhập",
-    guide: "Hướng dẫn",
-    tabAll: "📦 Tất cả",
-    tabFav: "❤️ Yêu thích",
-    search: "Tìm script..."
-  },
-  en: {
-    title: "Green Script Vault",
-    subtitle: "All hot Roblox scripts, updated regularly",
-    login: "Sign in",
-    guide: "Guide",
-    tabAll: "📦 All",
-    tabFav: "❤️ Favorites",
-    search: "Search scripts..."
-  },
-  th: {
-    title: "คลังสคริปต์สีเขียว",
-    subtitle: "รวมสคริปต์ Roblox ยอดนิยม อัปเดตตลอด",
-    login: "เข้าสู่ระบบ",
-    guide: "คู่มือ",
-    tabAll: "📦 ทั้งหมด",
-    tabFav: "❤️ รายการโปรด",
-    search: "ค้นหาสคริปต์..."
-  }
+  vi: { title: "Kho Script Neon", subtitle: "Tổng hợp script Roblox hot nhất, cập nhật liên tục", login: "Đăng nhập", guide: "Hướng dẫn", tabAll: "📦 Tất cả", tabFav: "❤️ Yêu thích", search: "Tìm script..." },
+  en: { title: "Neon Script Vault", subtitle: "All hot Roblox scripts, updated regularly", login: "Sign in", guide: "Guide", tabAll: "📦 All", tabFav: "❤️ Favorites", search: "Search scripts..." },
+  th: { title: "คลังสคริปต์ Neon", subtitle: "รวมสคริปต์ Roblox ยอดนิยม อัปเดตตลอด", login: "เข้าสู่ระบบ", guide: "คู่มือ", tabAll: "📦 ทั้งหมด", tabFav: "❤️ รายการโปรด", search: "ค้นหาสคริปต์..." }
 };
 
 let currentLang = localStorage.getItem("lang") || "vi";
@@ -2383,7 +2438,7 @@ function applyLang(lang) {
   const tabAll = document.querySelector('[data-tab="all"]');
   const tabFav = document.querySelector('[data-tab="fav"]');
 
-  if (heroTitle) heroTitle.textContent = "🌿 " + tr.title;
+  if (heroTitle) heroTitle.textContent = "⚡ " + tr.title;
   if (heroSub) heroSub.textContent = tr.subtitle;
   if (loginBtn && !currentUser) loginBtn.textContent = tr.login;
   if (guideBtn) guideBtn.innerHTML = "📖 " + tr.guide;
@@ -2391,7 +2446,6 @@ function applyLang(lang) {
   if (tabAll) tabAll.innerHTML = tr.tabAll + ' <span class="tab-count" id="countAll">' + SCRIPTS.length + '</span>';
   if (tabFav) tabFav.innerHTML = tr.tabFav + ' <span class="tab-count" id="countFav">' + favorites.size + '</span>';
 
-  // Cập nhật active item trong menu
   $$(".lang-item").forEach(item => {
     item.classList.toggle("active", item.dataset.lang === lang);
   });
@@ -2403,133 +2457,82 @@ function applyLang(lang) {
 function initLang() {
   const wrapper = $("#langWrapper");
   const btn = $("#langBtn");
-  const menu = $("#langMenu");
+  if (!wrapper || !btn) return;
 
   btn.addEventListener("click", (e) => {
     e.stopPropagation();
     wrapper.classList.toggle("open");
   });
-
   document.addEventListener("click", () => wrapper.classList.remove("open"));
-
   $$(".lang-item").forEach(item => {
     item.addEventListener("click", () => {
       applyLang(item.dataset.lang);
       wrapper.classList.remove("open");
     });
   });
-
-  applyLang(currentLang);
+  // Không gọi applyLang ở đây nữa, gọi trong DOMContentLoaded
 }
 
 /* =========================================================
-   FOOTER INFO MODAL
+   FOOTER INFO
 ========================================================== */
 const INFO_CONTENT = {
-  about: {
-    eyebrow: "Về chúng tôi",
-    title: "About Script Hub",
-    body: `
-      <h4>🌿 Script Hub</h4>
-      <p>Script Hub là cộng đồng chia sẻ script Roblox miễn phí, tổng hợp các hub script chất lượng cao cho nhiều tựa game phổ biến như Blox Fruits, Fishing Master, Steal an Egg...</p>
-      <p>Chúng tôi hoạt động phi lợi nhuận, mục tiêu là tạo ra một thư viện script mở, dễ truy cập, an toàn cho cộng đồng game thủ Việt Nam và quốc tế.</p>
-      <h4>🎯 Sứ mệnh</h4>
-      <ul>
-        <li>Cung cấp script miễn phí, chất lượng cao</li>
-        <li>Cập nhật liên tục, phản hồi nhanh với các bản update game</li>
-        <li>Xây dựng cộng đồng chia sẻ, hỗ trợ lẫn nhau</li>
-      </ul>
-      <h4>💬 Liên hệ</h4>
-      <p>Tham gia Discord của chúng tôi: <a href="https://discord.com/invite/GrTCy2DHEX" target="_blank">discord.gg/GrTCy2DHEX</a></p>
-    `
-  },
-  terms: {
-    eyebrow: "Điều khoản",
-    title: "Terms of Service",
-    body: `
-      <h4>📜 Điều khoản sử dụng</h4>
-      <p>Bằng việc truy cập Script Hub, bạn đồng ý với các điều khoản sau:</p>
-      <h4>1. Mục đích sử dụng</h4>
-      <p>Script Hub cung cấp script cho mục đích học tập và giải trí. Bạn tự chịu trách nhiệm về mọi hành vi sử dụng script của mình.</p>
-      <h4>2. Không bảo đảm</h4>
-      <p>Chúng tôi không bảo đảm script sẽ luôn hoạt động ổn định. Các script có thể bị ngừng hoạt động khi game cập nhật.</p>
-      <h4>3. Trách nhiệm người dùng</h4>
-      <ul>
-        <li>Không sử dụng script để gây hại cho người khác</li>
-        <li>Không bán lại script dưới mọi hình thức</li>
-        <li>Chấp nhận rủi ro có thể bị ban tài khoản Roblox</li>
-      </ul>
-      <h4>4. Bản quyền</h4>
-      <p>Mọi script trên web đều thuộc về tác giả gốc. Script Hub chỉ là nền tảng tổng hợp, không sở hữu script.</p>
-    `
-  },
-  privacy: {
-    eyebrow: "Quyền riêng tư",
-    title: "Privacy Policy",
-    body: `
-      <h4>🔒 Chính sách bảo mật</h4>
-      <p>Script Hub tôn trọng quyền riêng tư của bạn. Chúng tôi thu thập tối thiểu dữ liệu cần thiết:</p>
-      <h4>1. Dữ liệu thu thập</h4>
-      <ul>
-        <li><strong>Email + mật khẩu (mã hoá):</strong> khi bạn đăng ký tài khoản</li>
-        <li><strong>Tên hiển thị + ảnh đại diện:</strong> bạn tự nguyện cung cấp</li>
-        <li><strong>Yêu thích, lượt xem, bình luận:</strong> để cá nhân hoá trải nghiệm</li>
-        <li><strong>Cookies / localStorage:</strong> ghi nhớ theme, ngôn ngữ</li>
-      </ul>
-      <h4>2. Cách sử dụng dữ liệu</h4>
-      <p>Chúng tôi chỉ dùng dữ liệu để vận hành website. Không bán, không chia sẻ cho bên thứ ba.</p>
-      <h4>3. Bên thứ ba</h4>
-      <p>Chúng tôi dùng <strong>Google Firebase</strong> để xác thực và lưu trữ dữ liệu. Bạn có thể xem <a href="https://firebase.google.com/support/privacy" target="_blank">Privacy Policy của Google</a>.</p>
-      <h4>4. Quyền của bạn</h4>
-      <p>Bạn có thể yêu cầu xoá tài khoản bằng cách liên hệ qua Discord.</p>
-    `
-  },
-  legal: {
-    eyebrow: "Pháp lý",
-    title: "Legal Disclaimer",
-    body: `
-      <h4>⚖️ Tuyên bố miễn trừ trách nhiệm</h4>
-      <p><strong>Script Hub không liên kết với Roblox Corporation.</strong></p>
-      <p>Roblox là thương hiệu đã đăng ký của Roblox Corporation. Mọi thương hiệu, logo đều thuộc về chủ sở hữu gốc.</p>
-      <h4>1. Sử dụng script</h4>
-      <p>Việc sử dụng script có thể vi phạm <a href="https://en.help.roblox.com/hc/en-us/articles/115004647846-Roblox-Terms-of-Use" target="_blank">Điều khoản của Roblox</a>. Bạn tự chịu trách nhiệm nếu bị ban tài khoản.</p>
-      <h4>2. Nội dung bên thứ ba</h4>
-      <p>Script được tổng hợp từ nhiều nguồn công khai. Chúng tôi không chịu trách nhiệm về nội dung, mã độc (nếu có) từ script bên thứ ba.</p>
-      <h4>3. Giới hạn trách nhiệm</h4>
-      <p>Trong mọi trường hợp, Script Hub không chịu trách nhiệm cho bất kỳ thiệt hại trực tiếp hoặc gián tiếp nào phát sinh từ việc sử dụng website.</p>
-      <h4>4. Bản quyền DMCA</h4>
-      <p>Nếu bạn là tác giả và muốn gỡ script khỏi web, vui lòng liên hệ qua Discord để được xử lý trong 48h.</p>
-    `
-  },
-  contact: {
-    eyebrow: "Liên hệ",
-    title: "Contact Us",
-    body: `
-      <h4>📬 Liên hệ với chúng tôi</h4>
-      <p>Có câu hỏi, báo lỗi, hoặc muốn đóng góp script? Liên hệ qua các kênh sau:</p>
-      <h4>💬 Discord (nhanh nhất)</h4>
-      <p>Tham gia server Discord để được hỗ trợ trực tiếp:<br>
-      👉 <a href="https://discord.com/invite/GrTCy2DHEX" target="_blank"><strong>discord.gg/GrTCy2DHEX</strong></a></p>
-      <h4>📧 Email</h4>
-      <p>Gửi email tới: <a href="mailto:kenhmatchat@gmail.com">kenhmatchat@gmail.com</a></p>
-      <h4>⏱️ Thời gian phản hồi</h4>
-      <ul>
-        <li>Discord: trong vòng 1-2 giờ</li>
-        <li>Email: trong vòng 24-48 giờ</li>
-      </ul>
-      <h4>🐞 Báo lỗi script</h4>
-      <p>Nếu phát hiện script lỗi, dùng nút 🚩 báo lỗi trên card script để gửi email tự động.</p>
-    `
-  }
+  about: { eyebrow: "Về chúng tôi", title: "About Script Hub", body: `
+    <h4>⚡ Script Hub</h4>
+    <p>Script Hub là cộng đồng chia sẻ script Roblox miễn phí, tổng hợp các hub script chất lượng cao cho nhiều tựa game phổ biến.</p>
+    <h4>🎯 Sứ mệnh</h4>
+    <ul><li>Cung cấp script miễn phí, chất lượng cao</li><li>Cập nhật liên tục</li><li>Xây dựng cộng đồng</li></ul>
+    <h4>💬 Liên hệ</h4>
+    <p>Discord: <a href="https://discord.com/invite/GrTCy2DHEX" target="_blank">discord.gg/GrTCy2DHEX</a></p>
+  ` },
+  terms: { eyebrow: "Điều khoản", title: "Terms of Service", body: `
+    <h4>📜 Điều khoản sử dụng</h4>
+    <p>Bằng việc truy cập Script Hub, bạn đồng ý với các điều khoản sau:</p>
+    <h4>1. Mục đích sử dụng</h4>
+    <p>Script Hub cung cấp script cho mục đích học tập và giải trí.</p>
+    <h4>2. Trách nhiệm</h4>
+    <ul><li>Không dùng script gây hại người khác</li><li>Không bán lại script</li><li>Chấp nhận rủi ro ban tài khoản</li></ul>
+    <h4>3. Bản quyền</h4>
+    <p>Script thuộc về tác giả gốc. Script Hub chỉ là nền tảng tổng hợp.</p>
+  ` },
+  privacy: { eyebrow: "Quyền riêng tư", title: "Privacy Policy", body: `
+    <h4>🔒 Chính sách bảo mật</h4>
+    <h4>1. Dữ liệu thu thập</h4>
+    <ul><li>Email + mật khẩu (mã hoá)</li><li>Tên hiển thị + ảnh đại diện</li><li>Yêu thích, lượt xem, bình luận</li><li>Cookies / localStorage</li></ul>
+    <h4>2. Sử dụng</h4>
+    <p>Chỉ dùng để vận hành website. Không bán cho bên thứ ba.</p>
+    <h4>3. Bên thứ ba</h4>
+    <p>Dùng Google Firebase. Xem <a href="https://firebase.google.com/support/privacy" target="_blank">Privacy Policy của Google</a>.</p>
+  ` },
+  legal: { eyebrow: "Pháp lý", title: "Legal Disclaimer", body: `
+    <h4>⚖️ Tuyên bố miễn trừ</h4>
+    <p><strong>Script Hub không liên kết với Roblox Corporation.</strong></p>
+    <p>Roblox là thương hiệu của Roblox Corporation.</p>
+    <h4>1. Sử dụng script</h4>
+    <p>Việc dùng script có thể vi phạm Điều khoản Roblox. Bạn tự chịu trách nhiệm.</p>
+    <h4>2. Nội dung bên thứ ba</h4>
+    <p>Chúng tôi không chịu trách nhiệm về nội dung script bên thứ ba.</p>
+    <h4>3. DMCA</h4>
+    <p>Liên hệ Discord để gỡ script trong 48h.</p>
+  ` },
+  contact: { eyebrow: "Liên hệ", title: "Contact Us", body: `
+    <h4>📬 Liên hệ</h4>
+    <h4>💬 Discord (nhanh nhất)</h4>
+    <p>👉 <a href="https://discord.com/invite/GrTCy2DHEX" target="_blank"><strong>discord.gg/GrTCy2DHEX</strong></a></p>
+    <h4>📧 Email</h4>
+    <p><a href="mailto:kenhmatchat@gmail.com">kenhmatchat@gmail.com</a></p>
+    <h4>⏱️ Thời gian phản hồi</h4>
+    <ul><li>Discord: 1-2 giờ</li><li>Email: 24-48 giờ</li></ul>
+  ` }
 };
 
 function openInfoModal(key) {
   const info = INFO_CONTENT[key];
   if (!info) return;
-  $("#infoEyebrow").textContent = info.eyebrow;
-  $("#infoTitle").textContent = info.title;
-  $("#infoBody").innerHTML = info.body;
-  $("#infoModal").classList.add("show");
+  const ie = $("#infoEyebrow"); if (ie) ie.textContent = info.eyebrow;
+  const it = $("#infoTitle"); if (it) it.textContent = info.title;
+  const ib = $("#infoBody"); if (ib) ib.innerHTML = info.body;
+  const m = $("#infoModal"); if (m) m.classList.add("show");
   document.body.style.overflow = "hidden";
 }
 
@@ -2540,19 +2543,19 @@ function initFooter() {
 }
 
 /* =========================================================
-   COOKIE BANNER
+   COOKIE
 ========================================================== */
 function initCookie() {
   const banner = $("#cookieBanner");
+  if (!banner) return;
   const accepted = localStorage.getItem("cookieAccepted");
   if (!accepted) banner.hidden = false;
-
-  $("#cookieAccept").addEventListener("click", () => {
+  const ca = $("#cookieAccept"); if (ca) ca.addEventListener("click", () => {
     localStorage.setItem("cookieAccepted", "1");
     banner.hidden = true;
     showToast("Đã chấp nhận cookies", "success");
   });
-  $("#cookieDecline").addEventListener("click", () => {
+  const cd = $("#cookieDecline"); if (cd) cd.addEventListener("click", () => {
     localStorage.setItem("cookieAccepted", "0");
     banner.hidden = true;
     showToast("Đã từ chối cookies", "info");
@@ -2586,9 +2589,10 @@ window.addEventListener("firebase-ready", async () => {
 });
 
 /* =========================================================
-   INIT
+   INIT TẤT CẢ
 ========================================================== */
 document.addEventListener("DOMContentLoaded", () => {
+  console.log("🚀 DOM ready");
   initTabs();
   initSearch();
   initSort();
@@ -2605,10 +2609,13 @@ document.addEventListener("DOMContentLoaded", () => {
   initProfile();
   updateTagFilterUI();
   generateCaptcha();
-  $("#captchaRefresh").addEventListener("click", generateCaptcha);
+  const cr = $("#captchaRefresh"); if (cr) cr.addEventListener("click", generateCaptcha);
   updateCommentForm();
   renderScripts();
   updateCounts();
+
+  // Apply lang SAU KHI mọi thứ đã init
+  applyLang(currentLang);
 });
 </script>
 
