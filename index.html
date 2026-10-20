@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VuotLinkFun</title>
+    <title>Chuyển hướng an toàn</title>
     <style>
         * {
             margin: 0;
@@ -132,12 +132,14 @@
         <p class="subtitle">Hệ thống đang kiểm tra an toàn, vui lòng bấm "Tiếp tục".</p>
 
         <div class="btn-group">
+            <!-- NÚT TIẾP TỤC (ĐÃ GẮN LINK DONATE CỦA BẠN) -->
             <a href="#" id="btnContinue" class="btn btn-primary" onclick="handleContinue(event)">
                 <span id="btnText">Tiếp tục</span>
                 <div id="loadingSpinner" class="spinner"></div>
                 <svg id="btnIcon" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>
             </a>
             
+            <!-- NÚT LIÊN KẾT TÀI TRỢ -->
             <a href="https://kenhmatchat-executor.vercel.app/" target="_blank" class="btn btn-secondary">
                 <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
                 Liên kết tài trợ
@@ -154,29 +156,29 @@
             const spinner = document.getElementById('loadingSpinner');
             const icon = document.getElementById('btnIcon');
 
-            text.innerText = "Đang xử lý...";
+            // Đổi trạng thái nút sang Loading
+            text.innerText = "Đang chuyển hướng...";
             spinner.style.display = "block";
             icon.style.display = "none";
             btn.style.pointerEvents = "none";
             btn.style.opacity = "0.8";
 
             setTimeout(() => {
-                // ==========================================
-                // THAY LINK VƯỢT LINK CỦA BẠN VÀO DƯỚI ĐÂY:
-                // ==========================================
-                const yourTargetLink = "https://link4m.net/..."; 
+                // Link Donate của bạn
+                const donateLink = "https://link4m.org/x4mvKX"; 
                 
-                if (yourTargetLink !== "https://link4m.net/..." && yourTargetLink !== "") {
-                    window.location.href = yourTargetLink;
+                if (donateLink && donateLink !== "#") {
+                    window.location.href = donateLink;
                 } else {
-                    alert("Vui lòng cập nhật link vượt link vào code!");
+                    alert("Vui lòng cập nhật link Donate vào code!");
+                    // Khôi phục trạng thái nếu có lỗi
                     text.innerText = "Tiếp tục";
                     spinner.style.display = "none";
                     icon.style.display = "block";
                     btn.style.pointerEvents = "auto";
                     btn.style.opacity = "1";
                 }
-            }, 1500); 
+            }, 1200); 
         }
     </script>
 
